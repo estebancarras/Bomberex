@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Vehículos de Emergencia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-card *ngFor="let vehiculo of vehiculos$ | async">
+      <ion-item [routerLink]="['/detalle-vehiculo', vehiculo.id]" detail>
+        <ion-avatar slot="start">
+          <ion-icon name="car-sport-outline" style="font-size: 2em;"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ vehiculo.nombre }}</h2>
+          <p>
+            Estado:
+            <strong [ngClass]="{'ion-text-success': vehiculo.estado === 'Operativo', 'ion-text-danger': vehiculo.estado !== 'Operativo'}">
+              {{ vehiculo.estado }}
+            </strong>
+          </p>
+          <p *ngIf="vehiculo.ultimoMantenimiento">
+            Último mantenimiento: {{ vehiculo.ultimoMantenimiento }}
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </ion-list>
+</ion-content>

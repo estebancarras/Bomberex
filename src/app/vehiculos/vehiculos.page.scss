@@ -1,0 +1,26 @@
+/* Estilos para la página Vehiculos */
+
+ion-card {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  border-radius: 16px;
+  transition: transform 0.1s;
+  &:hover {
+    transform: scale(1.01);
+  }
+}
+
+ion-item {
+  --background: transparent;
+  border-radius: 12px;
+}
+
+ion-avatar {
+  background: #f0f4f8;
+}
+
+.ion-text-success {
+  color: #2dd36f !important;
+}
+.ion-text-danger {
+  color: #eb445a !important;
+}

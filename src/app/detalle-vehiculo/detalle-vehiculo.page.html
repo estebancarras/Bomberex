@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalle Vehículo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ng-container *ngIf="vehiculo$ | async as vehiculo">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ vehiculo.nombre }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Estado: {{ vehiculo.estado }}</p>
+        <h3>Mantenimientos</h3>
+        <ul>
+          <li *ngFor="let m of vehiculo.mantenimientos">
+            {{ m.fecha }} - {{ m.tipo }} - {{ m.descripcion }}
+          </li>
+        </ul>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ion-content>

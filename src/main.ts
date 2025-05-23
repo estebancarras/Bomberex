@@ -5,10 +5,36 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 
+import { initializeApp } from 'firebase/app';
+import { provideFirebaseApp } from '@angular/fire/app';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+
+import { addIcons } from 'ionicons';
+import { homeOutline, carSportOutline, personCircleOutline, buildOutline } from 'ionicons/icons';
+
+addIcons({
+  'home-outline': homeOutline,
+  'car-sport-outline': carSportOutline,
+  'person-circle-outline': personCircleOutline,
+  'build-outline': buildOutline,
+});
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDK-yZF6KkVpTDIHLmnQUnDZUS-1-x8gy8",
+  authDomain: "bomberex-70bb0.firebaseapp.com",
+  projectId: "bomberex-70bb0",
+  storageBucket: "bomberex-70bb0.firebasestorage.app",
+  messagingSenderId: "409061707467",
+  appId: "1:409061707467:web:441385fd843ed07ee4154e",
+  measurementId: "G-Q0Y8NH1CXK"
+};
+
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideFirestore(() => getFirestore()),
   ],
 });

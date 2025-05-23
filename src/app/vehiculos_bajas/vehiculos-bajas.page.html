@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Vehículos Dados de Baja</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-card *ngFor="let baja of bajas$ | async">
+      <ion-card-header>
+        <ion-card-title>{{ baja.nombreVehiculo }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Fecha de baja:</strong> {{ baja.fechaBaja }}</p>
+        <p><strong>Motivo:</strong> {{ baja.motivo }}</p>
+        <p *ngIf="baja.estadoFinal"><strong>Estado final:</strong> {{ baja.estadoFinal }}</p>
+        <p *ngIf="baja.responsable"><strong>Responsable:</strong> {{ baja.responsable }}</p>
+        <p *ngIf="baja.observaciones"><strong>Observaciones:</strong> {{ baja.observaciones }}</p>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

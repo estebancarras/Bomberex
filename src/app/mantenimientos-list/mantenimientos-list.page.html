@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Lista de Mantenimientos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      Historial de Mantenimientos
+    </ion-list-header>
+    <ion-item *ngFor="let mantenimiento of mantenimientos$ | async">
+      <ion-label>
+        <h2>{{ mantenimiento.tipo }}</h2>
+        <p>{{ mantenimiento.descripcion }}</p>
+        <p><small>{{ mantenimiento.fecha | date }}</small></p>
+        <p><small>Vehículo: {{ mantenimiento.vehiculo }}</small></p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

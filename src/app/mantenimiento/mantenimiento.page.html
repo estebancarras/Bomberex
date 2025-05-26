@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Mantenimientos</ion-title>
+    <ion-title>Agregar Mantenimiento</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -31,19 +31,6 @@
       </form>
     </ion-card-content>
   </ion-card>
-
-  <ion-list>
-    <ion-list-header>
-      Historial de Mantenimientos
-    </ion-list-header>
-    <ion-item *ngFor="let mantenimiento of mantenimientos$ | async">
-      <ion-label>
-        <h2>{{ mantenimiento.vehiculo }} - {{ mantenimiento.tipo }}</h2>
-        <p>{{ mantenimiento.descripcion }}</p>
-        <p><small>{{ mantenimiento.fecha }}</small></p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
 
   <ion-toast
     [isOpen]="showToast"

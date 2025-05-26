@@ -7,4 +7,8 @@ export const routes: Routes = [
   { path: 'detalle-vehiculo/:id', loadComponent: () => /* @vite-ignore */ import('./detalle-vehiculo/detalle-vehiculo.page').then(m => m.DetalleVehiculoPage) },
   { path: 'mantenimiento', loadComponent: () => /* @vite-ignore */ import('./mantenimiento/mantenimiento.page').then(m => m.MantenimientoPage) },
   { path: 'perfil', loadComponent: () => /* @vite-ignore */ import('./perfil/perfil.page').then(m => m.PerfilPage) },
+  {
+    path: 'registro',
+    loadComponent: () => import('./registro/registro.page').then( m => m.RegistroPage)
+  },
 ];

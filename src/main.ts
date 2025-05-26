@@ -8,6 +8,7 @@ import { AppComponent } from './app/app.component';
 import { initializeApp } from 'firebase/app';
 import { provideFirebaseApp } from '@angular/fire/app';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 
 import { addIcons } from 'ionicons';
 import { homeOutline, carSportOutline, personCircleOutline, buildOutline } from 'ionicons/icons';
@@ -36,5 +37,6 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
   ],
 });

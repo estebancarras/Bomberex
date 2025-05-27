@@ -2,9 +2,7 @@ import { Component, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -14,11 +12,17 @@ import { Observable } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  firestore = inject(Firestore);
-  vehiculos$: Observable<any[]>;
+  isAdmin: boolean = false;
+  isLoggedIn: boolean = false;
+
+  private authService = inject(AuthService);
 
   constructor() {
-    const ref = collection(this.firestore, 'vehiculos');
-    this.vehiculos$ = collectionData(ref, { idField: 'Nombre' });
+    this.authService.userRole$.subscribe(role => {
+      this.isAdmin = role === 'admin';
+    });
+    this.authService.user$.subscribe(user => {
+      this.isLoggedIn = !!user;
+    });
   }
 }

@@ -1,14 +1,14 @@
 <ion-app>
   <ion-header>
     <ion-toolbar>
-      <ion-buttons slot="start">
+      <ion-buttons slot="start" *ngIf="isLoggedIn">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-title> Bomberos App</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ion-menu side="start" contentId="main-content">
+  <ion-menu side="start" contentId="main-content" *ngIf="isLoggedIn">
     <ion-header>
       <ion-toolbar>
         <ion-title>Menú</ion-title>
@@ -33,7 +33,7 @@
             <ion-icon name="build-outline" slot="start"></ion-icon>
             Mantenimiento
           </ion-item>
-          <ion-item routerLink="/registro" routerDirection="root" routerLinkActive="selected">
+          <ion-item *ngIf="isAdmin" routerLink="/registro" routerDirection="root" routerLinkActive="selected">
             <ion-icon name="log-in-outline" slot="start"></ion-icon>
             Registro
           </ion-item>

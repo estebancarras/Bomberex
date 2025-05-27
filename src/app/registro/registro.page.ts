@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton } from '@ionic/angular/standalone';
-import { Firestore } from '@angular/fire/firestore';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -24,6 +24,12 @@ export class RegistroPage implements OnInit {
   async register() {
     try {
       const userCredential = await createUserWithEmailAndPassword(this.auth, this.email, this.password);
+      // Guardar datos adicionales en Firestore con rol "normal"
+      const userDocRef = doc(this.firestore, 'users', userCredential.user.uid);
+      await setDoc(userDocRef, {
+        email: this.email,
+        role: 'normal'
+      });
       console.log('Usuario registrado:', userCredential.user);
       this.router.navigateByUrl('/home');
     } catch (error) {

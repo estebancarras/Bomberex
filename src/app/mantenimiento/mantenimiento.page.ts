@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonInput, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonListHeader, IonDatetime, IonToast } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonInput, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonListHeader, IonDatetime, IonToast, IonButtons, IonBackButton } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
   templateUrl: 'mantenimiento.page.html',
   styleUrls: ['mantenimiento.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonInput, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonListHeader, IonDatetime, IonToast],
+  imports: [CommonModule, FormsModule, RouterModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonInput, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonListHeader, IonDatetime, IonToast, IonButtons, IonBackButton],
 })
 export class MantenimientoPage {
   private firestore = inject(Firestore);

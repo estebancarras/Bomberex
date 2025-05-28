@@ -13,19 +13,17 @@ export const routes: Routes = [
   {
     path: 'mantenimiento',
     loadComponent: () => import('./mantenimiento-home/mantenimiento-home.page').then(m => m.MantenimientoHomePage),
-    canActivate: [AuthGuard],
-    children: [
-      {
-        path: 'add',
-        loadComponent: () => import('./mantenimiento/mantenimiento.page').then(m => m.MantenimientoPage),
-        canActivate: [AuthGuard]
-      },
-      {
-        path: 'list',
-        loadComponent: () => import('./mantenimientos-list/mantenimientos-list.page').then(m => m.MantenimientosListPage),
-        canActivate: [AuthGuard]
-      }
-    ]
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'mantenimiento-add',
+    loadComponent: () => import('./mantenimiento/mantenimiento.page').then(m => m.MantenimientoPage),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'mantenimiento-list',
+    loadComponent: () => import('./mantenimientos-list/mantenimientos-list.page').then(m => m.MantenimientosListPage),
+    canActivate: [AuthGuard]
   },
   { path: 'perfil', loadComponent: () => import('./perfil/perfil.page').then(m => m.PerfilPage), canActivate: [AuthGuard] },
 ];

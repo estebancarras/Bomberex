@@ -1,21 +1,27 @@
 import { Component, inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, MenuController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
+
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [IonicModule, RouterModule, CommonModule],
+  imports: [IonicModule, CommonModule, RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   isAdmin: boolean = false;
   isLoggedIn: boolean = false;
+  isMenuEnabled: boolean = false;
 
   private authService = inject(AuthService);
+  private router = inject(Router);
+  private menuController = inject(MenuController);
 
   constructor() {
     this.authService.userRole$.subscribe(role => {
@@ -23,6 +29,19 @@ export class AppComponent {
     });
     this.authService.user$.subscribe(user => {
       this.isLoggedIn = !!user;
+    });
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      const url = event.urlAfterRedirects;
+      if (url.includes('login') || url.includes('registro') || url.includes('auth-choice')) {
+        this.isMenuEnabled = false;
+        this.menuController.enable(false);
+      } else {
+        this.isMenuEnabled = true;
+        this.menuController.enable(true);
+      }
     });
   }
 }

@@ -1,14 +1,14 @@
 <ion-app>
   <ion-header>
     <ion-toolbar>
-      <ion-buttons slot="start" *ngIf="isLoggedIn">
+      <ion-buttons slot="start" *ngIf="isMenuEnabled">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-title> Bomberos App</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ion-menu side="start" contentId="main-content" *ngIf="isLoggedIn">
+  <ion-menu side="start" contentId="main-content" *ngIf="isMenuEnabled">
     <ion-header>
       <ion-toolbar>
         <ion-title>Menú</ion-title>

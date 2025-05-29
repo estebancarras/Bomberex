@@ -5,6 +5,15 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <ion-button expand="block" color="primary" (click)="abrirModal()">
+    <ion-icon slot="start" name="add"></ion-icon>
+    Agregar Vehículo
+  </ion-button>
+
+  <ion-item>
+    <ion-input placeholder="Buscar vehículo" (ionInput)="searchChanged($event)"></ion-input>
+  </ion-item>
+
   <ion-list>
     <ion-card *ngFor="let vehiculo of vehiculos$ | async">
       <ion-item [routerLink]="['/detalle-vehiculo', vehiculo.id]" detail>
@@ -12,9 +21,8 @@
           <ion-icon name="car-sport-outline" style="font-size: 2em;"></ion-icon>
         </ion-avatar>
         <ion-label>
-          <h2>{{ vehiculo.nombre }}</h2>
           <p>
-            Estado:
+            Vehículo: <strong>{{ vehiculo.vehiculo }}</strong>, Estado: 
             <strong [ngClass]="{'ion-text-success': vehiculo.estado === 'Operativo', 'ion-text-danger': vehiculo.estado !== 'Operativo'}">
               {{ vehiculo.estado }}
             </strong>
@@ -26,4 +34,12 @@
       </ion-item>
     </ion-card>
   </ion-list>
+
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [color]="toastColor"
+    duration="2000"
+    (ionDidDismiss)="showToast = false">
+  </ion-toast>
 </ion-content>

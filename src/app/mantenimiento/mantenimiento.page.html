@@ -16,7 +16,11 @@
       <form (ngSubmit)="agregarMantenimiento()">
         <ion-item>
           <ion-label position="floating">Vehículo</ion-label>
-          <ion-input [(ngModel)]="nuevoMantenimiento.vehiculo" name="vehiculo" required></ion-input>
+          <ion-select [(ngModel)]="nuevoMantenimiento.vehiculo" name="vehiculo" required>
+            <ion-select-option *ngFor="let vehiculo of vehiculos$ | async" [value]="vehiculo.id">
+              {{ vehiculo.vehiculo }}
+            </ion-select-option>
+          </ion-select>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Tipo</ion-label>
@@ -29,6 +33,14 @@
         <ion-item>
           <ion-label position="floating">Fecha</ion-label>
           <ion-datetime display-format="YYYY-MM-DD" [(ngModel)]="nuevoMantenimiento.fecha" name="fecha" required></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Estado</ion-label>
+          <ion-select [(ngModel)]="nuevoMantenimiento.estado" name="estado" required>
+            <ion-select-option value="Operativo">Operativo</ion-select-option>
+            <ion-select-option value="En mantenimiento">En mantenimiento</ion-select-option>
+            <ion-select-option value="Fuera de servicio">Fuera de servicio</ion-select-option>
+          </ion-select>
         </ion-item>
         <ion-button expand="block" type="submit" color="primary">Agregar</ion-button>
       </form>

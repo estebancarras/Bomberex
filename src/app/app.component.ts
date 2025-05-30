@@ -35,7 +35,7 @@ export class AppComponent {
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       const url = event.urlAfterRedirects;
-      if (url.includes('login') || url.includes('registro') || url.includes('auth-choice')) {
+      if (url.includes('login') || url.includes('registro') || url.includes('auth-choice') || url.includes('recuperar-contrasena')) {
         this.isMenuEnabled = false;
         this.menuController.enable(false);
       } else {

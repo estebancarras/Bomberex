@@ -12,12 +12,18 @@
     <ion-list-header>
       Historial de Mantenimientos
     </ion-list-header>
-    <ion-item *ngFor="let mantenimiento of mantenimientos$ | async" [routerLink]="['/editar-mantenimiento', mantenimiento.id]" detail>
+    <ion-item *ngFor="let mantenimiento of mantenimientos$ | async"
+      [routerLink]="mantenimiento.completado !== 'Completado' ? ['/editar-mantenimiento', mantenimiento.id] : null"
+      [detail]="mantenimiento.completado !== 'Completado'">
       <ion-label>
         <h2>{{ mantenimiento.tipo }}</h2>
         <p>{{ mantenimiento.descripcion }}</p>
         <p><small>{{ mantenimiento.fecha | date }}</small></p>
         <p><small>Vehículo: {{ mantenimiento.vehiculo }}</small></p>
+        <p>
+          <ion-badge *ngIf="mantenimiento.completado === 'Completado'" color="success">Completado</ion-badge>
+          <ion-badge *ngIf="mantenimiento.completado !== 'Completado'" color="medium">No completado</ion-badge>
+        </p>
       </ion-label>
     </ion-item>
   </ion-list>

@@ -23,6 +23,7 @@ export class EditarMantenimientoPage implements OnInit {
   toastMessage = '';
   toastColor = 'success';
   vehiculos$: Observable<any[]> = new Observable();
+  vehiculosLista: any[] = [];
 
   private firestore = inject(Firestore);
   private route = inject(ActivatedRoute);
@@ -37,6 +38,12 @@ export class EditarMantenimientoPage implements OnInit {
       });
     }
     this.vehiculos$ = collectionData(collection(this.firestore, 'vehiculos'), { idField: 'id' });
+    this.vehiculos$.subscribe(lista => this.vehiculosLista = lista);
+  }
+
+  getVehiculoNombre(id: string): string {
+    const v = this.vehiculosLista.find(x => x.id === id);
+    return v ? v.vehiculo : '';
   }
 
   async guardarCambios() {
@@ -53,7 +60,8 @@ export class EditarMantenimientoPage implements OnInit {
         descripcion: this.mantenimiento.descripcion,
         fecha: this.mantenimiento.fecha,
         vehiculo: this.mantenimiento.vehiculo,
-        estado: this.mantenimiento.estado
+        estado: this.mantenimiento.estado,
+        completado: this.mantenimiento.completado ? 'Completado' : 'No completado'
       });
 
       // Actualizar el estado del vehículo relacionado

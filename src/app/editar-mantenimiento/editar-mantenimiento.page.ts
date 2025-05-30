@@ -55,12 +55,19 @@ export class EditarMantenimientoPage implements OnInit {
         vehiculo: this.mantenimiento.vehiculo,
         estado: this.mantenimiento.estado
       });
-      this.toastMessage = 'Mantenimiento actualizado con éxito.';
+
+      // Actualizar el estado del vehículo relacionado
+      const vehiculoRef = doc(this.firestore, `vehiculos/${this.mantenimiento.vehiculo}`);
+      await updateDoc(vehiculoRef, {
+        estado: this.mantenimiento.estado
+      });
+
+      this.toastMessage = 'Mantenimiento y estado del vehículo actualizados con éxito.';
       this.toastColor = 'success';
       this.showToast = true;
       setTimeout(() => this.router.navigateByUrl('/mantenimiento-list'), 1000);
     } catch (error) {
-      this.toastMessage = 'Error al actualizar mantenimiento.';
+      this.toastMessage = 'Error al actualizar mantenimiento o vehículo.';
       this.toastColor = 'danger';
       this.showToast = true;
     }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton } from '@ionic/angular/standalone';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
@@ -11,8 +11,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
   selector: 'app-registro',
   templateUrl: './registro.page.html',
   styleUrls: ['./registro.page.scss'],
-  standalone: true,
-  imports: [IonButton, IonInput, IonLabel, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+standalone: true,
+imports: [IonButton, IonInput, IonLabel, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterModule]
 })
 export class RegistroPage implements OnInit {
   email: string = '';

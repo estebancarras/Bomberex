@@ -3,13 +3,18 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel
 import { CommonModule } from '@angular/common';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-mantenimientos-list',
   templateUrl: './mantenimientos-list.page.html',
   styleUrls: ['./mantenimientos-list.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonListHeader, IonButtons, IonBackButton]
+  imports: [
+    CommonModule,
+    IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonListHeader, IonButtons, IonBackButton,
+    RouterModule
+  ]
 })
 export class MantenimientosListPage {
   private firestore = inject(Firestore);

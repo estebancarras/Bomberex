@@ -12,7 +12,7 @@
     <ion-list-header>
       Historial de Mantenimientos
     </ion-list-header>
-    <ion-item *ngFor="let mantenimiento of mantenimientos$ | async">
+    <ion-item *ngFor="let mantenimiento of mantenimientos$ | async" [routerLink]="['/editar-mantenimiento', mantenimiento.id]" detail>
       <ion-label>
         <h2>{{ mantenimiento.tipo }}</h2>
         <p>{{ mantenimiento.descripcion }}</p>

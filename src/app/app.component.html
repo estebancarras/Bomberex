@@ -25,10 +25,7 @@
             <ion-icon name="car-sport-outline" slot="start"></ion-icon>
             Vehículos
           </ion-item>
-          <ion-item routerLink="/perfil" routerDirection="root" routerLinkActive="selected">
-            <ion-icon name="person-circle-outline" slot="start"></ion-icon>
-            Perfil
-          </ion-item>
+          
           <ion-item routerLink="/mantenimiento" routerDirection="root" routerLinkActive="selected">
             <ion-icon name="build-outline" slot="start"></ion-icon>
             Mantenimiento
@@ -37,11 +34,18 @@
             <ion-icon name="log-in-outline" slot="start"></ion-icon>
             Registro
           </ion-item>
+          <ion-item routerLink="/perfil" routerDirection="root" routerLinkActive="selected">
+            <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+            Perfil
+          </ion-item>
+          <ion-item button (click)="logout()" routerDirection="root">
+            <ion-icon name="log-out-outline" slot="start"></ion-icon>
+            Cerrar sesión
+          </ion-item>
         </ion-menu-toggle>
       </ion-list>
     </ion-content>
   </ion-menu>
-
   <ion-content id="main-content">
     <router-outlet></router-outlet>
   </ion-content>

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
+import { Auth } from '@angular/fire/auth';
 
 import { RouterModule } from '@angular/router';
 
@@ -22,6 +23,7 @@ export class AppComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private menuController = inject(MenuController);
+  private auth = inject(Auth);
 
   constructor() {
     this.authService.userRole$.subscribe(role => {
@@ -43,5 +45,10 @@ export class AppComponent {
         this.menuController.enable(true);
       }
     });
+  }
+
+  async logout() {
+    await this.auth.signOut();
+    this.router.navigateByUrl('/auth-choice');
   }
 }

@@ -11,13 +11,14 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 
 import { addIcons } from 'ionicons';
-import { homeOutline, carSportOutline, personCircleOutline, buildOutline } from 'ionicons/icons';
+import { homeOutline, carSportOutline, personCircleOutline, buildOutline, logOutOutline } from 'ionicons/icons';
 
 addIcons({
   'home-outline': homeOutline,
   'car-sport-outline': carSportOutline,
   'person-circle-outline': personCircleOutline,
   'build-outline': buildOutline,
+  'log-out-outline': logOutOutline,
 });
 
 const firebaseConfig = {

@@ -15,6 +15,7 @@ standalone: true,
 imports: [IonButton, IonInput, IonLabel, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterModule]
 })
 export class RegistroPage implements OnInit {
+  name: string = '';
   email: string = '';
   password: string = '';
 
@@ -27,6 +28,7 @@ export class RegistroPage implements OnInit {
       // Guardar datos adicionales en Firestore con rol "normal"
       const userDocRef = doc(this.firestore, 'users', userCredential.user.uid);
       await setDoc(userDocRef, {
+        name: this.name,
         email: this.email,
         role: 'normal'
       });

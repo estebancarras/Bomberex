@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { IonicModule, MenuController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
@@ -24,6 +24,7 @@ export class AppComponent {
   private router = inject(Router);
   private menuController = inject(MenuController);
   private auth = inject(Auth);
+  private cdr = inject(ChangeDetectorRef);
 
   constructor() {
     this.authService.userRole$.subscribe(role => {
@@ -48,7 +49,13 @@ export class AppComponent {
   }
 
   async logout() {
+    await this.menuController.close();
+    // Add a short delay to ensure menu is fully closed before proceeding
+    await new Promise(resolve => setTimeout(resolve, 300));
     await this.auth.signOut();
-    this.router.navigateByUrl('/auth-choice');
+    this.isMenuEnabled = false;
+    this.menuController.enable(false);
+    this.cdr.detectChanges();
+    await this.router.navigateByUrl('/auth-choice', { replaceUrl: true });
   }
 }

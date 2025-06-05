@@ -2,3 +2,26 @@
 ion-list-header {
   font-weight: bold;
 }
+
+ion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+ion-label {
+  flex: 1;
+  margin-right: 10px;
+}
+
+ion-buttons[slot="end"] {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+ion-button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0;
+}

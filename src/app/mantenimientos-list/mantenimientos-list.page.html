@@ -12,10 +12,8 @@
     <ion-list-header>
       Historial de Mantenimientos
     </ion-list-header>
-    <ion-item *ngFor="let mantenimiento of mantenimientos$ | async"
-      [routerLink]="mantenimiento.completado !== 'Completado' ? ['/editar-mantenimiento', mantenimiento.id] : null"
-      [detail]="mantenimiento.completado !== 'Completado'">
-      <ion-label>
+    <div *ngFor="let mantenimiento of mantenimientos$ | async" class="mantenimiento-item">
+      <div class="mantenimiento-info" (click)="router.navigate(['/editar-mantenimiento', mantenimiento.id])">
         <h2>{{ mantenimiento.tipo }}</h2>
         <p>{{ mantenimiento.descripcion }}</p>
         <p><small>{{ mantenimiento.fecha | date }}</small></p>
@@ -24,7 +22,21 @@
           <ion-badge *ngIf="mantenimiento.completado === 'Completado'" color="success">Completado</ion-badge>
           <ion-badge *ngIf="mantenimiento.completado !== 'Completado'" color="medium">No completado</ion-badge>
         </p>
-      </ion-label>
-    </ion-item>
+      </div>
+      <div class="action-buttons">
+        <ion-button color="primary" (click)="descargarPDF(mantenimiento); $event.stopPropagation();" title="Descargar PDF">
+          <ion-icon name="download-outline" style="font-size: 24px;"></ion-icon>
+          Descargar
+        </ion-button>
+        <ion-button color="secondary" (click)="router.navigate(['/editar-mantenimiento', mantenimiento.id]); $event.stopPropagation()" title="Editar">
+          <ion-icon name="create-outline" style="font-size: 24px;"></ion-icon>
+          Editar
+        </ion-button>
+        <ion-button color="danger" (click)="borrarMantenimiento(mantenimiento); $event.stopPropagation()" title="Borrar">
+          <ion-icon name="trash-outline" style="font-size: 24px;"></ion-icon>
+          Borrar
+        </ion-button>
+      </div>
+    </div>
   </ion-list>
 </ion-content>

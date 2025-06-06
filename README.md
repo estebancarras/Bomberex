@@ -1,4 +1,4 @@
-# Bomberex App
+# Bomberex App 1
 
 Este proyecto es una aplicación Ionic con integración a Firebase Firestore. A continuación se detallan las instrucciones para configurar y ejecutar el proyecto en el equipo de un compañero de trabajo.
 

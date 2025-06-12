@@ -1,9 +1,6 @@
-# Bomberex App 1
+# Bomberex App
 
 Este proyecto es una aplicación Ionic con integración a Firebase Firestore. A continuación se detallan las instrucciones para configurar y ejecutar el proyecto en el equipo de un compañero de trabajo.
-
-git config --global user.email "geo.ulloa@duocuc.c"
-  git config --global user.name "GeovannyUlloa"
 
 ## Requisitos previos
 

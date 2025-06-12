@@ -1,24 +1,71 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/vehiculos"></ion-back-button>
+    </ion-buttons>
     <ion-title>Detalle Vehículo</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <ng-container *ngIf="vehiculo$ | async as vehiculo">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>{{ vehiculo.nombre }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Estado: {{ vehiculo.estado }}</p>
-        <h3>Mantenimientos</h3>
-        <ul>
-          <li *ngFor="let m of vehiculo.mantenimientos">
-            {{ m.fecha }} - {{ m.tipo }} - {{ m.descripcion }}
-          </li>
-        </ul>
-      </ion-card-content>
-    </ion-card>
+    <ion-segment [(ngModel)]="segment">
+      <ion-segment-button value="general">
+        General
+      </ion-segment-button>
+      <ion-segment-button value="mantenimientos">
+        Mantenimientos
+      </ion-segment-button>
+      <ion-segment-button value="historial">
+        Historial
+      </ion-segment-button>
+      <ion-segment-button value="documentos">
+        Documentos
+      </ion-segment-button>
+    </ion-segment>
+
+    <div [ngSwitch]="segment" class="segment-content">
+      <div *ngSwitchCase="'general'">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{ vehiculo.nombre }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item>
+              <ion-label position="floating">Estado</ion-label>
+              <ion-input [(ngModel)]="vehiculo.estado"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Modelo</ion-label>
+              <ion-input [(ngModel)]="vehiculo.modelo"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Año</ion-label>
+              <ion-input type="number" [(ngModel)]="vehiculo.anio"></ion-input>
+            </ion-item>
+            <ion-button expand="block" (click)="guardarCambios()">Guardar Cambios</ion-button>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <div *ngSwitchCase="'mantenimientos'">
+        <ion-list>
+          <ion-item *ngFor="let m of vehiculo.mantenimientos">
+            <ion-label>
+              <h3>{{ m.tipo }}</h3>
+              <p>{{ m.fecha }} - {{ m.descripcion }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <div *ngSwitchCase="'historial'">
+        <p>Historial detallado del vehículo (pendiente de implementación)</p>
+      </div>
+
+      <div *ngSwitchCase="'documentos'">
+        <p>Subir y visualizar documentos (pendiente de implementación)</p>
+      </div>
+    </div>
   </ng-container>
 </ion-content>

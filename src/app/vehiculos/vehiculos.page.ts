@@ -1,80 +1,77 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { VehiculosService, Vehiculo } from '../services/vehiculos.service';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonList, IonItem, IonLabel, IonAvatar, IonIcon, IonSearchbar, IonInput, IonButton, IonToast, IonButtons, IonModal, IonSelect, IonSelectOption, ModalController } from '@ionic/angular/standalone';
-import { Firestore, collection, collectionData, addDoc } from '@angular/fire/firestore';
-import { Observable, BehaviorSubject, switchMap, map } from 'rxjs';
 import { VehiculoModalComponent } from './vehiculo-modal.component';
 
 @Component({
   selector: 'app-vehiculos',
-  templateUrl: 'vehiculos.page.html',
-  styleUrls: ['vehiculos.page.scss'],
+  templateUrl: './vehiculos.page.html',
+  styleUrls: ['./vehiculos.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonList, IonItem, IonLabel, IonAvatar, IonIcon, IonSearchbar, IonInput, IonButton, IonToast, IonButtons, IonModal, IonSelect, IonSelectOption],
+  imports: [IonicModule, CommonModule, RouterModule, VehiculoModalComponent]
 })
-export class VehiculosPage {
-  private firestore = inject(Firestore);
-  private modalController = inject(ModalController);
-  private searchTerm$ = new BehaviorSubject<string>('');
-
-  vehiculos$: Observable<any[]> = this.searchTerm$.pipe(
-    switchMap(searchTerm => {
-      return collectionData(collection(this.firestore, 'vehiculos'), { idField: 'id' }).pipe(
-        map(vehiculos => {
-          if (searchTerm) {
-            return vehiculos.filter(v =>
-              v['vehiculo'].toLowerCase().includes(searchTerm.toLowerCase()) ||
-              v['estado'].toLowerCase().includes(searchTerm.toLowerCase())
-            );
-          }
-          return vehiculos;
-        })
-      );
-    })
-  );
-
+export class VehiculosPage implements OnInit {
+  vehiculos$: Vehiculo[] = [];
   showToast = false;
   toastMessage = '';
   toastColor = 'success';
 
-  async abrirModal() {
-    const modal = await this.modalController.create({
-      component: VehiculoModalComponent,
-    });
+  constructor(private vehiculosService: VehiculosService, private router: Router, private modalCtrl: ModalController) {}
 
-    modal.onDidDismiss().then((result) => {
-      if (result.data) {
-        this.agregarVehiculo(result.data);
-      }
-    });
-
-    await modal.present();
+  async ngOnInit() {
+    await this.vehiculosService.init();
+    await this.loadVehiculos();
   }
 
-  async agregarVehiculo(vehiculoData: any) {
-    if (!vehiculoData.vehiculo) {
-      this.toastMessage = 'Por favor, ingresa el nombre del vehículo.';
-      this.toastColor = 'danger';
-      this.showToast = true;
-      return;
-    }
-    try {
-      const ref = collection(this.firestore, 'vehiculos');
-      await addDoc(ref, vehiculoData);
-      this.toastMessage = 'Vehículo agregado con éxito.';
-      this.toastColor = 'success';
-      this.showToast = true;
-      this.searchTerm$.next(''); // refrescar lista
-    } catch (error) {
-      this.toastMessage = 'Error al agregar vehículo.';
-      this.toastColor = 'danger';
-      this.showToast = true;
-    }
+  async loadVehiculos() {
+    this.vehiculos$ = await this.vehiculosService.getVehiculos();
   }
 
   searchChanged(event: any) {
-    this.searchTerm$.next(event.detail.value);
+    // Aquí puedes implementar la lógica de búsqueda
+    console.log('Buscar:', event.detail.value);
+  }
+
+  async addVehiculo() {
+    const modal = await this.modalCtrl.create({
+      component: VehiculoModalComponent
+    });
+    modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data) {
+      try {
+        await this.vehiculosService.addVehiculo(data);
+        this.toastMessage = 'Vehículo agregado correctamente';
+        this.toastColor = 'success';
+        this.showToast = true;
+        await this.loadVehiculos();
+      } catch (error) {
+        this.toastMessage = 'Error al agregar vehículo';
+        this.toastColor = 'danger';
+        this.showToast = true;
+      }
+    }
+  }
+
+  async deleteVehiculo(id: number) {
+    try {
+      await this.vehiculosService.deleteVehiculo(id);
+      this.toastMessage = 'Vehículo eliminado correctamente';
+      this.toastColor = 'success';
+      this.showToast = true;
+      await this.loadVehiculos();
+    } catch (error) {
+      this.toastMessage = 'Error al eliminar vehículo';
+      this.toastColor = 'danger';
+      this.showToast = true;
+    }
+  }
+
+  goToDetalle(id: number) {
+    this.router.navigate(['/detalle-vehiculo', id]);
   }
 }

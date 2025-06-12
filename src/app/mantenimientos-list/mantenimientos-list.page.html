@@ -13,7 +13,7 @@
       Historial de Mantenimientos
     </ion-list-header>
     <div *ngFor="let mantenimiento of mantenimientos$ | async" class="mantenimiento-item">
-      <div class="mantenimiento-info" (click)="router.navigate(['/editar-mantenimiento', mantenimiento.id])">
+      <div class="mantenimiento-info">
         <h2>{{ mantenimiento.tipo }}</h2>
         <p>{{ mantenimiento.descripcion }}</p>
         <p><small>{{ mantenimiento.fecha | date }}</small></p>

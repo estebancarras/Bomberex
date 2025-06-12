@@ -1,38 +1,34 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Vehículos de Emergencia</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      🚒 Vehículos Bomberos
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-button expand="block" color="primary" (click)="abrirModal()">
-    <ion-icon slot="start" name="add"></ion-icon>
-    Agregar Vehículo
+  <ion-button expand="block" color="primary" style="margin: 10px 0;" (click)="addVehiculo()">
+    AGREGAR VEHÍCULO
   </ion-button>
 
-  <ion-item>
-    <ion-input placeholder="Buscar vehículo" (ionInput)="searchChanged($event)"></ion-input>
-  </ion-item>
+  <ion-searchbar placeholder="Buscar vehículo" (ionInput)="searchChanged($event)"></ion-searchbar>
 
   <ion-list>
-    <ion-card *ngFor="let vehiculo of vehiculos$ | async">
-      <ion-item [routerLink]="['/detalle-vehiculo', vehiculo.id]" detail>
-        <ion-avatar slot="start">
-          <ion-icon name="car-sport-outline" style="font-size: 2em;"></ion-icon>
-        </ion-avatar>
-        <ion-label>
-          <p>
-            Vehículo: <strong>{{ vehiculo.vehiculo }}</strong>, Estado: 
-            <strong [ngClass]="{'ion-text-success': vehiculo.estado === 'Operativo', 'ion-text-danger': vehiculo.estado !== 'Operativo'}">
-              {{ vehiculo.estado }}
-            </strong>
-          </p>
-          <p *ngIf="vehiculo.ultimoMantenimiento">
-            Último mantenimiento: {{ vehiculo.ultimoMantenimiento }}
-          </p>
-        </ion-label>
-      </ion-item>
-    </ion-card>
+    <ion-item *ngFor="let vehiculo of vehiculos$" (click)="goToDetalle(vehiculo.id!)" button detail>
+      <ion-avatar slot="start">
+        <ion-icon name="fire" size="large" color="danger"></ion-icon>
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ vehiculo.nombre }}</h2>
+        <p>Modelo: {{ vehiculo.modelo }} - Año: {{ vehiculo.anio }}</p>
+      </ion-label>
+      <ion-button fill="clear" color="danger" (click)="deleteVehiculo(vehiculo.id!); $event.stopPropagation()">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-item>
   </ion-list>
 
   <ion-toast
@@ -40,6 +36,6 @@
     [message]="toastMessage"
     [color]="toastColor"
     duration="2000"
-    (ionDidDismiss)="showToast = false">
+    (didDismiss)="showToast = false">
   </ion-toast>
 </ion-content>

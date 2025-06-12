@@ -1,2 +1,25 @@
-// For information on how to create your own theme, please see:
-// http://ionicframework.com/docs/theming/
+// Variables personalizadas para el tema de Bomberos App
+
+// Colores principales
+$colors: (
+  primary:    #d32f2f, // rojo bombero
+  secondary:  #fbc02d, // amarillo fuego
+  tertiary:   #1976d2, // azul para detalles
+  success:    #388e3c,
+  warning:    #f57c00,
+  danger:     #d32f2f,
+  dark:       #212121,
+  medium:     #757575,
+  light:      #f5f5f5
+);
+
+// Tipografía
+$font-family-base: 'Roboto', sans-serif;
+
+// Tamaños y espaciados
+$padding-md: 16px;
+$margin-md: 16px;
+
+// Otros estilos
+$border-radius: 8px;
+$box-shadow: 0 2px 6px rgba(0,0,0,0.15);

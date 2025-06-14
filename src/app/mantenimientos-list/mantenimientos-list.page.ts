@@ -6,6 +6,15 @@ import { Observable } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
 import jsPDF from 'jspdf';
 
+import { addIcons } from 'ionicons';
+import { downloadOutline, createOutline, trashOutline } from 'ionicons/icons';
+
+addIcons({
+  'download-outline': downloadOutline,
+  'create-outline': createOutline,
+  'trash-outline': trashOutline
+});
+
 @Component({
   selector: 'app-mantenimientos-list',
   templateUrl: './mantenimientos-list.page.html',

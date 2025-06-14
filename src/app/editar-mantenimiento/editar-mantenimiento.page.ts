@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Firestore, doc, docData, updateDoc, collection, collectionData } from '@angular/fire/firestore';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonItem, IonLabel, IonInput, IonButton, IonDatetime, IonToast, IonButtons, IonBackButton, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonItem, IonLabel, IonInput, IonButton, IonDatetime, IonToast, IonButtons, IonBackButton, IonSelect, IonSelectOption, IonCheckbox } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -12,13 +12,13 @@ import { Observable } from 'rxjs';
   styleUrls: ['./editar-mantenimiento.page.scss'],
   standalone: true,
   imports: [
-    CommonModule, FormsModule,
+    CommonModule, FormsModule, ReactiveFormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent,
-    IonItem, IonLabel, IonInput, IonButton, IonDatetime, IonToast, IonButtons, IonBackButton, IonSelect, IonSelectOption
+    IonItem, IonLabel, IonInput, IonButton, IonDatetime, IonToast, IonButtons, IonBackButton, IonSelect, IonSelectOption, IonCheckbox
   ]
 })
 export class EditarMantenimientoPage implements OnInit {
-  mantenimiento: any = null;
+  mantenimientoForm: FormGroup;
   showToast = false;
   toastMessage = '';
   toastColor = 'success';
@@ -29,12 +29,32 @@ export class EditarMantenimientoPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
+  constructor() {
+    this.mantenimientoForm = new FormGroup({
+      tipo: new FormControl('', Validators.required),
+      descripcion: new FormControl('', Validators.required),
+      fecha: new FormControl('', Validators.required),
+      vehiculo: new FormControl('', Validators.required),
+      estado: new FormControl('', Validators.required),
+      completado: new FormControl(false)
+    });
+  }
+
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const mantenimientoRef = doc(this.firestore, `mantenimientos/${id}`);
       docData(mantenimientoRef, { idField: 'id' }).subscribe(data => {
-        this.mantenimiento = data;
+        if (data && typeof data === 'object') {
+          this.mantenimientoForm.patchValue({
+            tipo: (data as any).tipo,
+            descripcion: (data as any).descripcion,
+            fecha: (data as any).fecha,
+            vehiculo: (data as any).vehiculo,
+            estado: (data as any).estado,
+            completado: (data as any).completado === 'Completado' ? true : false
+          });
+        }
       });
     }
     this.vehiculos$ = collectionData(collection(this.firestore, 'vehiculos'), { idField: 'id' });
@@ -47,27 +67,27 @@ export class EditarMantenimientoPage implements OnInit {
   }
 
   async guardarCambios() {
-    if (!this.mantenimiento.tipo || !this.mantenimiento.descripcion || !this.mantenimiento.fecha || !this.mantenimiento.vehiculo || !this.mantenimiento.estado) {
+    if (this.mantenimientoForm.invalid) {
       this.toastMessage = 'Por favor, completa todos los campos.';
       this.toastColor = 'danger';
       this.showToast = true;
       return;
     }
     try {
-      const mantenimientoRef = doc(this.firestore, `mantenimientos/${this.mantenimiento.id}`);
+      const mantenimientoRef = doc(this.firestore, `mantenimientos/${this.mantenimientoForm.value.id}`);
       await updateDoc(mantenimientoRef, {
-        tipo: this.mantenimiento.tipo,
-        descripcion: this.mantenimiento.descripcion,
-        fecha: this.mantenimiento.fecha,
-        vehiculo: this.mantenimiento.vehiculo,
-        estado: this.mantenimiento.estado,
-        completado: this.mantenimiento.completado ? 'Completado' : 'No completado'
+        tipo: this.mantenimientoForm.value.tipo,
+        descripcion: this.mantenimientoForm.value.descripcion,
+        fecha: this.mantenimientoForm.value.fecha,
+        vehiculo: this.mantenimientoForm.value.vehiculo,
+        estado: this.mantenimientoForm.value.estado,
+        completado: this.mantenimientoForm.value.completado ? 'Completado' : 'No completado'
       });
 
       // Actualizar el estado del vehículo relacionado
-      const vehiculoRef = doc(this.firestore, `vehiculos/${this.mantenimiento.vehiculo}`);
+      const vehiculoRef = doc(this.firestore, `vehiculos/${this.mantenimientoForm.value.vehiculo}`);
       await updateDoc(vehiculoRef, {
-        estado: this.mantenimiento.estado
+        estado: this.mantenimientoForm.value.estado
       });
 
       this.toastMessage = 'Mantenimiento y estado del vehículo actualizados con éxito.';

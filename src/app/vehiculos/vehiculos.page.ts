@@ -5,6 +5,14 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { VehiculoModalComponent } from './vehiculo-modal.component';
+import { Observable } from 'rxjs';
+
+import { addIcons } from 'ionicons';
+import { trash } from 'ionicons/icons';
+
+addIcons({
+  trash
+});
 
 @Component({
   selector: 'app-vehiculos',
@@ -14,7 +22,7 @@ import { VehiculoModalComponent } from './vehiculo-modal.component';
   imports: [IonicModule, CommonModule, RouterModule, VehiculoModalComponent]
 })
 export class VehiculosPage implements OnInit {
-  vehiculos$: Vehiculo[] = [];
+  vehiculos$: Observable<Vehiculo[]> | undefined;
   showToast = false;
   toastMessage = '';
   toastColor = 'success';
@@ -23,11 +31,29 @@ export class VehiculosPage implements OnInit {
 
   async ngOnInit() {
     await this.vehiculosService.init();
-    await this.loadVehiculos();
+    this.loadVehiculos();
   }
 
-  async loadVehiculos() {
-    this.vehiculos$ = await this.vehiculosService.getVehiculos();
+  getIconoModelo(modelo: string): string {
+    const modeloLower = modelo.toLowerCase();
+    if (modeloLower.includes('camion')) {
+      return 'bus';
+    } else if (modeloLower.includes('auto') || modeloLower.includes('carro') || modeloLower.includes('coche')) {
+      return 'car';
+    } else if (modeloLower.includes('moto') || modeloLower.includes('motocicleta')) {
+      return 'bicycle';
+    } else if (modeloLower.includes('ambulancia')) {
+      return 'medkit';
+    } else {
+      return 'help-circle';
+    }
+  }
+
+  loadVehiculos() {
+    this.vehiculos$ = this.vehiculosService.getVehiculos();
+    this.vehiculos$.subscribe(data => {
+      console.log('Vehículos cargados:', data);
+    });
   }
 
   searchChanged(event: any) {
@@ -48,7 +74,7 @@ export class VehiculosPage implements OnInit {
         this.toastMessage = 'Vehículo agregado correctamente';
         this.toastColor = 'success';
         this.showToast = true;
-        await this.loadVehiculos();
+        this.loadVehiculos();
       } catch (error) {
         this.toastMessage = 'Error al agregar vehículo';
         this.toastColor = 'danger';
@@ -57,13 +83,13 @@ export class VehiculosPage implements OnInit {
     }
   }
 
-  async deleteVehiculo(id: number) {
+  async deleteVehiculo(id: string) {
     try {
       await this.vehiculosService.deleteVehiculo(id);
       this.toastMessage = 'Vehículo eliminado correctamente';
       this.toastColor = 'success';
       this.showToast = true;
-      await this.loadVehiculos();
+      this.loadVehiculos();
     } catch (error) {
       this.toastMessage = 'Error al eliminar vehículo';
       this.toastColor = 'danger';
@@ -71,7 +97,7 @@ export class VehiculosPage implements OnInit {
     }
   }
 
-  goToDetalle(id: number) {
+  goToDetalle(id: string) {
     this.router.navigate(['/detalle-vehiculo', id]);
   }
 }

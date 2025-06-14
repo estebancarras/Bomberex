@@ -17,7 +17,7 @@
         <ion-item>
           <ion-label position="floating">Vehículo</ion-label>
           <ion-select [(ngModel)]="nuevoMantenimiento.vehiculo" name="vehiculo" required>
-            <ion-select-option *ngFor="let vehiculo of vehiculos$ | async" [value]="vehiculo.id">
+          <ion-select-option *ngFor="let vehiculo of vehiculos$ | async" [value]="vehiculo.id">
               {{ vehiculo.vehiculo }}
             </ion-select-option>
           </ion-select>

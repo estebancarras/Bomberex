@@ -10,25 +10,33 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-button expand="block" color="primary" style="margin: 10px 0;" (click)="addVehiculo()">
+  <ion-button expand="block" color="secondary" class="add-vehicle-btn" (click)="addVehiculo()">
     AGREGAR VEHÍCULO
   </ion-button>
 
-  <ion-searchbar placeholder="Buscar vehículo" (ionInput)="searchChanged($event)"></ion-searchbar>
+  <ion-searchbar placeholder="Buscar vehículo" (ionInput)="searchChanged($event)" debounce="300"></ion-searchbar>
 
   <ion-list>
-    <ion-item *ngFor="let vehiculo of vehiculos$" (click)="goToDetalle(vehiculo.id!)" button detail>
-      <ion-avatar slot="start">
-        <ion-icon name="fire" size="large" color="danger"></ion-icon>
-      </ion-avatar>
-      <ion-label>
-        <h2>{{ vehiculo.nombre }}</h2>
+    <ion-card *ngFor="let vehiculo of vehiculos$ | async" (click)="goToDetalle(vehiculo.id!)" class="vehicle-card" button>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon [name]="getIconoModelo(vehiculo.modelo)" slot="start" class="vehicle-icon"></ion-icon>
+          <span class="vehicle-name" *ngIf="vehiculo.nombre; else sinNombre">{{ vehiculo.nombre }}</span>
+          <ng-template #sinNombre><span class="vehicle-name">Sin nombre</span></ng-template>
+          <span class="vehicle-status" [ngClass]="{
+            'status-operativo': vehiculo.estado === 'Operativo',
+            'status-mantenimiento': vehiculo.estado === 'En mantenimiento',
+            'status-fuera-servicio': vehiculo.estado === 'Fuera de servicio'
+          }">{{ vehiculo.estado }}</span>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
         <p>Modelo: {{ vehiculo.modelo }} - Año: {{ vehiculo.anio }}</p>
-      </ion-label>
-      <ion-button fill="clear" color="danger" (click)="deleteVehiculo(vehiculo.id!); $event.stopPropagation()">
+      </ion-card-content>
+      <ion-button fill="clear" color="danger" (click)="deleteVehiculo(vehiculo.id!); $event.stopPropagation()" class="delete-btn">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
       </ion-button>
-    </ion-item>
+    </ion-card>
   </ion-list>
 
   <ion-toast

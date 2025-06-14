@@ -1,14 +1,5 @@
 <ion-app>
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="start" *ngIf="isMenuEnabled">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title> Bomberos App</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-menu side="start" contentId="main-content" *ngIf="isMenuEnabled">
+  <ion-menu side="start" contentId="main-content" *ngIf="isMenuEnabled" type="overlay" swipeGesture="true" aria-label="Menú principal">
     <ion-header>
       <ion-toolbar>
         <ion-title>Menú</ion-title>
@@ -17,36 +8,36 @@
     <ion-content>
       <ion-list>
         <ion-menu-toggle auto-hide="true">
-          <ion-item routerLink="/home" routerDirection="root" routerLinkActive="selected">
-            <ion-icon name="home-outline" slot="start"></ion-icon>
+          <ion-item routerLink="/home" routerDirection="root" routerLinkActive="selected" aria-current="page" aria-label="Ir a Home">
+            <ion-icon name="home-outline" slot="start" aria-hidden="true"></ion-icon>
             Home
           </ion-item>
-          <ion-item routerLink="/vehiculos" routerDirection="root" routerLinkActive="selected">
-            <ion-icon name="car-sport-outline" slot="start"></ion-icon>
+          <ion-item routerLink="/vehiculos" routerDirection="root" routerLinkActive="selected" aria-current="page" aria-label="Ir a Vehículos">
+            <ion-icon name="car-sport-outline" slot="start" aria-hidden="true"></ion-icon>
             Vehículos
           </ion-item>
           
-          <ion-item routerLink="/mantenimiento" routerDirection="root" routerLinkActive="selected">
-            <ion-icon name="build-outline" slot="start"></ion-icon>
+          <ion-item routerLink="/mantenimiento" routerDirection="root" routerLinkActive="selected" aria-current="page" aria-label="Ir a Mantenimiento">
+            <ion-icon name="build-outline" slot="start" aria-hidden="true"></ion-icon>
             Mantenimiento
           </ion-item>
-          <ion-item *ngIf="isAdmin" routerLink="/registro" routerDirection="root" routerLinkActive="selected">
-            <ion-icon name="log-in-outline" slot="start"></ion-icon>
+          <ion-item *ngIf="isAdmin" routerLink="/registro" routerDirection="root" routerLinkActive="selected" aria-current="page" aria-label="Ir a Registro">
+            <ion-icon name="log-in-outline" slot="start" aria-hidden="true"></ion-icon>
             Registro
           </ion-item>
-          <ion-item routerLink="/perfil" routerDirection="root" routerLinkActive="selected">
-            <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+          <ion-item routerLink="/perfil" routerDirection="root" routerLinkActive="selected" aria-current="page" aria-label="Ir a Perfil">
+            <ion-icon name="person-circle-outline" slot="start" aria-hidden="true"></ion-icon>
             Perfil
           </ion-item>
-          <ion-item button (click)="logout()" routerDirection="root">
-            <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          <ion-item button (click)="logout()" routerDirection="root" aria-label="Cerrar sesión">
+            <ion-icon name="log-out-outline" slot="start" aria-hidden="true"></ion-icon>
             Cerrar sesión
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
     </ion-content>
   </ion-menu>
-  <ion-content id="main-content">
+  <ion-content id="main-content" tabindex="0">
     <router-outlet></router-outlet>
   </ion-content>
 </ion-app>

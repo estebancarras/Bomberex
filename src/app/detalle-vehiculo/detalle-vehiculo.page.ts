@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { VehiculosService, Vehiculo } from '../services/vehiculos.service';
 
 @Component({
   selector: 'app-detalle-vehiculo',
@@ -12,22 +14,22 @@ import { Observable, of } from 'rxjs';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class DetalleVehiculoPage {
+export class DetalleVehiculoPage implements OnInit {
   segment: string = 'general';
-  vehiculo$: Observable<any>;
+  vehiculo$: Observable<Vehiculo | undefined> | undefined;
 
-  constructor(private route: ActivatedRoute) {
-    // Simulación de datos, en producción se obtendrían de un servicio
-    this.vehiculo$ = of({
-      nombre: 'Camión de Bomberos 1',
-      estado: 'Operativo',
-      modelo: 'Modelo A',
-      anio: 2015,
-      mantenimientos: [
-        { fecha: '2023-01-10', tipo: 'Revisión', descripcion: 'Cambio de aceite' },
-        { fecha: '2023-03-15', tipo: 'Reparación', descripcion: 'Frenos' }
-      ]
-    });
+  constructor(private route: ActivatedRoute, private vehiculosService: VehiculosService) {}
+
+  ngOnInit() {
+    this.vehiculo$ = this.route.paramMap.pipe(
+      switchMap(params => {
+        const id = params.get('id');
+        if (!id) {
+          return of(undefined);
+        }
+        return this.vehiculosService.getVehiculoById(id);
+      })
+    );
   }
 
   guardarCambios() {

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Firestore, collection, collectionData, addDoc, doc, docData, setDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { VehiculosService } from '../services/vehiculos.service';
 
 @Component({
   selector: 'app-mantenimiento',
@@ -29,7 +30,12 @@ export class MantenimientoPage {
 
   mantenimientos$: Observable<any[]> = collectionData(collection(this.firestore, 'mantenimientos'), { idField: 'id' });
 
-  vehiculos$: Observable<any[]> = collectionData(collection(this.firestore, 'vehiculos'), { idField: 'id' });
+  vehiculos$: Observable<any[]>;
+
+  constructor(private vehiculosService: VehiculosService) {
+    this.vehiculos$ = this.vehiculosService.getVehiculos();
+    this.vehiculos$.subscribe(data => console.log('Vehículos:', data));
+  }
 
   async agregarMantenimiento() {
     if (!this.nuevoMantenimiento.fecha || !this.nuevoMantenimiento.tipo || !this.nuevoMantenimiento.descripcion || !this.nuevoMantenimiento.vehiculo || !this.nuevoMantenimiento.estado) {

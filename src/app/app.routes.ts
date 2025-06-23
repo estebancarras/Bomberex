@@ -13,7 +13,7 @@ export const routes: Routes = [
   { path: 'detalle-vehiculo/:id', loadComponent: () => import('./detalle-vehiculo/detalle-vehiculo.page').then(m => m.DetalleVehiculoPage), canActivate: [AuthGuard] },
   {
     path: 'mantenimiento',
-    loadComponent: () => import('./mantenimientos-list/mantenimientos-list.page').then(m => m.MantenimientosListPage),
+    loadComponent: () => import('./mantenimiento/mantenimiento.page').then(m => m.MantenimientoPage),
     canActivate: [AuthGuard]
   },
   {
@@ -23,7 +23,7 @@ export const routes: Routes = [
   },
   {
     path: 'mantenimiento-list',
-    loadComponent: () => import('./mantenimientos-list/mantenimientos-list.page').then(m => m.MantenimientosListPage),
+    loadComponent: () => import('./mantenimiento/mantenimiento.page').then(m => m.MantenimientoPage),
     canActivate: [AuthGuard]
   },
   { path: 'perfil', loadComponent: () => import('./perfil/perfil.page').then(m => m.PerfilPage), canActivate: [AuthGuard] },

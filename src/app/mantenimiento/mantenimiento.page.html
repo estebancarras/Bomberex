@@ -1,52 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/mantenimiento"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Agregar Mantenimiento</ion-title>
+<ion-buttons slot="start">
+  <ion-menu-button></ion-menu-button>
+</ion-buttons>
+
+    <ion-title>Mantenimientos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Agregar Mantenimiento</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <form (ngSubmit)="agregarMantenimiento()">
-        <ion-item>
-          <ion-label position="floating">Vehículo</ion-label>
-          <ion-select [(ngModel)]="nuevoMantenimiento.vehiculo" name="vehiculo" required>
-          <ion-select-option *ngFor="let vehiculo of vehiculos$ | async" [value]="vehiculo.id">
-              {{ vehiculo.vehiculo }}
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Tipo</ion-label>
-          <ion-input [(ngModel)]="nuevoMantenimiento.tipo" name="tipo" required></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Descripción</ion-label>
-          <ion-input [(ngModel)]="nuevoMantenimiento.descripcion" name="descripcion" required></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Fecha</ion-label>
-          <ion-datetime display-format="YYYY-MM-DD" [(ngModel)]="nuevoMantenimiento.fecha" name="fecha" required></ion-datetime>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Estado</ion-label>
-          <ion-select [(ngModel)]="nuevoMantenimiento.estado" name="estado" required>
-            <ion-select-option value="Operativo">Operativo</ion-select-option>
-            <ion-select-option value="En mantenimiento">En mantenimiento</ion-select-option>
-            <ion-select-option value="Fuera de servicio">Fuera de servicio</ion-select-option>
-          </ion-select>
-        </ion-item>
-        <ion-button expand="block" type="submit" color="primary">Agregar</ion-button>
-      </form>
-    </ion-card-content>
-  </ion-card>
-
+<ion-content>
   <ion-toast
     [isOpen]="showToast"
     [message]="toastMessage"
@@ -54,4 +16,273 @@
     duration="2000"
     (ionDidDismiss)="showToast = false">
   </ion-toast>
+
+  <div *ngIf="mostrarFormulario; else listaMantenimientos" class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Agregar Mantenimiento</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form (ngSubmit)="agregarMantenimiento()">
+          <ion-item>
+            <ion-label position="floating">Vehículo</ion-label>
+            <ion-select [(ngModel)]="nuevoMantenimiento.vehiculo" name="vehiculo" required>
+              <ion-select-option *ngFor="let vehiculo of vehiculos$ | async" [value]="vehiculo.id">
+                {{ vehiculo.vehiculo }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Tipo</ion-label>
+            <ion-input [(ngModel)]="nuevoMantenimiento.tipo" name="tipo" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Descripción</ion-label>
+            <ion-input [(ngModel)]="nuevoMantenimiento.descripcion" name="descripcion" required></ion-input>
+          </ion-item>
+          <ion-item button detail="false" (click)="abrirModalRangoFechas()">
+            <ion-label position="floating">Rango de Fechas de Mantenimiento</ion-label>
+            <ion-input [value]="mostrarRangoFechas()" readonly></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Categoría</ion-label>
+            <ion-select [(ngModel)]="nuevoMantenimiento.categoria" name="categoria" required>
+              <ion-select-option value="preventivo">Preventivo</ion-select-option>
+              <ion-select-option value="correctivo">Correctivo</ion-select-option>
+              <ion-select-option value="emergencia">Emergencia</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Estado</ion-label>
+            <ion-select [(ngModel)]="nuevoMantenimiento.estado" name="estado" required>
+              <ion-select-option value="Operativo">Operativo</ion-select-option>
+              <ion-select-option value="En mantenimiento">En mantenimiento</ion-select-option>
+              <ion-select-option value="Fuera de servicio">Fuera de servicio</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Prioridad</ion-label>
+            <ion-select [(ngModel)]="nuevoMantenimiento.prioridad" name="prioridad" required>
+              <ion-select-option value="alta">Alta</ion-select-option>
+              <ion-select-option value="media">Media</ion-select-option>
+              <ion-select-option value="baja">Baja</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Taller Responsable</ion-label>
+            <ion-input [(ngModel)]="nuevoMantenimiento.tallerResponsable" name="tallerResponsable" required></ion-input>
+          </ion-item>
+          <ion-button expand="block" type="submit" color="primary">Agregar</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ng-template #listaMantenimientos>
+    <div class="top-section ion-padding">
+      <div class="stats-container">
+        <div class="stat-card">
+          <ion-icon name="checkmark-circle-outline" color="success"></ion-icon>
+          <div class="stat-info">
+            <span class="stat-number">{{ getEstadisticas().completados }}</span>
+            <span class="stat-label">Completados</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <ion-icon name="time-outline" color="warning"></ion-icon>
+          <div class="stat-info">
+            <span class="stat-number">{{ getEstadisticas().enProgreso }}</span>
+            <span class="stat-label">En Progreso</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
+          <div class="stat-info">
+            <span class="stat-number">{{ getEstadisticas().pendientes }}</span>
+            <span class="stat-label">Pendientes</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <ion-icon name="warning-outline" color="medium"></ion-icon>
+          <div class="stat-info">
+            <span class="stat-number">{{ getEstadisticas().proximosVencer }}</span>
+            <span class="stat-label">Próximos a Vencer</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-actions">
+        <ion-button color="secondary" (click)="toggleMostrarFormulario()">
+          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+          AGREGAR MANTENIMIENTO
+        </ion-button>
+        <ion-button fill="outline" color="tertiary" (click)="mostrarFiltrosAvanzados()">
+          <ion-icon slot="start" name="filter-outline"></ion-icon>
+          FILTROS AVANZADOS
+        </ion-button>
+      </div>
+    </div>
+
+    <div class="main-layout">
+      <div class="sidebar-filters">
+        <div class="filters-header">
+          <h3>
+            <ion-icon name="filter-outline"></ion-icon>
+            Filtros
+          </h3>
+          <ion-button fill="clear" size="small" color="medium" (click)="resetFilters()">
+            <ion-icon slot="start" name="refresh-outline"></ion-icon>
+            Limpiar
+          </ion-button>
+        </div>
+
+        <div class="search-section">
+          <ion-searchbar 
+            placeholder="Buscar..." 
+            (ionInput)="handleSearch($event)" 
+            debounce="300"
+            [value]="searchTerm">
+          </ion-searchbar>
+        </div>
+
+        <div class="filter-section">
+          <ion-item>
+            <ion-label position="stacked">Estado</ion-label>
+            <ion-select [(ngModel)]="filters.estado" (ionChange)="applyFilters()" placeholder="Todos">
+              <ion-select-option value="">Todos</ion-select-option>
+              <ion-select-option value="Pendiente">Pendiente</ion-select-option>
+              <ion-select-option value="En progreso">En progreso</ion-select-option>
+              <ion-select-option value="Completado">Completado</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Prioridad</ion-label>
+            <ion-select [(ngModel)]="filters.prioridad" (ionChange)="applyFilters()" placeholder="Todas">
+              <ion-select-option value="">Todas</ion-select-option>
+              <ion-select-option value="alta">Alta</ion-select-option>
+              <ion-select-option value="media">Media</ion-select-option>
+              <ion-select-option value="baja">Baja</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Categoría</ion-label>
+            <ion-select [(ngModel)]="filters.categoria" (ionChange)="applyFilters()" placeholder="Todas">
+              <ion-select-option value="">Todas</ion-select-option>
+              <ion-select-option value="preventivo">Preventivo</ion-select-option>
+              <ion-select-option value="correctivo">Correctivo</ion-select-option>
+              <ion-select-option value="emergencia">Emergencia</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Taller</ion-label>
+            <ion-input [(ngModel)]="filters.taller" (ionInput)="applyFilters()" placeholder="Filtrar por taller"></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="active-filters" *ngIf="getActiveFiltersCount() > 0">
+          <ion-chip color="primary">
+            <ion-icon name="filter-outline"></ion-icon>
+            <ion-label>{{ getActiveFiltersCount() }} filtro(s) activo(s)</ion-label>
+          </ion-chip>
+        </div>
+
+        <div class="info-section">
+          <div class="info-text">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ filteredData.length }} mantenimientos encontrados</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="loading-container" *ngIf="isLoading">
+          <ion-spinner name="crescent"></ion-spinner>
+          <p>Cargando mantenimientos...</p>
+        </div>
+
+        <div class="table-container" *ngIf="!isLoading">
+          <div class="table-header">
+            <div class="header-cell" (click)="sortData('patente')">
+              Patente
+              <ion-icon *ngIf="sortField === 'patente'"
+                [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
+            </div>
+            <div class="header-cell" (click)="sortData('Tiempomanteni')">
+              Tiempo Mantenimiento
+              <ion-icon *ngIf="sortField === 'Tiempomanteni'"
+                [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
+            </div>
+            <div class="header-cell" (click)="sortData('categoria')">
+              Categoría
+              <ion-icon *ngIf="sortField === 'categoria'"
+                [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
+            </div>
+            <div class="header-cell" (click)="sortData('prioridad')">
+              Prioridad
+              <ion-icon *ngIf="sortField === 'prioridad'"
+                [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
+            </div>
+            <div class="header-cell" (click)="sortData('estado')">
+              Estado
+              <ion-icon *ngIf="sortField === 'estado'"
+                [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
+            </div>
+            <div class="header-cell">Taller</div>
+            <div class="header-cell">Descripción</div>
+            <div class="header-cell">Acciones</div>
+          </div>
+
+          <div class="table-body">
+            <div *ngFor="let mantenimiento of paginatedData" class="table-row" (click)="editarMantenimiento(mantenimiento)">
+              <div class="table-cell">{{ mantenimiento.patente }}</div>
+              <div class="table-cell">{{ formatDateRange(mantenimiento.Tiempomanteni) }}</div>
+              <div class="table-cell">{{ mantenimiento.categoria | titlecase }}</div>
+              <div class="table-cell">
+                <ion-chip [color]="getPrioridadColor(mantenimiento.prioridad)" class="priority-chip">
+                  <ion-label>{{ mantenimiento.prioridad | titlecase }}</ion-label>
+                </ion-chip>
+              </div>
+              <div class="table-cell">
+                <ion-chip [color]="getEstadoColor(mantenimiento.estado)" class="status-chip">
+                  <ion-label>{{ mantenimiento.estado }}</ion-label>
+                </ion-chip>
+              </div>
+              <div class="table-cell">{{ mantenimiento.tallerResponsable || '-' }}</div>
+              <div class="table-cell description-cell">{{ mantenimiento.descripcion }}</div>
+              <div class="table-cell">
+                <ion-button fill="clear" size="small" (click)="editarMantenimiento(mantenimiento); $event.stopPropagation()">
+                  <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" size="small" color="danger" (click)="borrarMantenimiento(mantenimiento); $event.stopPropagation()">
+                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" size="small" color="tertiary" (click)="descargarPDF(mantenimiento); $event.stopPropagation()">
+                  <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pagination-container">
+            <ion-button fill="outline" (click)="previousPage()" [disabled]="currentPage === 1">
+              <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+              Anterior
+            </ion-button>
+            
+            <span class="page-info">
+              Página {{ currentPage }} de {{ totalPages }}
+            </span>
+            
+            <ion-button fill="outline" (click)="nextPage()" [disabled]="currentPage === totalPages">
+              Siguiente
+              <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </ion-content>

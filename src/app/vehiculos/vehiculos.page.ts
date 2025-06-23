@@ -22,7 +22,7 @@ addIcons({
   templateUrl: './vehiculos.page.html',
   styleUrls: ['./vehiculos.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterModule, VehiculoModalComponent, FormsModule]
+  imports: [IonicModule, CommonModule, RouterModule, FormsModule, VehiculoModalComponent]
 })
 export class VehiculosPage implements OnInit {
   vehiculos$: Observable<Vehiculo[]> | undefined;

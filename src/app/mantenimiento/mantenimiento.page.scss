@@ -1,25 +1,301 @@
-/* Estilos para la página Mantenimiento */
+/* Variables y estilos globales */
+:host {
+  --card-border-radius: 12px;
+  --transition-duration: 0.3s;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+}
 
+/* Estilos del encabezado */
+ion-header ion-toolbar {
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
+
+  ion-button {
+    --color: var(--ion-color-primary-contrast);
+    font-weight: 500;
+  }
+}
+
+/* Contenedor principal */
+ion-content {
+  --background: var(--ion-color-light);
+  
+  .content-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+  }
+}
+
+/* Sección superior con estadísticas */
+.top-section {
+  margin-bottom: var(--spacing-lg);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.stat-card {
+  background: var(--ion-color-light);
+  border-radius: var(--card-border-radius);
+  padding: var(--spacing-md);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  transition: transform var(--transition-duration);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  ion-icon {
+    font-size: 24px;
+    padding: var(--spacing-sm);
+    border-radius: 50%;
+    background: var(--ion-color-light-shade);
+  }
+
+  .stat-info {
+    .stat-number {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--ion-color-dark);
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      color: var(--ion-color-medium);
+      font-size: 14px;
+    }
+  }
+}
+
+/* Botones principales */
+.main-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+
+  ion-button {
+    --padding-start: var(--spacing-md);
+    --padding-end: var(--spacing-md);
+    font-weight: 500;
+    
+    ion-icon {
+      margin-right: var(--spacing-xs);
+    }
+  }
+}
+
+/* Layout principal */
+.main-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: var(--spacing-lg);
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Panel de filtros */
+.sidebar-filters {
+  background: white;
+  border-radius: var(--card-border-radius);
+  padding: var(--spacing-md);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  height: fit-content;
+
+  .filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+
+    h3 {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      color: var(--ion-color-dark);
+      font-size: 18px;
+    }
+  }
+
+  .filter-section {
+    ion-item {
+      --padding-start: 0;
+      --inner-padding-end: 0;
+      margin-bottom: var(--spacing-sm);
+    }
+  }
+
+  .active-filters {
+    margin: var(--spacing-md) 0;
+  }
+}
+
+/* Contenido principal */
+.main-content {
+  background: white;
+  border-radius: var(--card-border-radius);
+  padding: var(--spacing-md);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Tabla y tarjetas */
+.table-container {
+  overflow-x: auto;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 1fr 2fr 1fr;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--ion-color-light);
+  border-radius: var(--card-border-radius);
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 1fr 2fr 1fr;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border-bottom: 1px solid var(--ion-color-light);
+  transition: background-color var(--transition-duration);
+
+  &:hover {
+    background-color: var(--ion-color-light-tint);
+  }
+}
+
+/* Chips de estado y prioridad */
+ion-chip {
+  &.priority-chip {
+    min-width: 80px;
+    justify-content: center;
+  }
+
+  &.status-chip {
+    min-width: 100px;
+    justify-content: center;
+  }
+}
+
+/* Paginación */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md) 0;
+
+  .page-info {
+    color: var(--ion-color-medium);
+  }
+}
+
+/* Formulario */
 ion-card {
-  margin-bottom: 24px;
-  border-radius: 16px;
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin: var(--spacing-lg) 0;
+
+  ion-card-header {
+    background: var(--ion-color-primary);
+    color: var(--ion-color-primary-contrast);
+    border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+    padding: var(--spacing-md);
+
+    ion-card-title {
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+
+  ion-card-content {
+    padding: var(--spacing-lg);
+
+    ion-item {
+      --padding-start: 0;
+      margin-bottom: var(--spacing-md);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ion-button[type="submit"] {
+      margin-top: var(--spacing-lg);
+    }
+  }
 }
 
-ion-list-header {
-  font-weight: bold;
-  color: #222428;
-  margin-top: 16px;
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-ion-item {
-  border-radius: 10px;
-  margin-bottom: 8px;
+/* Loading spinner */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  color: var(--ion-color-medium);
+
+  ion-spinner {
+    margin-bottom: var(--spacing-sm);
+  }
 }
 
-ion-icon {
-  color: #ffce00;
-}
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-ion-select-option {
-  color: black !important;
+  .table-header, .table-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+  }
+
+  .table-cell {
+    padding: var(--spacing-xs) 0;
+    
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--ion-color-light);
+    }
+  }
+
+  .main-actions {
+    flex-direction: column;
+    
+    ion-button {
+      width: 100%;
+    }
+  }
 }

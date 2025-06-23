@@ -1,1 +1,112 @@
-/* Estilos para la página Detalle Vehículo */
+ion-card {
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  cursor: default;
+  position: relative;
+}
+
+ion-card-header {
+  padding-bottom: 0;
+}
+
+ion-card-title {
+  font-weight: 600;
+  font-size: 1.4em;
+  margin-right: 10px;
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  background-color: var(--ion-background-color, #fff);
+  box-shadow: none;
+  border: none;
+  display: flex;
+  align-items: center;
+}
+
+ion-label {
+  margin-right: 12px;
+  min-width: 90px;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-left: 8px;
+}
+
+ion-input {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--ion-border-color, #ccc);
+  background-color: var(--ion-background-color, #fff);
+  height: 38px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease;
+  color: var(--ion-text-color, #000);
+  box-shadow: none;
+}
+
+ion-input:focus {
+  border-color: var(--ion-color-primary, #3880ff);
+  box-shadow: 0 0 5px var(--ion-color-primary, #3880ff);
+}
+
+ion-button {
+  margin: 15px 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  box-shadow: none;
+  transition: background-color 0.3s ease;
+  background-color: var(--ion-color-primary, #3880ff);
+  color: var(--ion-color-light, #fff);
+}
+
+ion-button:hover {
+  background-color: var(--ion-color-primary-shade, #2c6bed);
+  color: var(--ion-color-light, #fff);
+}
+
+ion-segment {
+  margin-bottom: 15px;
+}
+
+ion-segment-button {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+ion-list {
+  margin-top: 10px;
+}
+
+ion-list ion-item {
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background-color: var(--ion-background-color, #fff);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+ion-list ion-item h3 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+ion-list ion-item p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ion-text-color, #666);
+}
+
+.segment-content {
+  padding-top: 10px;
+}
+
+ion-content.ion-padding {
+  padding-left: 15px;
+  padding-right: 15px;
+}

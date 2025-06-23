@@ -16,6 +16,10 @@ export interface Vehiculo {
   modelo: string;
   anio: number;
   mantenimientos: Mantenimiento[];
+  vehiculo?: string;
+  kilometraje?: string;
+  marca?: string;
+  patente?: string;
 }
 
 @Injectable({
@@ -67,7 +71,11 @@ export class VehiculosService {
         console.log('Datos crudos vehiculos:', vehiculos);
         return vehiculos.map((v: any) => ({
           ...v,
-          nombre: v.nombre || v.vehiculo || v.marca || v.patente || 'Sin nombre'
+          nombre: v.nombre || v.vehiculo || v.marca || v.patente || 'Sin nombre',
+          vehiculo: v.vehiculo || '',
+          kilometraje: v.kilometraje || '',
+          marca: v.marca || '',
+          patente: v.patente || ''
         }));
       })
     );

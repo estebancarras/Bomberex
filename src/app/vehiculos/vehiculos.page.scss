@@ -44,3 +44,224 @@
   top: 10px;
   right: 10px;
 }
+
+/* Improved styles for vehicles table and filters */
+
+.vehicles-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  color: var(--ion-text-color, #333);
+  background-color: var(--ion-background-color, #fff);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+:host-context(.dark) .vehicles-table {
+  color: var(--ion-color-step-100, #ddd);
+  background-color: var(--ion-color-step-900, #222);
+}
+
+.vehicles-table th,
+.vehicles-table td {
+  border: 1px solid #5f5f5f !important; /* force gray border for table cells */
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: middle;
+  background-color: var(--ion-background-color, #fff);
+  border-bottom: 1px solid #5f5f5f !important; /* force bottom border */
+}
+
+ion-input, ion-select {
+  border: 1px solid #888888 !important; /* force gray border */
+  box-shadow: none !important;
+}
+
+:host-context(.dark) .vehicles-table th,
+:host-context(.dark) .vehicles-table td {
+  background-color: var(--ion-color-step-900, #222);
+}
+
+.vehicles-table th {
+  background-color: transparent;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 700;
+  color: var(--ion-text-color, #555);
+  border-bottom: 2px solid var(--ion-color-primary, #3880ff);
+  transition: background-color 0.3s ease;
+}
+
+:host-context(.dark) .vehicles-table th {
+  color: var(--ion-color-step-100, #ddd);
+  border-bottom-color: var(--ion-color-primary, #3880ff);
+}
+
+.vehicles-table th:hover {
+  background-color: var(--ion-color-step-200, #f8f8f8);
+}
+
+:host-context(.dark) .vehicles-table th:hover {
+  background-color: var(--ion-color-step-800, #333);
+}
+
+.vehicle-row {
+  border-radius: 12px;
+  box-shadow: none;
+  transition: background-color 0.3s ease;
+}
+
+.vehicle-row:hover {
+  background-color: var(--ion-color-step-100, #fafafa);
+}
+
+:host-context(.dark) .vehicle-row:hover {
+  background-color: var(--ion-color-step-800, #333);
+}
+
+.delete-btn {
+  padding: 0;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: var(--ion-color-danger-tint, #f8d7da);
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  background-color: var(--ion-background-color, #fff);
+  box-shadow: none;
+  border: none;
+  display: flex;
+  align-items: center;
+}
+
+ion-label {
+  margin-right: 12px;
+  min-width: 90px;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-left: 8px;
+}
+
+ion-item ion-select {
+  margin-left: 0 !important;
+  flex: 1 1 auto;
+}
+
+:host-context(.dark) ion-item {
+  background-color: var(--ion-color-step-900, #222);
+}
+
+ion-input, ion-select {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--ion-border-color, #ccc);
+  background-color: var(--ion-background-color, #fff);
+  height: 38px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease;
+  color: var(--ion-text-color, #000);
+  box-shadow: none;
+}
+
+:host-context(.dark) ion-input,
+:host-context(.dark) ion-select {
+  border-color: var(--ion-color-step-700, #444);
+  background-color: var(--ion-color-step-900, #222);
+  color: var(--ion-color-step-100, #ddd);
+}
+
+ion-input:focus, ion-select:focus {
+  border-color: var(--ion-color-primary, #3880ff);
+  box-shadow: 0 0 5px var(--ion-color-primary, #3880ff);
+}
+
+.add-vehicle-btn {
+  margin: 15px 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  box-shadow: none;
+  transition: background-color 0.3s ease;
+  background-color: var(--ion-color-primary, #3880ff);
+  color: var(--ion-color-light, #fff);
+}
+
+.add-vehicle-btn:hover {
+  background-color: var(--ion-color-primary-shade, #2c6bed);
+  color: var(--ion-color-light, #fff);
+}
+
+:host-context(.dark) .add-vehicle-btn {
+  box-shadow: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.vehicles-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vehicles-table th,
+.vehicles-table td {
+  padding: 0.5rem;
+  border: 1px solid var(--ion-border-color, #ccc);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.vehicle-row:hover {
+  background-color: var(--ion-color-step-100, #fafafa);
+  cursor: pointer;
+}
+
+.delete-btn {
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+/* Responsive layout for larger screens */
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+  }
+
+  .filters {
+    width: 25%;
+    max-width: 300px;
+  }
+
+  .table-container {
+    width: 75%;
+  }
+}

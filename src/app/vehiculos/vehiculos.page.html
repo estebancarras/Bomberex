@@ -1,49 +1,133 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>
-      🚒 Vehículos Bomberos
-    </ion-title>
+    <ion-title>Vehiculos</ion-title>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content class="ion-padding">
   <ion-button expand="block" color="secondary" class="add-vehicle-btn" (click)="addVehiculo()">
     AGREGAR VEHÍCULO
   </ion-button>
 
-  <ion-searchbar placeholder="Buscar vehículo" (ionInput)="searchChanged($event)" debounce="300"></ion-searchbar>
+  <ion-button expand="block" color="medium" class="reset-filters-btn" (click)="resetFilters()">
+    REINICIAR FILTROS
+  </ion-button>
 
-  <ion-list>
-    <ion-card *ngFor="let vehiculo of vehiculos$ | async" (click)="goToDetalle(vehiculo.id!)" class="vehicle-card" button>
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon [name]="getIconoModelo(vehiculo.modelo)" slot="start" class="vehicle-icon"></ion-icon>
-          <span class="vehicle-name" *ngIf="vehiculo.nombre; else sinNombre">{{ vehiculo.nombre }}</span>
-          <ng-template #sinNombre><span class="vehicle-name">Sin nombre</span></ng-template>
-          <span class="vehicle-status" [ngClass]="{
-            'status-operativo': vehiculo.estado === 'Operativo',
-            'status-mantenimiento': vehiculo.estado === 'En mantenimiento',
-            'status-fuera-servicio': vehiculo.estado === 'Fuera de servicio'
-          }">{{ vehiculo.estado }}</span>
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Modelo: {{ vehiculo.modelo }} - Año: {{ vehiculo.anio }}</p>
-      </ion-card-content>
-      <ion-button fill="clear" color="danger" (click)="deleteVehiculo(vehiculo.id!); $event.stopPropagation()" class="delete-btn">
-        <ion-icon slot="icon-only" name="trash"></ion-icon>
-      </ion-button>
-    </ion-card>
-  </ion-list>
+  <ion-searchbar placeholder="Buscar vehículo. Ej: Carro Bomba" (ionInput)="searchChanged($event)" debounce="300"></ion-searchbar>
+  <ion-item>
+    <ion-label>Presione un vehículo para ver los detalles</ion-label>
+  </ion-item>
+  
+  <div class="container">
+    <div class="filters">
 
-  <ion-toast
-    [isOpen]="showToast"
-    [message]="toastMessage"
-    [color]="toastColor"
-    duration="2000"
+      <ion-item>
+        <ion-label>Estado</ion-label>
+        <ion-select [(ngModel)]="filters.estado" (ionChange)="applyFilters()">
+          <ion-select-option value="">Todos</ion-select-option>
+          <ion-select-option value="Operativo">Operativo</ion-select-option>
+          <ion-select-option value="En mantenimiento">En mantenimiento</ion-select-option>
+          <ion-select-option value="Fuera de servicio">Fuera de servicio</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Kilometraje </ion-label>
+        <ion-input placeholder="Ej: 10000" [(ngModel)]="filters.kilometraje" (ionInput)="applyFilters()"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Marca </ion-label>
+        <ion-input placeholder="Ej: Toyota" [(ngModel)]="filters.marca" (ionInput)="applyFilters()"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Modelo </ion-label>
+        <ion-input placeholder="Ej: Hilux" [(ngModel)]="filters.modelo" (ionInput)="applyFilters()"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Patente </ion-label>
+        <ion-input placeholder="Ej: ABC123" [(ngModel)]="filters.patente" (ionInput)="applyFilters()"></ion-input>
+      </ion-item>
+    </div>
+
+    <div class="table-container">
+      <table class="vehicles-table">
+        <thead>
+          <tr>
+            <th (click)="sortBy('vehiculo')">
+              Vehículo
+              <ion-icon *ngIf="sortField === 'vehiculo'"
+                [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
+            </th>
+            <th (click)="sortBy('estado')">
+              Estado
+              <ion-icon *ngIf="sortField === 'estado'"
+                [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
+            </th>
+            <th (click)="sortBy('kilometraje')">
+              Kilometraje
+              <ion-icon *ngIf="sortField === 'kilometraje'"
+                [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
+            </th>
+            <th (click)="sortBy('marca')">
+              Marca
+              <ion-icon *ngIf="sortField === 'marca'"
+                [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
+            </th>
+            <th (click)="sortBy('modelo')">
+              Modelo
+              <ion-icon *ngIf="sortField === 'modelo'"
+                [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
+            </th>
+            <th (click)="sortBy('patente')">
+              Patente
+              <ion-icon *ngIf="sortField === 'patente'"
+                [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
+            </th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vehiculo of paginatedData" (click)="goToDetalle(vehiculo.id!)" class="vehicle-row">
+            <td>{{ vehiculo.vehiculo || vehiculo.nombre || 'Sin nombre' }}</td>
+            <td>{{ vehiculo.estado }}</td>
+            <td>{{ vehiculo.kilometraje || '-' }}</td>
+            <td>{{ vehiculo.marca || '-' }}</td>
+            <td>{{ vehiculo.modelo || '-' }}</td>
+            <td>{{ vehiculo.patente || '-' }}</td>
+            <td>
+              <ion-button fill="clear" color="danger" (click)="deleteVehiculo(vehiculo.id!); $event.stopPropagation()"
+                class="delete-btn">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+              </ion-button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="4">
+        <ion-button expand="block" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</ion-button>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        Página {{ currentPage }} de {{ totalPages }}
+      </ion-col>
+      <ion-col size="4">
+        <ion-button expand="block" (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-toast [isOpen]="showToast" [message]="toastMessage" [color]="toastColor" duration="2000"
     (didDismiss)="showToast = false">
   </ion-toast>
 </ion-content>

@@ -13,7 +13,7 @@ export const routes: Routes = [
   { path: 'detalle-vehiculo/:id', loadComponent: () => import('./detalle-vehiculo/detalle-vehiculo.page').then(m => m.DetalleVehiculoPage), canActivate: [AuthGuard] },
   {
     path: 'mantenimiento',
-    loadComponent: () => import('./mantenimiento-home/mantenimiento-home.page').then(m => m.MantenimientoHomePage),
+    loadComponent: () => import('./mantenimientos-list/mantenimientos-list.page').then(m => m.MantenimientosListPage),
     canActivate: [AuthGuard]
   },
   {

@@ -3,131 +3,284 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Vehiculos</ion-title>
+    <ion-title>Vehículos</ion-title>
   </ion-toolbar>
 </ion-header>
 
+<ion-content>
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [color]="toastColor"
+    duration="2000"
+    (ionDidDismiss)="showToast = false">
+  </ion-toast>
 
-<ion-content class="ion-padding">
-  <ion-button expand="block" color="secondary" class="add-vehicle-btn" (click)="addVehiculo()">
-    AGREGAR VEHÍCULO
-  </ion-button>
+  <div class="main-content">
+    <div class="top-section ion-padding">
+      <div class="stats-container">
+        <div class="stat-card">
+          <ion-icon name="car-outline" color="primary"></ion-icon>
+          <div class="stat-info">
+            <span class="stat-number">{{ getEstadisticas().total }}</span>
+            <span class="stat-label">Total Vehículos</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <ion-icon name="checkmark-circle-outline" color="success"></ion-icon>
+          <div class="stat-info">
+            <span class="stat-number">{{ getEstadisticas().operativos }}</span>
+            <span class="stat-label">Operativos</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <ion-icon name="construct-outline" color="warning"></ion-icon>
+          <div class="stat-info">
+            <span class="stat-number">{{ getEstadisticas().enMantenimiento }}</span>
+            <span class="stat-label">En Mantenimiento</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
+          <div class="stat-info">
+            <span class="stat-number">{{ getEstadisticas().fueraServicio }}</span>
+            <span class="stat-label">Fuera de Servicio</span>
+          </div>
+        </div>
+      </div>
 
-  <ion-button expand="block" color="medium" class="reset-filters-btn" (click)="resetFilters()">
-    REINICIAR FILTROS
-  </ion-button>
-
-  <ion-searchbar placeholder="Buscar vehículo. Ej: Carro Bomba" (ionInput)="searchChanged($event)" debounce="300"></ion-searchbar>
-  <ion-item>
-    <ion-label>Presione un vehículo para ver los detalles</ion-label>
-  </ion-item>
-  
-  <div class="container">
-    <div class="filters">
-
-      <ion-item>
-        <ion-label>Estado</ion-label>
-        <ion-select [(ngModel)]="filters.estado" (ionChange)="applyFilters()">
-          <ion-select-option value="">Todos</ion-select-option>
-          <ion-select-option value="Operativo">Operativo</ion-select-option>
-          <ion-select-option value="En mantenimiento">En mantenimiento</ion-select-option>
-          <ion-select-option value="Fuera de servicio">Fuera de servicio</ion-select-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Kilometraje </ion-label>
-        <ion-input placeholder="Ej: 10000" [(ngModel)]="filters.kilometraje" (ionInput)="applyFilters()"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Marca </ion-label>
-        <ion-input placeholder="Ej: Toyota" [(ngModel)]="filters.marca" (ionInput)="applyFilters()"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Modelo </ion-label>
-        <ion-input placeholder="Ej: Hilux" [(ngModel)]="filters.modelo" (ionInput)="applyFilters()"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Patente </ion-label>
-        <ion-input placeholder="Ej: ABC123" [(ngModel)]="filters.patente" (ionInput)="applyFilters()"></ion-input>
-      </ion-item>
+      <div class="main-actions">
+        <ion-button color="secondary" (click)="addVehiculo()">
+          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+          AGREGAR VEHÍCULO
+        </ion-button>
+        <ion-button fill="outline" color="tertiary" (click)="mostrarFiltrosAvanzados()">
+          <ion-icon slot="start" name="filter-outline"></ion-icon>
+          FILTROS AVANZADOS
+        </ion-button>
+      </div>
     </div>
 
-    <div class="table-container">
-      <table class="vehicles-table">
-        <thead>
-          <tr>
-            <th (click)="sortBy('vehiculo')">
+    <div class="main-layout">
+      <div class="sidebar-filters">
+        <div class="filters-header">
+          <h3>
+            <ion-icon name="filter-outline"></ion-icon>
+            Filtros
+          </h3>
+          <ion-button fill="clear" size="small" color="medium" (click)="resetFilters()">
+            <ion-icon slot="start" name="refresh-outline"></ion-icon>
+            Limpiar
+          </ion-button>
+        </div>
+
+        <div class="search-section">
+          <ion-searchbar 
+            placeholder="Buscar vehículo..." 
+            (ionInput)="searchChanged($event)" 
+            debounce="300"
+            [value]="searchTerm">
+          </ion-searchbar>
+        </div>
+
+        <div class="filter-section">
+          <ion-item>
+            <ion-label position="stacked">Estado</ion-label>
+            <ion-select [(ngModel)]="filters.estado" (ionChange)="applyFilters()" placeholder="Todos">
+              <ion-select-option value="">Todos</ion-select-option>
+              <ion-select-option value="Operativo">Operativo</ion-select-option>
+              <ion-select-option value="En mantenimiento">En mantenimiento</ion-select-option>
+              <ion-select-option value="Fuera de servicio">Fuera de servicio</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Kilometraje mínimo</ion-label>
+            <ion-input type="number" [(ngModel)]="filters.kilometraje" (ionInput)="applyFilters()" placeholder="Ej: 10000"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Marca</ion-label>
+            <ion-input [(ngModel)]="filters.marca" (ionInput)="applyFilters()" placeholder="Ej: Toyota"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Modelo</ion-label>
+            <ion-input [(ngModel)]="filters.modelo" (ionInput)="applyFilters()" placeholder="Ej: Hilux"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Patente</ion-label>
+            <ion-input [(ngModel)]="filters.patente" (ionInput)="applyFilters()" placeholder="Ej: ABC123"></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="active-filters" *ngIf="getActiveFiltersCount() > 0">
+          <ion-chip color="primary">
+            <ion-icon name="filter-outline"></ion-icon>
+            <ion-label>{{ getActiveFiltersCount() }} filtro(s) activo(s)</ion-label>
+          </ion-chip>
+        </div>
+
+        <div class="info-section">
+          <div class="info-text">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ filteredData.length }} vehículos encontrados</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="loading-container" *ngIf="isLoading">
+          <ion-spinner name="crescent"></ion-spinner>
+          <p>Cargando vehículos...</p>
+        </div>
+
+        <div class="table-container" *ngIf="!isLoading">
+          <div class="table-header">
+            <div class="header-cell" (click)="sortBy('vehiculo')">
               Vehículo
               <ion-icon *ngIf="sortField === 'vehiculo'"
                 [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
-            </th>
-            <th (click)="sortBy('estado')">
+            </div>
+            <div class="header-cell" (click)="sortBy('estado')">
               Estado
               <ion-icon *ngIf="sortField === 'estado'"
                 [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
-            </th>
-            <th (click)="sortBy('kilometraje')">
+            </div>
+            <div class="header-cell" (click)="sortBy('kilometraje')">
               Kilometraje
               <ion-icon *ngIf="sortField === 'kilometraje'"
                 [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
-            </th>
-            <th (click)="sortBy('marca')">
+            </div>
+            <div class="header-cell" (click)="sortBy('marca')">
               Marca
               <ion-icon *ngIf="sortField === 'marca'"
                 [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
-            </th>
-            <th (click)="sortBy('modelo')">
+            </div>
+            <div class="header-cell" (click)="sortBy('modelo')">
               Modelo
               <ion-icon *ngIf="sortField === 'modelo'"
                 [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
-            </th>
-            <th (click)="sortBy('patente')">
+            </div>
+            <div class="header-cell" (click)="sortBy('patente')">
               Patente
               <ion-icon *ngIf="sortField === 'patente'"
                 [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
-            </th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let vehiculo of paginatedData" (click)="goToDetalle(vehiculo.id!)" class="vehicle-row">
-            <td>{{ vehiculo.vehiculo || vehiculo.nombre || 'Sin nombre' }}</td>
-            <td>{{ vehiculo.estado }}</td>
-            <td>{{ vehiculo.kilometraje || '-' }}</td>
-            <td>{{ vehiculo.marca || '-' }}</td>
-            <td>{{ vehiculo.modelo || '-' }}</td>
-            <td>{{ vehiculo.patente || '-' }}</td>
-            <td>
-              <ion-button fill="clear" color="danger" (click)="deleteVehiculo(vehiculo.id!); $event.stopPropagation()"
-                class="delete-btn">
-                <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </div>
+            <div class="header-cell">Acciones</div>
+          </div>
+
+          <div class="table-body">
+            <div *ngFor="let vehiculo of paginatedData" class="table-row" (click)="goToDetalle(vehiculo.id!)">
+              <div class="table-cell">{{ vehiculo.vehiculo || vehiculo.nombre || 'Sin nombre' }}</div>
+              <div class="table-cell">
+                <ion-chip [color]="getEstadoColor(vehiculo.estado)" class="status-chip">
+                  <ion-label>{{ vehiculo.estado }}</ion-label>
+                </ion-chip>
+              </div>
+              <div class="table-cell">{{ vehiculo.kilometraje || '-' }} km</div>
+              <div class="table-cell">{{ vehiculo.marca || '-' }}</div>
+              <div class="table-cell">{{ vehiculo.modelo || '-' }}</div>
+              <div class="table-cell">{{ vehiculo.patente || '-' }}</div>
+              <div class="table-cell">
+                <ion-button fill="clear" size="small" (click)="editarVehiculo(vehiculo); $event.stopPropagation()">
+                  <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" size="small" color="danger" (click)="deleteVehiculo(vehiculo.id!); $event.stopPropagation()">
+                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paginación Mejorada -->
+          <div class="pagination-container" *ngIf="filteredData.length > 0">
+            <!-- Selector de elementos por página -->
+            <div class="pagination-controls">
+              <div class="page-size-selector">
+                <ion-label>Mostrar:</ion-label>
+                <ion-select 
+                  [(ngModel)]="pageSize" 
+                  (ionChange)="onPageSizeChange()"
+                  interface="popover"
+                  class="page-size-select">
+                  <ion-select-option value="2">2</ion-select-option>
+                  <ion-select-option value="3">3</ion-select-option>
+                  <ion-select-option value="4">4</ion-select-option>
+                  <ion-select-option value="5">5</ion-select-option>
+                </ion-select>
+                <ion-label>por página</ion-label>
+              </div>
+
+              <!-- Información de rango -->
+              <div class="range-info">
+                <span>
+                  Mostrando {{ getRangeStart() }}-{{ getRangeEnd() }} de {{ filteredData.length }} vehículos
+                </span>
+              </div>
+            </div>
+
+            <!-- Controles de navegación -->
+            <div class="navigation-controls" *ngIf="totalPages > 1">
+              <!-- Primera página -->
+              <ion-button 
+                fill="clear" 
+                size="small"
+                [disabled]="currentPage === 1" 
+                (click)="goToFirstPage()"
+                class="nav-button">
+                <ion-icon slot="icon-only" name="play-back-outline"></ion-icon>
               </ion-button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+
+              <!-- Página anterior -->
+              <ion-button 
+                fill="clear" 
+                size="small"
+                [disabled]="currentPage === 1" 
+                (click)="previousPage()"
+                class="nav-button">
+                <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+              </ion-button>
+              
+              <!-- Navegación directa -->
+              <div class="direct-navigation">
+                <span>Página</span>
+                <ion-input 
+                  type="number" 
+                  [value]="currentPage"
+                  (ionInput)="onPageInputChange($event)"
+                  (ionBlur)="validatePageInput()"
+                  min="1" 
+                  [max]="totalPages"
+                  class="page-input">
+                </ion-input>
+                <span>de {{ totalPages }}</span>
+              </div>
+              
+              <!-- Página siguiente -->
+              <ion-button 
+                fill="clear" 
+                size="small"
+                [disabled]="currentPage === totalPages" 
+                (click)="nextPage()"
+                class="nav-button">
+                <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+              </ion-button>
+
+              <!-- Última página -->
+              <ion-button 
+                fill="clear" 
+                size="small"
+                [disabled]="currentPage === totalPages" 
+                (click)="goToLastPage()"
+                class="nav-button">
+                <ion-icon slot="icon-only" name="play-forward-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <ion-grid>
-    <ion-row>
-      <ion-col size="4">
-        <ion-button expand="block" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</ion-button>
-      </ion-col>
-      <ion-col size="4" class="ion-text-center">
-        Página {{ currentPage }} de {{ totalPages }}
-      </ion-col>
-      <ion-col size="4">
-        <ion-button expand="block" (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-toast [isOpen]="showToast" [message]="toastMessage" [color]="toastColor" duration="2000"
-    (didDismiss)="showToast = false">
-  </ion-toast>
 </ion-content>

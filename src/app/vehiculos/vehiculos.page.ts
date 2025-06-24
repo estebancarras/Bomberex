@@ -9,12 +9,44 @@ import { VehiculoModalComponent } from './vehiculo-modal.component';
 import { Observable } from 'rxjs';
 
 import { addIcons } from 'ionicons';
-import { trash, arrowUp, arrowDown } from 'ionicons/icons';
+import { 
+  trash, 
+  arrowUp, 
+  arrowDown, 
+  carOutline, 
+  checkmarkCircleOutline, 
+  constructOutline, 
+  alertCircleOutline,
+  addCircleOutline,
+  filterOutline,
+  refreshOutline,
+  informationCircleOutline,
+  chevronBackOutline,
+  chevronForwardOutline,
+  createOutline,
+  trashOutline,
+  playBackOutline,
+  playForwardOutline
+} from 'ionicons/icons';
 
 addIcons({
   trash,
   'arrow-up': arrowUp,
-  'arrow-down': arrowDown
+  'arrow-down': arrowDown,
+  'car-outline': carOutline,
+  'checkmark-circle-outline': checkmarkCircleOutline,
+  'construct-outline': constructOutline,
+  'alert-circle-outline': alertCircleOutline,
+  'add-circle-outline': addCircleOutline,
+  'filter-outline': filterOutline,
+  'refresh-outline': refreshOutline,
+  'information-circle-outline': informationCircleOutline,
+  'chevron-back-outline': chevronBackOutline,
+  'chevron-forward-outline': chevronForwardOutline,
+  'create-outline': createOutline,
+  'trash-outline': trashOutline,
+  'play-back-outline': playBackOutline,
+  'play-forward-outline': playForwardOutline
 });
 
 @Component({
@@ -33,6 +65,7 @@ export class VehiculosPage implements OnInit {
   showToast = false;
   toastMessage = '';
   toastColor = 'success';
+  isLoading = true;
 
   searchTerm: string = '';
   filters = {
@@ -43,6 +76,84 @@ export class VehiculosPage implements OnInit {
     modelo: '',
     patente: ''
   };
+
+  currentPage: number = 1;
+  pageSize: number = 3;
+  totalPages: number = 1;
+  tempPageInput: number = 1;
+
+  sortField: keyof Vehiculo = 'vehiculo';
+  sortDirection: 'asc' | 'desc' = 'asc';
+
+  constructor(private vehiculosService: VehiculosService, private router: Router, private modalCtrl: ModalController) {}
+
+  async ngOnInit() {
+    this.isLoading = true;
+    
+    // Cargar preferencia de tamaño de página desde localStorage
+    const savedPageSize = localStorage.getItem('vehiculos-page-size');
+    if (savedPageSize) {
+      this.pageSize = parseInt(savedPageSize);
+    }
+    
+    this.tempPageInput = this.currentPage;
+    
+    await this.vehiculosService.init();
+    this.loadVehiculos();
+  }
+
+  loadVehiculos() {
+    this.vehiculos$ = this.vehiculosService.getVehiculos();
+    this.vehiculos$.subscribe(data => {
+      this.dataSource = data;
+      this.isLoading = false;
+      this.applyFilters();
+      console.log('Vehículos cargados:', data);
+    });
+  }
+
+  getEstadisticas() {
+    const total = this.dataSource.length;
+    const operativos = this.dataSource.filter(v => v.estado === 'Operativo').length;
+    const enMantenimiento = this.dataSource.filter(v => v.estado === 'En mantenimiento').length;
+    const fueraServicio = this.dataSource.filter(v => v.estado === 'Fuera de servicio').length;
+
+    return {
+      total,
+      operativos,
+      enMantenimiento,
+      fueraServicio
+    };
+  }
+
+  getEstadoColor(estado: string): string {
+    switch (estado) {
+      case 'Operativo':
+        return 'success';
+      case 'En mantenimiento':
+        return 'warning';
+      case 'Fuera de servicio':
+        return 'danger';
+      default:
+        return 'medium';
+    }
+  }
+
+  getActiveFiltersCount(): number {
+    let count = 0;
+    if (this.filters.estado) count++;
+    if (this.filters.kilometraje) count++;
+    if (this.filters.marca) count++;
+    if (this.filters.modelo) count++;
+    if (this.filters.patente) count++;
+    if (this.searchTerm) count++;
+    return count;
+  }
+
+  mostrarFiltrosAvanzados() {
+    // Implementar si es necesario
+    console.log('Mostrar filtros avanzados');
+  }
 
   resetFilters() {
     this.filters = {
@@ -55,29 +166,6 @@ export class VehiculosPage implements OnInit {
     };
     this.searchTerm = '';
     this.applyFilters();
-  }
-
-  currentPage: number = 1;
-  pageSize: number = 10;
-  totalPages: number = 1;
-
-  sortField: keyof Vehiculo = 'vehiculo';
-  sortDirection: 'asc' | 'desc' = 'asc';
-
-  constructor(private vehiculosService: VehiculosService, private router: Router, private modalCtrl: ModalController) {}
-
-  async ngOnInit() {
-    await this.vehiculosService.init();
-    this.loadVehiculos();
-  }
-
-  loadVehiculos() {
-    this.vehiculos$ = this.vehiculosService.getVehiculos();
-    this.vehiculos$.subscribe(data => {
-      this.dataSource = data;
-      this.applyFilters();
-      console.log('Vehículos cargados:', data);
-    });
   }
 
   searchChanged(event: any) {
@@ -179,6 +267,32 @@ export class VehiculosPage implements OnInit {
     }
   }
 
+  async editarVehiculo(vehiculo: Vehiculo) {
+    const modal = await this.modalCtrl.create({
+      component: VehiculoModalComponent,
+      componentProps: {
+        vehiculo: vehiculo,
+        isEdit: true
+      }
+    });
+    modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data) {
+      try {
+        await this.vehiculosService.updateVehiculo(vehiculo.id!, data);
+        this.toastMessage = 'Vehículo actualizado correctamente';
+        this.toastColor = 'success';
+        this.showToast = true;
+        this.loadVehiculos();
+      } catch (error) {
+        this.toastMessage = 'Error al actualizar vehículo';
+        this.toastColor = 'danger';
+        this.showToast = true;
+      }
+    }
+  }
+
   async deleteVehiculo(id: string) {
     try {
       await this.vehiculosService.deleteVehiculo(id);
@@ -207,5 +321,49 @@ export class VehiculosPage implements OnInit {
     }
     console.log('New sortField:', this.sortField, 'New sortDirection:', this.sortDirection);
     this.applyFilters();
+  }
+
+  // Métodos de paginación mejorada
+  onPageSizeChange() {
+    this.currentPage = 1;
+    this.updatePagination();
+    // Guardar en localStorage para persistencia
+    localStorage.setItem('vehiculos-page-size', this.pageSize.toString());
+  }
+
+  getRangeStart(): number {
+    return this.filteredData.length === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  getRangeEnd(): number {
+    const end = this.currentPage * this.pageSize;
+    return end > this.filteredData.length ? this.filteredData.length : end;
+  }
+
+  goToFirstPage() {
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  goToLastPage() {
+    this.currentPage = this.totalPages;
+    this.updatePagination();
+  }
+
+  onPageInputChange(event: any) {
+    const value = parseInt(event.detail.value);
+    if (!isNaN(value)) {
+      this.tempPageInput = value;
+    }
+  }
+
+  validatePageInput() {
+    if (this.tempPageInput >= 1 && this.tempPageInput <= this.totalPages) {
+      this.currentPage = this.tempPageInput;
+      this.updatePagination();
+    } else {
+      // Resetear al valor actual si es inválido
+      this.tempPageInput = this.currentPage;
+    }
   }
 }

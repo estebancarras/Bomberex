@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Firestore, collection, collectionData, addDoc, doc, docData, setDoc, deleteDoc } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { AlertController, ModalController } from '@ionic/angular';
 import { 
   IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonButton, IonMenuButton,
@@ -21,7 +21,7 @@ import {
 } from 'ionicons/icons';
 
 import { VehiculosService } from '../services/vehiculos.service';
-import { RangoFechasModalComponent } from '../rango-fechas-modal/rango-fechas-modal.component';
+import { MantenimientoModalComponent } from './mantenimiento-modal.component';
 import jsPDF from 'jspdf';
 
 addIcons({
@@ -77,7 +77,7 @@ addIcons({
     IonSelect,
     IonSelectOption,
     IonSpinner,
-    RangoFechasModalComponent
+    MantenimientoModalComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [ModalController]
@@ -90,22 +90,10 @@ export class MantenimientoPage implements OnInit {
   private alertController = inject(AlertController);
   private router = inject(Router);
 
-  // Variables para el formulario de agregar mantenimiento
+  // Variables para el toast
   showToast = false;
   toastMessage = '';
   toastColor = 'success';
-  mostrarFormulario = false;
-
-  nuevoMantenimiento = {
-    Tiempomanteni: ['', ''],
-    categoria: '',
-    tipo: '',
-    descripcion: '',
-    vehiculo: '',
-    estado: '',
-    prioridad: '',
-    tallerResponsable: ''
-  };
 
   // Variables para la lista de mantenimientos
   mantenimientos$: Observable<any[]>;
@@ -161,91 +149,73 @@ export class MantenimientoPage implements OnInit {
     this.isDesktop = window.innerWidth >= 768;
   }
 
-  // Métodos para el formulario de agregar mantenimiento
-  async abrirModalRangoFechas() {
+  // Método para abrir el modal de agregar mantenimiento
+  async abrirModalAgregarMantenimiento() {
+    let vehiculos = [];
+    try {
+      vehiculos = await firstValueFrom(this.vehiculos$);
+    } catch (error) {
+      console.error('Error al obtener vehículos:', error);
+    }
+
     const modal = await this.modalCtrl.create({
-      component: RangoFechasModalComponent,
+      component: MantenimientoModalComponent,
+      componentProps: {
+        vehiculos: vehiculos || []
+      }
     });
+
     await modal.present();
     const { data } = await modal.onDidDismiss();
+
     if (data) {
-      this.nuevoMantenimiento.Tiempomanteni = [data.inicio, data.fin];
-    }
-  }
-
-  mostrarRangoFechas() {
-    if (this.nuevoMantenimiento.Tiempomanteni[0] && this.nuevoMantenimiento.Tiempomanteni[1]) {
-      return this.nuevoMantenimiento.Tiempomanteni[0] + ' - ' + this.nuevoMantenimiento.Tiempomanteni[1];
-    }
-    return '';
-  }
-
-  async agregarMantenimiento() {
-    if (!this.nuevoMantenimiento.Tiempomanteni[0] || !this.nuevoMantenimiento.Tiempomanteni[1] || !this.nuevoMantenimiento.categoria || !this.nuevoMantenimiento.tipo || !this.nuevoMantenimiento.descripcion || !this.nuevoMantenimiento.vehiculo || !this.nuevoMantenimiento.estado || !this.nuevoMantenimiento.prioridad || !this.nuevoMantenimiento.tallerResponsable) {
-      this.toastMessage = 'Por favor, completa todos los campos.';
-      this.toastColor = 'danger';
-      this.showToast = true;
-      return;
-    }
-    try {
-      const vehiculoRef = doc(this.firestore, `vehiculos/${this.nuevoMantenimiento.vehiculo}`);
-      const vehiculoSnap = await new Promise<any>((resolve, reject) => {
-        const sub = docData(vehiculoRef).subscribe({
-          next: data => {
-            resolve(data);
-            sub.unsubscribe();
-          },
-          error: err => {
-            resolve(null);
-            sub.unsubscribe();
-          }
+      try {
+        // Obtener datos del vehículo para agregar la patente
+        const vehiculoRef = doc(this.firestore, `vehiculos/${data.vehiculo}`);
+        const vehiculoSnap = await new Promise<any>((resolve, reject) => {
+          const sub = docData(vehiculoRef).subscribe({
+            next: vehiculoData => {
+              resolve(vehiculoData);
+              sub.unsubscribe();
+            },
+            error: err => {
+              resolve(null);
+              sub.unsubscribe();
+            }
+          });
         });
-      });
-      const patente = vehiculoSnap ? vehiculoSnap.patente : '';
+        const patente = vehiculoSnap ? vehiculoSnap.patente : '';
 
-      const mantenimientoData = {
-        Tiempomanteni: this.nuevoMantenimiento.Tiempomanteni,
-        categoria: this.nuevoMantenimiento.categoria,
-        tipo: this.nuevoMantenimiento.tipo,
-        descripcion: this.nuevoMantenimiento.descripcion,
-        vehiculo: this.nuevoMantenimiento.vehiculo,
-        estado: this.nuevoMantenimiento.estado,
-        prioridad: this.nuevoMantenimiento.prioridad,
-        tallerResponsable: this.nuevoMantenimiento.tallerResponsable,
-        patente: patente
-      };
+        const mantenimientoData = {
+          ...data,
+          patente: patente
+        };
 
-      const ref = collection(this.firestore, 'mantenimientos');
-      const docRef = await addDoc(ref, mantenimientoData);
+        // Agregar nuevo mantenimiento a Firestore
+        const docRef = await addDoc(collection(this.firestore, 'mantenimientos'), mantenimientoData);
 
-      let mantenimientos = [];
-      if (vehiculoSnap && vehiculoSnap.mantenimientos) {
-        mantenimientos = vehiculoSnap.mantenimientos;
+        // Actualizar el vehículo correspondiente con el nuevo mantenimiento
+        if (vehiculoSnap) {
+          let mantenimientos = [];
+          if (vehiculoSnap.mantenimientos) {
+            mantenimientos = vehiculoSnap.mantenimientos;
+          }
+          mantenimientos.push({
+            id: docRef.id,
+            ...mantenimientoData
+          });
+          await setDoc(vehiculoRef, { mantenimientos, estado: data.estado }, { merge: true });
+        }
+
+        this.toastMessage = 'Mantenimiento agregado con éxito.';
+        this.toastColor = 'success';
+        this.showToast = true;
+      } catch (error) {
+        console.error('Error al agregar mantenimiento:', error);
+        this.toastMessage = 'Error al agregar mantenimiento.';
+        this.toastColor = 'danger';
+        this.showToast = true;
       }
-      mantenimientos.push({
-        id: docRef.id,
-        ...mantenimientoData
-      });
-      await setDoc(vehiculoRef, { mantenimientos, estado: this.nuevoMantenimiento.estado }, { merge: true });
-
-      this.toastMessage = 'Mantenimiento agregado con éxito.';
-      this.toastColor = 'success';
-      this.showToast = true;
-      this.nuevoMantenimiento = {
-        Tiempomanteni: ['', ''],
-        categoria: '',
-        tipo: '',
-        descripcion: '',
-        vehiculo: '',
-        estado: '',
-        prioridad: '',
-        tallerResponsable: ''
-      };
-      this.mostrarFormulario = false;
-    } catch (error) {
-      this.toastMessage = 'Error al agregar mantenimiento.';
-      this.toastColor = 'danger';
-      this.showToast = true;
     }
   }
 
@@ -388,9 +358,6 @@ export class MantenimientoPage implements OnInit {
     return `${start} - ${end}`;
   }
 
-  toggleMostrarFormulario() {
-    this.mostrarFormulario = !this.mostrarFormulario;
-  }
 
   editarMantenimiento(mantenimiento: any): void {
     this.router.navigate(['/editar-mantenimiento', mantenimiento.id]);

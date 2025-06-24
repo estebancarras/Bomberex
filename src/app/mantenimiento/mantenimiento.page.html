@@ -17,68 +17,7 @@
     (ionDidDismiss)="showToast = false">
   </ion-toast>
 
-  <div *ngIf="mostrarFormulario; else listaMantenimientos" class="ion-padding">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Agregar Mantenimiento</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <form (ngSubmit)="agregarMantenimiento()">
-          <ion-item>
-            <ion-label position="floating">Vehículo</ion-label>
-            <ion-select [(ngModel)]="nuevoMantenimiento.vehiculo" name="vehiculo" required>
-              <ion-select-option *ngFor="let vehiculo of vehiculos$ | async" [value]="vehiculo.id">
-                {{ vehiculo.vehiculo }}
-              </ion-select-option>
-            </ion-select>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Tipo</ion-label>
-            <ion-input [(ngModel)]="nuevoMantenimiento.tipo" name="tipo" required></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Descripción</ion-label>
-            <ion-input [(ngModel)]="nuevoMantenimiento.descripcion" name="descripcion" required></ion-input>
-          </ion-item>
-          <ion-item button detail="false" (click)="abrirModalRangoFechas()">
-            <ion-label position="floating">Rango de Fechas de Mantenimiento</ion-label>
-            <ion-input [value]="mostrarRangoFechas()" readonly></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Categoría</ion-label>
-            <ion-select [(ngModel)]="nuevoMantenimiento.categoria" name="categoria" required>
-              <ion-select-option value="preventivo">Preventivo</ion-select-option>
-              <ion-select-option value="correctivo">Correctivo</ion-select-option>
-              <ion-select-option value="emergencia">Emergencia</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Estado</ion-label>
-            <ion-select [(ngModel)]="nuevoMantenimiento.estado" name="estado" required>
-              <ion-select-option value="Operativo">Operativo</ion-select-option>
-              <ion-select-option value="En mantenimiento">En mantenimiento</ion-select-option>
-              <ion-select-option value="Fuera de servicio">Fuera de servicio</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Prioridad</ion-label>
-            <ion-select [(ngModel)]="nuevoMantenimiento.prioridad" name="prioridad" required>
-              <ion-select-option value="alta">Alta</ion-select-option>
-              <ion-select-option value="media">Media</ion-select-option>
-              <ion-select-option value="baja">Baja</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Taller Responsable</ion-label>
-            <ion-input [(ngModel)]="nuevoMantenimiento.tallerResponsable" name="tallerResponsable" required></ion-input>
-          </ion-item>
-          <ion-button expand="block" type="submit" color="primary">Agregar</ion-button>
-        </form>
-      </ion-card-content>
-    </ion-card>
-  </div>
-
-  <ng-template #listaMantenimientos>
+  <div class="main-content">
     <div class="top-section ion-padding">
       <div class="stats-container">
         <div class="stat-card">
@@ -112,7 +51,7 @@
       </div>
 
       <div class="main-actions">
-        <ion-button color="secondary" (click)="toggleMostrarFormulario()">
+        <ion-button color="secondary" (click)="abrirModalAgregarMantenimiento()">
           <ion-icon slot="start" name="add-circle-outline"></ion-icon>
           AGREGAR MANTENIMIENTO
         </ion-button>
@@ -284,5 +223,5 @@
         </div>
       </div>
     </div>
-  </ng-template>
+  </div>
 </ion-content>

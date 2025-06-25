@@ -15,29 +15,37 @@
   <div class="main-content">
     <div class="top-section ion-padding">
       <div class="stats-container">
-        <div class="stat-card">
-          <ion-icon name="car-outline" color="primary"></ion-icon>
+        <div class="stat-card total-card">
+          <div class="icon-container">
+            <ion-icon name="car-outline"></ion-icon>
+          </div>
           <div class="stat-info">
             <span class="stat-number">{{ getEstadisticas().total }}</span>
             <span class="stat-label">Total Vehículos</span>
           </div>
         </div>
-        <div class="stat-card">
-          <ion-icon name="checkmark-circle-outline" color="success"></ion-icon>
+        <div class="stat-card success-card">
+          <div class="icon-container">
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+          </div>
           <div class="stat-info">
             <span class="stat-number">{{ getEstadisticas().operativos }}</span>
             <span class="stat-label">Operativos</span>
           </div>
         </div>
-        <div class="stat-card">
-          <ion-icon name="construct-outline" color="warning"></ion-icon>
+        <div class="stat-card warning-card">
+          <div class="icon-container">
+            <ion-icon name="construct-outline"></ion-icon>
+          </div>
           <div class="stat-info">
             <span class="stat-number">{{ getEstadisticas().enMantenimiento }}</span>
             <span class="stat-label">En Mantenimiento</span>
           </div>
         </div>
-        <div class="stat-card">
-          <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
+        <div class="stat-card danger-card">
+          <div class="icon-container">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+          </div>
           <div class="stat-info">
             <span class="stat-number">{{ getEstadisticas().fueraServicio }}</span>
             <span class="stat-label">Fuera de Servicio</span>
@@ -45,14 +53,21 @@
         </div>
       </div>
 
+      <!-- FAB Button -->
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="secondary" (click)="addVehiculo()">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
       <div class="main-actions">
-        <ion-button color="secondary" (click)="addVehiculo()">
-          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
-          AGREGAR VEHÍCULO
-        </ion-button>
         <ion-button fill="outline" color="tertiary" (click)="mostrarFiltrosAvanzados()">
           <ion-icon slot="start" name="filter-outline"></ion-icon>
           FILTROS AVANZADOS
+        </ion-button>
+        <ion-button fill="outline" color="medium">
+          <ion-icon slot="start" name="download-outline"></ion-icon>
+          EXPORTAR
         </ion-button>
       </div>
     </div>
@@ -167,23 +182,26 @@
 
           <div class="table-body">
             <div *ngFor="let vehiculo of paginatedData" class="table-row" (click)="goToDetalle(vehiculo.id!)">
-              <div class="table-cell">{{ vehiculo.vehiculo || vehiculo.nombre || 'Sin nombre' }}</div>
-              <div class="table-cell">
+              <div class="table-cell" data-label="Vehículo:">{{ vehiculo.vehiculo || vehiculo.nombre || 'Sin nombre' }}</div>
+              <div class="table-cell" data-label="Estado:">
                 <ion-chip [color]="getEstadoColor(vehiculo.estado)" class="status-chip">
                   <ion-label>{{ vehiculo.estado }}</ion-label>
                 </ion-chip>
               </div>
-              <div class="table-cell">{{ vehiculo.kilometraje || '-' }} km</div>
-              <div class="table-cell">{{ vehiculo.marca || '-' }}</div>
-              <div class="table-cell">{{ vehiculo.modelo || '-' }}</div>
-              <div class="table-cell">{{ vehiculo.patente || '-' }}</div>
-              <div class="table-cell">
-                <ion-button fill="clear" size="small" (click)="editarVehiculo(vehiculo); $event.stopPropagation()">
+              <div class="table-cell" data-label="Kilometraje:">{{ vehiculo.kilometraje || '-' }} km</div>
+              <div class="table-cell" data-label="Marca:">{{ vehiculo.marca || '-' }}</div>
+              <div class="table-cell" data-label="Modelo:">{{ vehiculo.modelo || '-' }}</div>
+              <div class="table-cell" data-label="Patente:">{{ vehiculo.patente || '-' }}</div>
+              <div class="table-cell actions-cell">
+                <ion-button fill="clear" size="small" class="action-button" (click)="editarVehiculo(vehiculo); $event.stopPropagation()">
                   <ion-icon slot="icon-only" name="create-outline"></ion-icon>
                 </ion-button>
-                <ion-button fill="clear" size="small" color="danger"
-                  (click)="deleteVehiculo(vehiculo.id!); $event.stopPropagation()">
+                <ion-button fill="clear" size="small" class="action-button" color="danger" (click)="deleteVehiculo(vehiculo.id!); $event.stopPropagation()">
+
                   <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" size="small" class="action-button" color="tertiary">
+                  <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
                 </ion-button>
               </div>
             </div>

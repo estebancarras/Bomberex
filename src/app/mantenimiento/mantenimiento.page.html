@@ -173,17 +173,18 @@
               <div class="table-cell">{{ formatDateRange(mantenimiento.Tiempomanteni) }}</div>
               <div class="table-cell">{{ mantenimiento.categoria | titlecase }}</div>
               <div class="table-cell">
+
                 <ion-chip [color]="getPrioridadColor(mantenimiento.prioridad)" class="priority-chip">
                   <ion-label>{{ mantenimiento.prioridad | titlecase }}</ion-label>
                 </ion-chip>
               </div>
-              <div class="table-cell">
+              <div class="table-cell" data-label="Estado:">
                 <ion-chip [color]="getEstadoColor(mantenimiento.estado)" class="status-chip">
                   <ion-label>{{ mantenimiento.estado }}</ion-label>
                 </ion-chip>
               </div>
-              <div class="table-cell">{{ mantenimiento.tallerResponsable || '-' }}</div>
-              <div class="table-cell description-cell">{{ mantenimiento.descripcion }}</div>
+              <div class="table-cell" data-label="Taller:">{{ mantenimiento.tallerResponsable || '-' }}</div>
+              <div class="table-cell description-cell" data-label="Descripción:">{{ mantenimiento.descripcion }}</div>
               <div class="table-cell">
                 <ion-button fill="clear" size="small"
                   (click)="editarMantenimiento(mantenimiento); $event.stopPropagation()">

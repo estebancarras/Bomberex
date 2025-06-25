@@ -9,13 +9,13 @@ import { VehiculoModalComponent } from './vehiculo-modal.component';
 import { Observable } from 'rxjs';
 
 import { addIcons } from 'ionicons';
-import { 
-  trash, 
-  arrowUp, 
-  arrowDown, 
-  carOutline, 
-  checkmarkCircleOutline, 
-  constructOutline, 
+import {
+  trash,
+  arrowUp,
+  arrowDown,
+  carOutline,
+  checkmarkCircleOutline,
+  constructOutline,
   alertCircleOutline,
   addCircleOutline,
   filterOutline,
@@ -85,19 +85,19 @@ export class VehiculosPage implements OnInit {
   sortField: keyof Vehiculo = 'vehiculo';
   sortDirection: 'asc' | 'desc' = 'asc';
 
-  constructor(private vehiculosService: VehiculosService, private router: Router, private modalCtrl: ModalController) {}
+  constructor(private vehiculosService: VehiculosService, private router: Router, private modalCtrl: ModalController) { }
 
   async ngOnInit() {
     this.isLoading = true;
-    
+
     // Cargar preferencia de tamaño de página desde localStorage
     const savedPageSize = localStorage.getItem('vehiculos-page-size');
     if (savedPageSize) {
       this.pageSize = parseInt(savedPageSize);
     }
-    
+
     this.tempPageInput = this.currentPage;
-    
+
     await this.vehiculosService.init();
     this.loadVehiculos();
   }

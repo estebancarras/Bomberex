@@ -81,18 +81,18 @@ import { RangoFechasModalComponent } from '../rango-fechas-modal/rango-fechas-mo
   `,
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
-    IonHeader, 
-    IonToolbar, 
-    IonTitle, 
-    IonContent, 
-    IonItem, 
-    IonLabel, 
-    IonInput, 
-    IonButton, 
-    IonSelect, 
-    IonSelectOption, 
+    CommonModule,
+    FormsModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonButton,
+    IonSelect,
+    IonSelectOption,
     IonButtons,
     IonTextarea
   ],
@@ -111,7 +111,7 @@ export class MantenimientoModalComponent {
 
   vehiculos: any[] = [];
 
-  constructor(private modalCtrl: ModalController) {}
+  constructor(private modalCtrl: ModalController) { }
 
   async abrirModalRangoFechas() {
     const modal = await this.modalCtrl.create({

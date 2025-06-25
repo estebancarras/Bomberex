@@ -7,8 +7,49 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <h2>Bienvenido al perfil</h2>
-  <p><strong>Nombre:</strong> {{ name || '(Sin nombre)' }}</p>
-  <p><strong>Correo:</strong> {{ correo }}</p>
+<ion-content class="ion-padding perfil-content">
+  <div class="profile-card">
+    <div class="avatar-container">
+      <ion-avatar>
+        <ng-container *ngIf="photoURL; else defaultIcon">
+          <img [src]="photoURL" alt="Avatar" />
+        </ng-container>
+        <ng-template #defaultIcon>
+          <ion-icon name="person-circle-outline" style="font-size: 120px; color: var(--ion-color-medium)"></ion-icon>
+        </ng-template>
+      </ion-avatar>
+      <ion-button fill="clear" size="small" (click)="editPhoto()">
+        <ion-icon name="camera-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div class="info-container">
+      <ion-item lines="none">
+        <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+        <ion-label>
+          <h2>Nombre</h2>
+          <div *ngIf="!editingName">{{ name || '(Sin nombre)' }}</div>
+          <ion-input *ngIf="editingName" [(ngModel)]="name" placeholder="Ingresa tu nombre"></ion-input>
+        </ion-label>
+        <ion-button *ngIf="!editingName" fill="clear" size="small" (click)="editingName = true">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="editingName" fill="clear" size="small" (click)="saveName()">
+          <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-icon slot="start" name="mail-outline"></ion-icon>
+        <ion-label>
+          <h2>Correo</h2>
+          <div>{{ correo }}</div>
+        </ion-label>
+      </ion-item>
+    </div>
+
+    <ion-button expand="block" color="danger" (click)="logout()">
+      Cerrar sesión
+    </ion-button>
+  </div>
 </ion-content>

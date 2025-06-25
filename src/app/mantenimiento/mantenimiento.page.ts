@@ -5,14 +5,14 @@ import { Router, RouterModule } from '@angular/router';
 import { Firestore, collection, collectionData, addDoc, doc, docData, setDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable, firstValueFrom } from 'rxjs';
 import { AlertController, ModalController } from '@ionic/angular';
-import { 
+import {
   IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonButton, IonMenuButton,
   IonSearchbar, IonChip, IonLabel, IonIcon, IonItem, IonInput, IonCard, IonCardHeader,
   IonCardTitle, IonCardContent, IonToast, IonSelect, IonSelectOption, IonSpinner
 } from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
-import { 
+import {
   downloadOutline, createOutline, trashOutline, filterOutline, calendarOutline,
   addCircleOutline, chevronBackOutline, chevronForwardOutline, closeOutline,
   clipboardOutline, arrowDownOutline, arrowUpOutline, constructOutline,
@@ -233,7 +233,7 @@ export class MantenimientoPage implements OnInit {
     const completados = this.dataSource.filter(m => m.estado === 'Completado').length;
     const enProgreso = this.dataSource.filter(m => m.estado === 'En progreso').length;
     const pendientes = this.dataSource.filter(m => m.estado === 'Pendiente').length;
-    
+
     const hoy = new Date();
     const proximaSemana = new Date(hoy.getTime() + 7 * 24 * 60 * 60 * 1000);
     const proximosVencer = this.dataSource.filter(m => {

@@ -11,8 +11,8 @@ import { RegistroPage } from './registro.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild([{ path: '', component: RegistroPage }]),
-    RegistroPage
-  ]
+    RouterModule.forChild([{ path: '', component: RegistroPage }])
+  ],
+  declarations: [RegistroPage]
 })
-export class RegistroModule {}
+export class RegistroModule { }

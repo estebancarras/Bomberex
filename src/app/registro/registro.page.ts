@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton, IonBackButton, IonButtons } from '@ionic/angular/standalone';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { Router, RouterModule } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
@@ -11,8 +11,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
   selector: 'app-registro',
   templateUrl: './registro.page.html',
   styleUrls: ['./registro.page.scss'],
-standalone: true,
-imports: [IonButton, IonInput, IonLabel, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterModule]
+  standalone: true,
+  imports: [IonButton, IonInput, IonLabel, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, IonButtons, CommonModule, FormsModule, RouterModule]
 })
 export class RegistroPage implements OnInit {
   name: string = '';
@@ -41,5 +41,5 @@ export class RegistroPage implements OnInit {
 
   private firestore = inject(Firestore);
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

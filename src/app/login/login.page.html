@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Iniciar Sesión</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/auth-choice"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Inicio de sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -20,11 +23,7 @@
     ¿Olvidaste tu contraseña?
   </ion-button>
 
-  <ion-toast
-    [isOpen]="showToast"
-    [message]="toastMessage"
-    [color]="toastColor"
-    duration="2000"
+  <ion-toast [isOpen]="showToast" [message]="toastMessage" [color]="toastColor" duration="2000"
     (ionDidDismiss)="showToast = false">
   </ion-toast>
 </ion-content>

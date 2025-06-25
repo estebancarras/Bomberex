@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton, IonToast } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonBackButton, IonButtons, IonToast, IonButton } from '@ionic/angular/standalone';
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 import { Router, RouterModule } from '@angular/router';
@@ -10,8 +10,8 @@ import { Router, RouterModule } from '@angular/router';
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-standalone: true,
-imports: [IonButton, IonInput, IonLabel, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonToast, RouterModule]
+  standalone: true,
+  imports: [IonBackButton, IonButtons, IonInput, IonLabel, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, IonButton, CommonModule, FormsModule, IonToast, RouterModule]
 })
 export class LoginPage {
   email: string = '';

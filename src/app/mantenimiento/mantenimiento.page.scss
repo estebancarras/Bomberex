@@ -80,7 +80,7 @@ ion-content {
     font-weight: 500;
 
     height: 40px;
-    
+
 
     ion-icon {
       margin-right: var(--spacing-xs);
@@ -146,7 +146,8 @@ ion-content {
         font-size: 13px;
       }
 
-      ion-select, ion-input {
+      ion-select,
+      ion-input {
         --padding-start: var(--spacing-sm);
         --padding-end: var(--spacing-sm);
         min-height: 36px;
@@ -182,7 +183,7 @@ ion-content {
 .table-container {
   background: white;
   border-radius: var(--card-border-radius);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -211,9 +212,22 @@ ion-content {
   will-change: background-color;
   transition: background-color var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateZ(0);
+  background-color: var(--ion-background-color);
 
   &:hover {
-    background-color: var(--ion-color-light-tint);
+    background-color: var(--ion-background-color-tint);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &:hover {
+      background-color: #555555 !important;
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    &:hover {
+      background-color: var(--ion-color-light-tint, #f0f0f0);
+    }
   }
 
   .table-cell {
@@ -224,7 +238,9 @@ ion-content {
 }
 
 /* Optimizaciones de rendimiento */
-ion-button, ion-chip, ion-item {
+ion-button,
+ion-chip,
+ion-item {
   will-change: transform;
   backface-visibility: hidden;
   transform: translateZ(0);
@@ -386,11 +402,11 @@ ion-card {
       will-change: transform;
       transform: translateZ(0);
       transition: transform 0.2s ease-out;
-      
+
       &:active {
         transform: scale(0.98) translateZ(0);
       }
-      
+
       .table-cell {
         padding: var(--spacing-xs) 0;
         display: flex;
@@ -416,7 +432,8 @@ ion-card {
   }
 
   /* Optimizaciones para dispositivos móviles */
-  ion-button, ion-chip {
+  ion-button,
+  ion-chip {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }
@@ -443,7 +460,7 @@ ion-card {
   .main-actions {
     flex-direction: column;
     gap: var(--spacing-sm);
-    
+
 
     ion-button {
       width: 100%;

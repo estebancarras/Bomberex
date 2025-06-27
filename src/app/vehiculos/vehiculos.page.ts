@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { VehiculosService, Vehiculo } from '../services/vehiculos.service';
@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { VehiculoModalComponent } from './vehiculo-modal.component';
 import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 import { addIcons } from 'ionicons';
 import {
@@ -85,7 +86,14 @@ export class VehiculosPage implements OnInit {
   sortField: keyof Vehiculo = 'vehiculo';
   sortDirection: 'asc' | 'desc' = 'asc';
 
-  constructor(private vehiculosService: VehiculosService, private router: Router, private modalCtrl: ModalController) { }
+  private authService = inject(AuthService);
+  private modalCtrl = inject(ModalController);
+  private router = inject(Router);
+  private vehiculosService = inject(VehiculosService);
+
+  userRole: string | null = null;
+
+  constructor() { }
 
   async ngOnInit() {
     this.isLoading = true;
@@ -100,6 +108,10 @@ export class VehiculosPage implements OnInit {
 
     await this.vehiculosService.init();
     this.loadVehiculos();
+
+    this.authService.userRole$.subscribe(role => {
+      this.userRole = role;
+    });
   }
 
   loadVehiculos() {
@@ -246,6 +258,12 @@ export class VehiculosPage implements OnInit {
   }
 
   async addVehiculo() {
+    if (this.userRole !== 'admin') {
+      this.toastMessage = 'No tienes permiso para agregar vehículos.';
+      this.toastColor = 'danger';
+      this.showToast = true;
+      return;
+    }
     const modal = await this.modalCtrl.create({
       component: VehiculoModalComponent
     });
@@ -268,11 +286,18 @@ export class VehiculosPage implements OnInit {
   }
 
   async editarVehiculo(vehiculo: Vehiculo) {
+    if (this.userRole !== 'admin' && this.userRole !== 'jefeFlota') {
+      this.toastMessage = 'No tienes permiso para editar vehículos.';
+      this.toastColor = 'danger';
+      this.showToast = true;
+      return;
+    }
     const modal = await this.modalCtrl.create({
       component: VehiculoModalComponent,
       componentProps: {
         vehiculo: vehiculo,
-        isEdit: true
+        isEdit: true,
+        userRole: this.userRole
       }
     });
     modal.present();
@@ -294,6 +319,12 @@ export class VehiculosPage implements OnInit {
   }
 
   async deleteVehiculo(id: string) {
+    if (this.userRole !== 'admin') {
+      this.toastMessage = 'No tienes permiso para eliminar vehículos.';
+      this.toastColor = 'danger';
+      this.showToast = true;
+      return;
+    }
     try {
       await this.vehiculosService.deleteVehiculo(id);
       this.toastMessage = 'Vehículo eliminado correctamente';

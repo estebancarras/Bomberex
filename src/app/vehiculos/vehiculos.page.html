@@ -54,7 +54,7 @@
       </div>
 
       <!-- FAB Button -->
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="userRole === 'admin'">
         <ion-fab-button color="secondary" (click)="addVehiculo()">
           <ion-icon name="add-outline"></ion-icon>
         </ion-fab-button>
@@ -182,7 +182,8 @@
 
           <div class="table-body">
             <div *ngFor="let vehiculo of paginatedData" class="table-row" (click)="goToDetalle(vehiculo.id!)">
-              <div class="table-cell" data-label="Vehículo:">{{ vehiculo.vehiculo || vehiculo.nombre || 'Sin nombre' }}</div>
+              <div class="table-cell" data-label="Vehículo:">{{ vehiculo.vehiculo || vehiculo.nombre || 'Sin nombre' }}
+              </div>
               <div class="table-cell" data-label="Estado:">
                 <ion-chip [color]="getEstadoColor(vehiculo.estado)" class="status-chip">
                   <ion-label>{{ vehiculo.estado }}</ion-label>
@@ -193,15 +194,14 @@
               <div class="table-cell" data-label="Modelo:">{{ vehiculo.modelo || '-' }}</div>
               <div class="table-cell" data-label="Patente:">{{ vehiculo.patente || '-' }}</div>
               <div class="table-cell actions-cell">
-                <ion-button fill="clear" size="small" class="action-button" (click)="editarVehiculo(vehiculo); $event.stopPropagation()">
+                <ion-button fill="clear" size="small" class="action-button"
+                  *ngIf="userRole === 'admin' || userRole === 'jefeFlota' || userRole === 'mecanico'"
+                  (click)="editarVehiculo(vehiculo); $event.stopPropagation()">
                   <ion-icon slot="icon-only" name="create-outline"></ion-icon>
                 </ion-button>
-                <ion-button fill="clear" size="small" class="action-button" color="danger" (click)="deleteVehiculo(vehiculo.id!); $event.stopPropagation()">
-
+                <ion-button fill="clear" size="small" class="action-button" color="danger" *ngIf="userRole === 'admin'"
+                  (click)="deleteVehiculo(vehiculo.id!); $event.stopPropagation()">
                   <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-                </ion-button>
-                <ion-button fill="clear" size="small" class="action-button" color="tertiary">
-                  <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
                 </ion-button>
               </div>
             </div>

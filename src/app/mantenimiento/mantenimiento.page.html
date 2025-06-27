@@ -46,7 +46,9 @@
       </div>
 
       <div class="main-actions">
-        <ion-button color="secondary" (click)="abrirModalAgregarMantenimiento()">
+        <ion-button color="secondary"
+          *ngIf="userRole === 'mecanico' || userRole === 'admin' || userRole === 'jefeFlota'"
+          (click)="abrirModalAgregarMantenimiento()">
           <ion-icon slot="start" name="add-circle-outline"></ion-icon>
           AGREGAR MANTENIMIENTO
         </ion-button>
@@ -167,8 +169,7 @@
           </div>
 
           <div class="table-body">
-            <div *ngFor="let mantenimiento of paginatedData" class="table-row"
-              (click)="editarMantenimiento(mantenimiento)">
+            <div *ngFor="let mantenimiento of paginatedData" class="table-row">
               <div class="table-cell">{{ mantenimiento.patente }}</div>
               <div class="table-cell">{{ formatDateRange(mantenimiento.Tiempomanteni) }}</div>
               <div class="table-cell">{{ mantenimiento.categoria | titlecase }}</div>
@@ -186,17 +187,18 @@
               <div class="table-cell" data-label="Taller:">{{ mantenimiento.tallerResponsable || '-' }}</div>
               <div class="table-cell description-cell" data-label="Descripción:">{{ mantenimiento.descripcion }}</div>
               <div class="table-cell">
-                <ion-button fill="clear" size="small"
-                  (click)="editarMantenimiento(mantenimiento); $event.stopPropagation()">
+                <ion-button fill="clear" size="small" *ngIf="userRole==='mecanico' || userRole==='admin' ||
+                  userRole==='jefeFlota'" (click)="editarMantenimiento(mantenimiento); $event.stopPropagation()">
                   <ion-icon slot="icon-only" name="create-outline"></ion-icon>
                 </ion-button>
-                <ion-button fill="clear" size="small" color="danger"
-                  (click)="borrarMantenimiento(mantenimiento); $event.stopPropagation()">
-                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-                </ion-button>
                 <ion-button fill="clear" size="small" color="tertiary"
+                  *ngIf="userRole==='admin' || userRole==='mecanico'"
                   (click)="descargarPDF(mantenimiento); $event.stopPropagation()">
                   <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" size="small" color="danger" *ngIf="userRole==='admin'"
+                  (click)="borrarMantenimiento(mantenimiento); $event.stopPropagation()">
+                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
                 </ion-button>
               </div>
             </div>

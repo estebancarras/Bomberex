@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  userRole: string | null = null;
   isAdmin: boolean = false;
   isLoggedIn: boolean = false;
   isMenuEnabled: boolean = false;
@@ -28,6 +29,7 @@ export class AppComponent {
 
   constructor() {
     this.authService.userRole$.subscribe(role => {
+      this.userRole = role;
       this.isAdmin = role === 'admin';
     });
     this.authService.user$.subscribe(user => {

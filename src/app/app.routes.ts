@@ -1,6 +1,16 @@
 import { Routes } from '@angular/router';
 
 import { AuthGuard } from './guards/auth.guard';
+import { inject } from '@angular/core';
+import { AuthService } from './services/auth.service';
+import { map } from 'rxjs/operators';
+
+const adminGuard = () => {
+  const authService = inject(AuthService);
+  return authService.userRole$.pipe(
+    map(role => role === 'admin')
+  );
+};
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth-choice', pathMatch: 'full' },
@@ -31,4 +41,9 @@ export const routes: Routes = [
     path: 'editar-mantenimiento/:id',
     loadComponent: () => import('./editar-mantenimiento/editar-mantenimiento.page').then(m => m.EditarMantenimientoPage)
   },
+  {
+    path: 'role-management',
+    loadComponent: () => import('./role-management/role-management.page').then(m => m.RoleManagementPage),
+    canActivate: [adminGuard]
+  }
 ];

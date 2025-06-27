@@ -33,7 +33,7 @@ export class LoginPage {
       if (userDoc.exists()) {
         const userData = userDoc.data();
         if (userData['role'] === 'admin') {
-          this.router.navigateByUrl('/admin-home');
+          this.router.navigateByUrl('/home');
         } else {
           this.router.navigateByUrl('/home');
         }

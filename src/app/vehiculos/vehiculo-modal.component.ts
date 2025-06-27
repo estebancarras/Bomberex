@@ -56,13 +56,14 @@ addIcons({
         </ion-card-header>
         <ion-card-content>
           <form (ngSubmit)="onSubmit()" #vehiculoForm="ngForm">
-            <ion-item>
+          <ion-item>
               <ion-label position="floating">Nombre del Vehículo *</ion-label>
               <ion-input 
                 [(ngModel)]="vehiculoData.nombre" 
                 name="nombre" 
                 required
-                placeholder="Ej: Carro Bomba 1">
+                placeholder="Ej: Carro Bomba 1"
+                [disabled]="userRole === 'jefeFlota'">
               </ion-input>
             </ion-item>
 
@@ -71,13 +72,15 @@ addIcons({
               <ion-input 
                 [(ngModel)]="vehiculoData.vehiculo" 
                 name="vehiculo"
-                placeholder="Ej: Autobomba">
+                placeholder="Ej: Autobomba"
+                [disabled]="userRole === 'jefeFlota'">
               </ion-input>
             </ion-item>
 
             <ion-item>
               <ion-label position="floating">Estado *</ion-label>
-              <ion-select [(ngModel)]="vehiculoData.estado" name="estado" required>
+              <ion-select [(ngModel)]="vehiculoData.estado" name="estado" required
+                [disabled]="false">
                 <ion-select-option value="Operativo">Operativo</ion-select-option>
                 <ion-select-option value="En mantenimiento">En mantenimiento</ion-select-option>
                 <ion-select-option value="Fuera de servicio">Fuera de servicio</ion-select-option>
@@ -89,7 +92,8 @@ addIcons({
               <ion-input 
                 [(ngModel)]="vehiculoData.kilometraje" 
                 name="kilometraje"
-                placeholder="Ej: 50000">
+                placeholder="Ej: 50000"
+                [disabled]="userRole === 'jefeFlota'">
               </ion-input>
             </ion-item>
 
@@ -98,7 +102,8 @@ addIcons({
               <ion-input 
                 [(ngModel)]="vehiculoData.marca" 
                 name="marca"
-                placeholder="Ej: Toyota">
+                placeholder="Ej: Toyota"
+                [disabled]="userRole === 'jefeFlota'">
               </ion-input>
             </ion-item>
 
@@ -108,7 +113,8 @@ addIcons({
                 [(ngModel)]="vehiculoData.modelo" 
                 name="modelo" 
                 required
-                placeholder="Ej: Hilux">
+                placeholder="Ej: Hilux"
+                [disabled]="userRole === 'jefeFlota'">
               </ion-input>
             </ion-item>
 
@@ -117,7 +123,8 @@ addIcons({
               <ion-input 
                 [(ngModel)]="vehiculoData.patente" 
                 name="patente"
-                placeholder="Ej: ABC123">
+                placeholder="Ej: ABC123"
+                [disabled]="userRole === 'jefeFlota'">
               </ion-input>
             </ion-item>
 
@@ -127,7 +134,8 @@ addIcons({
                 type="number" 
                 [(ngModel)]="vehiculoData.anio" 
                 name="anio"
-                placeholder="Ej: 2020">
+                placeholder="Ej: 2020"
+                [disabled]="userRole === 'jefeFlota'">
               </ion-input>
             </ion-item>
 
@@ -136,7 +144,8 @@ addIcons({
                 expand="block" 
                 type="submit" 
                 color="primary"
-                [disabled]="!vehiculoForm.form.valid">
+                [disabled]="!vehiculoForm.form.valid"
+                *ngIf="userRole === 'admin' || userRole === 'jefeFlota'">
                 <ion-icon slot="start" name="save-outline"></ion-icon>
                 {{ isEdit ? 'Actualizar Vehículo' : 'Agregar Vehículo' }}
               </ion-button>
@@ -209,6 +218,7 @@ addIcons({
 export class VehiculoModalComponent implements OnInit {
   @Input() vehiculo?: Vehiculo;
   @Input() isEdit: boolean = false;
+  @Input() userRole: string | null = null;
   @ViewChild('vehiculoForm') vehiculoForm!: NgForm;
 
   vehiculoData = {

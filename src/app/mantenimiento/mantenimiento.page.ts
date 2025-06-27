@@ -24,6 +24,8 @@ import { VehiculosService } from '../services/vehiculos.service';
 import { MantenimientoModalComponent } from './mantenimiento-modal.component';
 import jsPDF from 'jspdf';
 
+import { AuthService } from '../services/auth.service';
+
 addIcons({
   'download-outline': downloadOutline,
   'create-outline': createOutline,
@@ -82,13 +84,15 @@ addIcons({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [ModalController]
 })
-
 export class MantenimientoPage implements OnInit {
+  userRole: string | null = null;
+
   // Inyección de dependencias
   private firestore = inject(Firestore);
   private modalCtrl = inject(ModalController);
   private alertController = inject(AlertController);
   private router = inject(Router);
+  private authService = inject(AuthService);
 
   // Variables para el toast
   showToast = false;
@@ -127,6 +131,10 @@ export class MantenimientoPage implements OnInit {
   constructor(private vehiculosService: VehiculosService) {
     this.vehiculos$ = this.vehiculosService.getVehiculos();
     this.mantenimientos$ = collectionData(collection(this.firestore, 'mantenimientos'), { idField: 'id' });
+
+    this.authService.userRole$.subscribe(role => {
+      this.userRole = role;
+    });
   }
 
   ngOnInit(): void {

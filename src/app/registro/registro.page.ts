@@ -30,7 +30,7 @@ export class RegistroPage implements OnInit {
       await setDoc(userDocRef, {
         name: this.name,
         email: this.email,
-        role: 'normal'
+        role: 'bombero'
       });
       console.log('Usuario registrado:', userCredential.user);
       this.router.navigateByUrl('/home');

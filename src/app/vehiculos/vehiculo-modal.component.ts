@@ -63,7 +63,7 @@ addIcons({
                 name="nombre" 
                 required
                 placeholder="Ej: Carro Bomba 1"
-                [disabled]="userRole === 'jefeFlota'">
+                [disabled]="userRole === 'mecanico' || userRole === 'jefeFlota' || userRole === 'bombero'">
               </ion-input>
             </ion-item>
 
@@ -73,14 +73,14 @@ addIcons({
                 [(ngModel)]="vehiculoData.vehiculo" 
                 name="vehiculo"
                 placeholder="Ej: Autobomba"
-                [disabled]="userRole === 'jefeFlota'">
+                [disabled]="userRole === 'mecanico' || userRole === 'jefeFlota' || userRole === 'bombero'">
               </ion-input>
             </ion-item>
 
             <ion-item>
               <ion-label position="floating">Estado *</ion-label>
               <ion-select [(ngModel)]="vehiculoData.estado" name="estado" required
-                [disabled]="false">
+                [disabled]="userRole === 'bombero'">
                 <ion-select-option value="Operativo">Operativo</ion-select-option>
                 <ion-select-option value="En mantenimiento">En mantenimiento</ion-select-option>
                 <ion-select-option value="Fuera de servicio">Fuera de servicio</ion-select-option>
@@ -93,7 +93,7 @@ addIcons({
                 [(ngModel)]="vehiculoData.kilometraje" 
                 name="kilometraje"
                 placeholder="Ej: 50000"
-                [disabled]="userRole === 'jefeFlota'">
+                [disabled]="userRole === 'mecanico' || userRole === 'jefeFlota' || userRole === 'bombero'">
               </ion-input>
             </ion-item>
 
@@ -103,7 +103,7 @@ addIcons({
                 [(ngModel)]="vehiculoData.marca" 
                 name="marca"
                 placeholder="Ej: Toyota"
-                [disabled]="userRole === 'jefeFlota'">
+                [disabled]="userRole === 'mecanico' || userRole === 'jefeFlota' || userRole === 'bombero'">
               </ion-input>
             </ion-item>
 
@@ -114,7 +114,7 @@ addIcons({
                 name="modelo" 
                 required
                 placeholder="Ej: Hilux"
-                [disabled]="userRole === 'jefeFlota'">
+                [disabled]="userRole === 'mecanico' || userRole === 'jefeFlota' || userRole === 'bombero'">
               </ion-input>
             </ion-item>
 
@@ -124,7 +124,7 @@ addIcons({
                 [(ngModel)]="vehiculoData.patente" 
                 name="patente"
                 placeholder="Ej: ABC123"
-                [disabled]="userRole === 'jefeFlota'">
+                [disabled]="userRole === 'mecanico' || userRole === 'jefeFlota' || userRole === 'bombero'">
               </ion-input>
             </ion-item>
 
@@ -135,7 +135,7 @@ addIcons({
                 [(ngModel)]="vehiculoData.anio" 
                 name="anio"
                 placeholder="Ej: 2020"
-                [disabled]="userRole === 'jefeFlota'">
+                [disabled]="userRole === 'mecanico' || userRole === 'jefeFlota' || userRole === 'bombero'">
               </ion-input>
             </ion-item>
 
@@ -145,7 +145,7 @@ addIcons({
                 type="submit" 
                 color="primary"
                 [disabled]="!vehiculoForm.form.valid"
-                *ngIf="userRole === 'admin' || userRole === 'jefeFlota'">
+                *ngIf="userRole === 'admin' || userRole === 'jefeFlota' || userRole === 'mecanico'">
                 <ion-icon slot="start" name="save-outline"></ion-icon>
                 {{ isEdit ? 'Actualizar Vehículo' : 'Agregar Vehículo' }}
               </ion-button>

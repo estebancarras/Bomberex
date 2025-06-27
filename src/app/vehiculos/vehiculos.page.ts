@@ -286,7 +286,7 @@ export class VehiculosPage implements OnInit {
   }
 
   async editarVehiculo(vehiculo: Vehiculo) {
-    if (this.userRole !== 'admin' && this.userRole !== 'jefeFlota') {
+    if (this.userRole !== 'admin' && this.userRole !== 'jefeFlota' && this.userRole !== 'mecanico') {
       this.toastMessage = 'No tienes permiso para editar vehículos.';
       this.toastColor = 'danger';
       this.showToast = true;

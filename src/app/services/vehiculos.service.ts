@@ -34,7 +34,7 @@ export interface Vehiculo {
 })
 export class VehiculosService {
   private vehiculosCollection;
-  private offlineMode = true; // Cambiar a false para usar Firestore
+  private offlineMode = false; // Cambiar a false para usar Firestore
   private localVehiculos: Vehiculo[] = [
     {
       id: '1',
@@ -84,7 +84,7 @@ export class VehiculosService {
   ];
 
   constructor(private firestore: Firestore) {
-    this.offlineMode = true; // Activar modo offline temporalmente para pruebas
+    this.offlineMode = false; // Activar modo offline temporalmente para pruebas
     this.vehiculosCollection = collection(this.firestore, 'vehiculos');
   }
 

@@ -54,11 +54,11 @@
       </div>
 
       <!-- FAB Button -->
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="userRole === 'admin'">
-        <ion-fab-button color="secondary" (click)="addVehiculo()">
-          <ion-icon name="add-outline"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="userRole === 'admin'">
+  <ion-fab-button color="primary" (click)="addVehiculo()">
+    <ion-icon name="add-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 
       <div class="main-actions">
         <ion-button fill="outline" color="tertiary" (click)="mostrarFiltrosAvanzados()">

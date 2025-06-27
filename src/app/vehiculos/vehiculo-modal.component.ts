@@ -154,8 +154,8 @@ addIcons({
                 expand="block" 
                 fill="outline" 
                 color="medium" 
-                (click)="cerrar()">
-                Cancelar
+                (click)="onSubmit()">
+                Guardar
               </ion-button>
             </div>
           </form>

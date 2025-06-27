@@ -33,9 +33,13 @@ export class EditarMantenimientoPage implements OnInit {
     this.mantenimientoForm = new FormGroup({
       tipo: new FormControl('', Validators.required),
       descripcion: new FormControl('', Validators.required),
-      fecha: new FormControl('', Validators.required),
-      vehiculo: new FormControl('', Validators.required),
+      tiempoManteni: new FormControl([], Validators.required),
+      categoria: new FormControl('', Validators.required),
       estado: new FormControl('', Validators.required),
+      patente: new FormControl('', Validators.required),
+      prioridad: new FormControl('', Validators.required),
+      tallerResponsable: new FormControl('', Validators.required),
+      vehiculo: new FormControl('', Validators.required),
       completado: new FormControl(false)
     });
   }
@@ -49,9 +53,13 @@ export class EditarMantenimientoPage implements OnInit {
           this.mantenimientoForm.patchValue({
             tipo: (data as any).tipo,
             descripcion: (data as any).descripcion,
-            fecha: (data as any).fecha,
-            vehiculo: (data as any).vehiculo,
+            tiempoManteni: (data as any).tiempoManteni || [],
+            categoria: (data as any).categoria,
             estado: (data as any).estado,
+            patente: (data as any).patente,
+            prioridad: (data as any).prioridad,
+            tallerResponsable: (data as any).tallerResponsable,
+            vehiculo: (data as any).vehiculo,
             completado: (data as any).completado === 'Completado' ? true : false
           });
         }
@@ -78,9 +86,13 @@ export class EditarMantenimientoPage implements OnInit {
       await updateDoc(mantenimientoRef, {
         tipo: this.mantenimientoForm.value.tipo,
         descripcion: this.mantenimientoForm.value.descripcion,
-        fecha: this.mantenimientoForm.value.fecha,
-        vehiculo: this.mantenimientoForm.value.vehiculo,
+        tiempoManteni: this.mantenimientoForm.value.tiempoManteni,
+        categoria: this.mantenimientoForm.value.categoria,
         estado: this.mantenimientoForm.value.estado,
+        patente: this.mantenimientoForm.value.patente,
+        prioridad: this.mantenimientoForm.value.prioridad,
+        tallerResponsable: this.mantenimientoForm.value.tallerResponsable,
+        vehiculo: this.mantenimientoForm.value.vehiculo,
         completado: this.mantenimientoForm.value.completado ? 'Completado' : 'No completado'
       });
 

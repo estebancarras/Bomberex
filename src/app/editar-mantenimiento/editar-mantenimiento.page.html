@@ -1,57 +1,79 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/mantenimiento"></ion-back-button>
-    </ion-buttons>
     <ion-title>Editar Mantenimiento</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" fullscreen="true">
-  <ion-card *ngIf="mantenimientoForm">
-    <ion-card-header>
-      <ion-card-title>Editar Mantenimiento</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <form [formGroup]="mantenimientoForm" (ngSubmit)="guardarCambios()">
+<ion-content class="page-content" [fullscreen]="true">
+  <form [formGroup]="mantenimientoForm" (ngSubmit)="guardarCambios()">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Detalles del Mantenimiento</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
         <ion-item>
-          <ion-label position="stacked">Vehículo</ion-label>
-          <ion-input [value]="getVehiculoNombre(mantenimientoForm.value.vehiculo)" readonly disabled>
-          </ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Tipo</ion-label>
-          <ion-input formControlName="tipo" required [disabled]="mantenimientoForm.value.completado"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Descripción</ion-label>
-          <ion-input formControlName="descripcion" required [disabled]="mantenimientoForm.value.completado"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Fecha</ion-label>
-          <ion-datetime display-format="YYYY-MM-DD" formControlName="fecha" required [disabled]="mantenimientoForm.value.completado"></ion-datetime>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Estado</ion-label>
-          <ion-select formControlName="estado" required [disabled]="mantenimientoForm.value.completado">
-            <ion-select-option value="Operativo">Operativo</ion-select-option>
-            <ion-select-option value="En mantenimiento">En mantenimiento</ion-select-option>
-            <ion-select-option value="Fuera de servicio">Fuera de servicio</ion-select-option>
+          <ion-label position="floating">Categoría</ion-label>
+          <ion-select formControlName="categoria" placeholder="Seleccione categoría">
+            <ion-select-option value="Correctivo">Correctivo</ion-select-option>
+            <ion-select-option value="Preventivo">Preventivo</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-label>Completado</ion-label>
-          <ion-checkbox slot="start" formControlName="completado" [disabled]="mantenimientoForm.value.completado"></ion-checkbox>
-        </ion-item>
-        <div style="padding-bottom: 24px;">
-          <ion-button expand="block" type="submit" color="primary" style="margin-bottom: 16px;"
-            [disabled]="mantenimientoForm.value.completado">Guardar Cambios</ion-button>
-        </div>
-      </form>
-    </ion-card-content>
-  </ion-card>
 
-  <ion-toast [isOpen]="showToast" [message]="toastMessage" [color]="toastColor" duration="2000"
-    (ionDidDismiss)="showToast = false">
-  </ion-toast>
+        <ion-item>
+          <ion-label position="floating">Descripción</ion-label>
+          <ion-textarea formControlName="descripcion" rows="4"></ion-textarea>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Estado</ion-label>
+          <ion-select formControlName="estado" placeholder="Seleccione estado">
+            <ion-select-option value="En progreso">En progreso</ion-select-option>
+            <ion-select-option value="Completado">Completado</ion-select-option>
+            <ion-select-option value="Pendiente">Pendiente</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Patente</ion-label>
+          <ion-input formControlName="patente" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Prioridad</ion-label>
+          <ion-select formControlName="prioridad" placeholder="Seleccione prioridad">
+            <ion-select-option value="baja">Baja</ion-select-option>
+            <ion-select-option value="media">Media</ion-select-option>
+            <ion-select-option value="alta">Alta</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Taller Responsable</ion-label>
+          <ion-input formControlName="tallerResponsable" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Tipo</ion-label>
+          <ion-input formControlName="tipo" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Vehículo</ion-label>
+          <ion-input formControlName="vehiculo" type="text" readonly></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Tiempo de Mantenimiento</ion-label>
+          <ion-datetime
+            formControlName="tiempoManteni"
+            presentation="date-time"
+            multiple="true"
+            placeholder="Seleccione fechas y horas">
+          </ion-datetime>
+        </ion-item>
+
+        <ion-button expand="block" type="submit" [disabled]="mantenimientoForm.invalid">Guardar</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </form>
 </ion-content>

@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
+
 import { inject } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { map } from 'rxjs/operators';
@@ -36,14 +38,18 @@ export const routes: Routes = [
     loadComponent: () => import('./mantenimiento/mantenimiento.page').then(m => m.MantenimientoPage),
     canActivate: [AuthGuard]
   },
-  { path: 'perfil', loadComponent: () => import('./perfil/perfil.page').then(m => m.PerfilPage), canActivate: [AuthGuard] },
+  {
+    path: 'perfil',
+    loadComponent: () => import('./perfil/perfil.page').then(m => m.PerfilPage), canActivate: [AuthGuard]
+  },
   {
     path: 'editar-mantenimiento/:id',
-    loadComponent: () => import('./editar-mantenimiento/editar-mantenimiento.page').then(m => m.EditarMantenimientoPage)
+    loadComponent: () => import('./editar-mantenimiento/editar-mantenimiento.page').then(m => m.EditarMantenimientoPage),
+    canActivate: [AuthGuard]
   },
   {
     path: 'role-management',
     loadComponent: () => import('./role-management/role-management.page').then(m => m.RoleManagementPage),
-    canActivate: [adminGuard]
+    canActivate: [AdminGuard]
   }
 ];

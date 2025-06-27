@@ -17,6 +17,7 @@ export class PerfilPage implements OnInit {
   name: string = '';
   correo: string = '';
   photoURL: string = '';
+  role: string = '';
   editingName: boolean = false;
 
   private auth = inject(Auth);
@@ -27,14 +28,16 @@ export class PerfilPage implements OnInit {
     if (this.user) {
       this.correo = this.user.email ?? '';
       this.photoURL = this.user.photoURL ?? '';
-      // Obtener datos adicionales (name) de Firestore si existen
+      // Obtener datos adicionales (name, role) de Firestore si existen
       const userDocRef = doc(this.firestore, 'users', this.user.uid);
       const userDoc = await getDoc(userDocRef);
       if (userDoc.exists()) {
         const data = userDoc.data();
         this.name = data['name'] || '';
+        this.role = data['role'] || '';
       }
     }
+
   }
 
   editPhoto() {

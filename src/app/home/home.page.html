@@ -20,9 +20,13 @@
         <ion-icon name="car-sport-outline" slot="start"></ion-icon>
         Ver Vehículos
       </ion-button>
-      <ion-button expand="block" routerLink="/mantenimiento" color="secondary">
+      <ion-button expand="block" routerLink="/mantenimiento">
         <ion-icon name="build-outline" slot="start"></ion-icon>
         Ver Mantenimientos
+      </ion-button>
+      <ion-button expand="block" routerLink="/role-management" color="secondary" *ngIf="isAdmin">
+        <ion-icon name=" shield-checkmark-outline" slot="start"></ion-icon>
+        Gestion de Roles
       </ion-button>
     </ion-card-content>
   </ion-card>

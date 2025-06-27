@@ -14,7 +14,8 @@
 
 
 .top-section {
-  background: var(--ion-background-color);
+   margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-md) 0 var(--spacing-md);
 }
 
 .stats-container {

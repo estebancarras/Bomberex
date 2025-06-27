@@ -7,6 +7,12 @@ export interface Mantenimiento {
   fecha: string;
   tipo: string;
   descripcion: string;
+  estado?: string;
+  categoria?: string;
+  prioridad?: string;
+  tallerResponsable?: string;
+  costo?: number;
+  kilometraje?: number;
 }
 
 export interface Vehiculo {
@@ -20,6 +26,7 @@ export interface Vehiculo {
   kilometraje?: string;
   marca?: string;
   patente?: string;
+  imagenVehiculo?: string;
 }
 
 @Injectable({
@@ -32,28 +39,52 @@ export class VehiculosService {
     {
       id: '1',
       nombre: 'Camión de Bomberos 1',
+      vehiculo: 'Camión de Bomberos 1',
       estado: 'Operativo',
       modelo: 'Modelo A',
+      marca: 'Mercedes-Benz',
+      patente: 'BB-1234',
       anio: 2015,
+      kilometraje: '45000',
       mantenimientos: [
-        { fecha: '2023-01-10', tipo: 'Revisión', descripcion: 'Cambio de aceite' },
-        { fecha: '2023-03-15', tipo: 'Reparación', descripcion: 'Frenos' }
+        { fecha: '2023-01-10', tipo: 'Revisión', descripcion: 'Cambio de aceite', estado: 'Completado' },
+        { fecha: '2023-03-15', tipo: 'Reparación', descripcion: 'Frenos', estado: 'Completado' },
+        { fecha: '2023-06-20', tipo: 'Mantenimiento', descripcion: 'Revisión general', estado: 'En progreso' }
       ]
     },
     {
       id: '2',
       nombre: 'Camión de Bomberos 2',
-      estado: 'En reparación',
+      vehiculo: 'Camión de Bomberos 2',
+      estado: 'En mantenimiento',
       modelo: 'Modelo B',
+      marca: 'Volvo',
+      patente: 'BB-5678',
       anio: 2018,
+      kilometraje: '32000',
       mantenimientos: [
-        { fecha: '2023-02-20', tipo: 'Revisión', descripcion: 'Cambio de frenos' }
+        { fecha: '2023-02-20', tipo: 'Revisión', descripcion: 'Cambio de frenos', estado: 'Completado' },
+        { fecha: '2023-05-15', tipo: 'Reparación', descripcion: 'Sistema hidráulico', estado: 'Pendiente' }
+      ]
+    },
+    {
+      id: '3',
+      nombre: 'Ambulancia 1',
+      vehiculo: 'Ambulancia 1',
+      estado: 'Operativo',
+      modelo: 'Sprinter',
+      marca: 'Mercedes-Benz',
+      patente: 'AM-9012',
+      anio: 2020,
+      kilometraje: '28000',
+      mantenimientos: [
+        { fecha: '2023-04-10', tipo: 'Revisión', descripcion: 'Mantenimiento preventivo', estado: 'Completado' }
       ]
     }
   ];
 
   constructor(private firestore: Firestore) {
-    this.offlineMode = false; // Desactivar modo offline porque Firebase ya funciona
+    this.offlineMode = true; // Activar modo offline temporalmente para pruebas
     this.vehiculosCollection = collection(this.firestore, 'vehiculos');
   }
 

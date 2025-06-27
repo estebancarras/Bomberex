@@ -1,71 +1,520 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/vehiculos"></ion-back-button>
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>Detalle Vehículo</ion-title>
+    <ion-title>Detalle del Vehículo</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleEditMode()" [color]="editMode ? 'warning' : 'primary'">
+        <ion-icon [name]="editMode ? 'close-outline' : 'create-outline'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ng-container *ngIf="vehiculo$ | async as vehiculo">
-    <ion-segment [(ngModel)]="segment">
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div *ngIf="currentVehiculo" class="vehicle-detail-container">
+    
+    <!-- Cabecera del Vehículo -->
+    <ion-card class="vehicle-header-card">
+      <ion-card-content>
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <!-- Imagen del Vehículo -->
+            <ion-col size="12" size-md="3" class="vehicle-image-col">
+              <div class="vehicle-image-container" (click)="changeVehiclePhoto()">
+                <img 
+                  [src]="currentVehiculo.imagenVehiculo || 'assets/images/carro_bombero.webp'" 
+                  [alt]="currentVehiculo.vehiculo"
+                  class="vehicle-image"
+                />
+                <div class="image-overlay">
+                  <ion-icon name="camera-outline"></ion-icon>
+                  <span>Cambiar foto</span>
+                </div>
+              </div>
+            </ion-col>
+            
+            <!-- Información Principal -->
+            <ion-col size="12" size-md="6">
+              <div class="vehicle-info">
+                <h1 class="vehicle-name">{{ currentVehiculo.vehiculo }}</h1>
+                <div class="vehicle-details">
+                  <ion-chip [color]="getStatusColor(currentVehiculo.estado)" class="status-chip">
+                    <ion-icon [name]="getStatusIcon(currentVehiculo.estado)"></ion-icon>
+                    <ion-label>{{ currentVehiculo.estado }}</ion-label>
+                  </ion-chip>
+                </div>
+                <div class="vehicle-specs">
+                  <div class="spec-item">
+                    <ion-icon name="car-outline"></ion-icon>
+                    <span>{{ currentVehiculo.patente }}</span>
+                  </div>
+                  <div class="spec-item">
+                    <ion-icon name="build-outline"></ion-icon>
+                    <span>{{ currentVehiculo.marca }} {{ currentVehiculo.modelo }}</span>
+                  </div>
+                  <div class="spec-item" *ngIf="currentVehiculo.kilometraje">
+                    <ion-icon name="speedometer-outline"></ion-icon>
+                    <span>{{ currentVehiculo.kilometraje | number }} km</span>
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+            
+            <!-- Acciones Rápidas -->
+            <ion-col size="12" size-md="3" class="actions-col">
+              <div class="quick-actions">
+                <ion-button 
+                  expand="block" 
+                  fill="outline" 
+                  (click)="agregarMantenimiento()"
+                  class="action-button"
+                >
+                  <ion-icon name="construct-outline" slot="start"></ion-icon>
+                  Nuevo Mantenimiento
+                </ion-button>
+                <ion-button 
+                  expand="block" 
+                  fill="outline" 
+                  (click)="uploadDocument()"
+                  class="action-button"
+                >
+                  <ion-icon name="document-attach-outline" slot="start"></ion-icon>
+                  Subir Documento
+                </ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Navegación por Tabs -->
+    <ion-segment [(ngModel)]="segment" class="custom-segment">
       <ion-segment-button value="general">
-        General
+        <ion-icon name="information-circle-outline"></ion-icon>
+        <ion-label>General</ion-label>
       </ion-segment-button>
       <ion-segment-button value="mantenimientos">
-        Mantenimientos
+        <ion-icon name="construct-outline"></ion-icon>
+        <ion-label>Mantenimientos</ion-label>
       </ion-segment-button>
       <ion-segment-button value="historial">
-        Historial
+        <ion-icon name="time-outline"></ion-icon>
+        <ion-label>Historial</ion-label>
       </ion-segment-button>
       <ion-segment-button value="documentos">
-        Documentos
+        <ion-icon name="folder-outline"></ion-icon>
+        <ion-label>Documentos</ion-label>
       </ion-segment-button>
     </ion-segment>
 
-    <div [ngSwitch]="segment" class="segment-content">
-      <div *ngSwitchCase="'general'">
+    <!-- Contenido de los Tabs -->
+    <div class="tab-content">
+      
+      <!-- Tab General -->
+      <div *ngIf="segment === 'general'" class="tab-panel">
         <ion-card>
           <ion-card-header>
-            <ion-card-title>{{ vehiculo.nombre }}</ion-card-title>
+            <ion-card-title>Información General</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-item>
-              <ion-label position="floating">Estado</ion-label>
-              <ion-input [(ngModel)]="vehiculo.estado"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label position="floating">Modelo</ion-label>
-              <ion-input [(ngModel)]="vehiculo.modelo"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label position="floating">Año</ion-label>
-              <ion-input type="number" [(ngModel)]="vehiculo.anio"></ion-input>
-            </ion-item>
-            <ion-button expand="block" (click)="guardarCambios()">Guardar Cambios</ion-button>
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12" size-md="6">
+                  <ion-item lines="none">
+                    <ion-label position="stacked">Nombre del Vehículo</ion-label>
+                    <ion-input 
+                      [(ngModel)]="currentVehiculo.vehiculo" 
+                      [readonly]="!editMode"
+                      placeholder="Ingrese el nombre del vehículo"
+                    ></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12" size-md="6">
+                  <ion-item lines="none">
+                    <ion-label position="stacked">Patente</ion-label>
+                    <ion-input 
+                      [(ngModel)]="currentVehiculo.patente" 
+                      [readonly]="!editMode"
+                      placeholder="Ingrese la patente"
+                    ></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12" size-md="6">
+                  <ion-item lines="none">
+                    <ion-label position="stacked">Marca</ion-label>
+                    <ion-input 
+                      [(ngModel)]="currentVehiculo.marca" 
+                      [readonly]="!editMode"
+                      placeholder="Ingrese la marca"
+                    ></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12" size-md="6">
+                  <ion-item lines="none">
+                    <ion-label position="stacked">Modelo</ion-label>
+                    <ion-input 
+                      [(ngModel)]="currentVehiculo.modelo" 
+                      [readonly]="!editMode"
+                      placeholder="Ingrese el modelo"
+                    ></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12" size-md="6">
+                  <ion-item lines="none">
+                    <ion-label position="stacked">Año</ion-label>
+                    <ion-input 
+                      [(ngModel)]="currentVehiculo.anio" 
+                      [readonly]="!editMode"
+                      type="number"
+                      placeholder="Ingrese el año"
+                    ></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12" size-md="6">
+                  <ion-item lines="none">
+                    <ion-label position="stacked">Kilometraje</ion-label>
+                    <ion-input 
+                      [(ngModel)]="currentVehiculo.kilometraje" 
+                      [readonly]="!editMode"
+                      type="number"
+                      placeholder="Ingrese el kilometraje"
+                    ></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12" size-md="6">
+                  <ion-item lines="none">
+                    <ion-label position="stacked">Estado</ion-label>
+                    <ion-select 
+                      [(ngModel)]="currentVehiculo.estado" 
+                      [disabled]="!editMode"
+                      placeholder="Seleccione el estado"
+                    >
+                      <ion-select-option value="Operativo">Operativo</ion-select-option>
+                      <ion-select-option value="En mantenimiento">En mantenimiento</ion-select-option>
+                      <ion-select-option value="Fuera de servicio">Fuera de servicio</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            
+            <div *ngIf="editMode" class="edit-actions">
+              <ion-button (click)="guardarCambios()" color="success">
+                <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+                Guardar Cambios
+              </ion-button>
+              <ion-button (click)="cancelEdit()" fill="outline" color="medium">
+                <ion-icon name="close-outline" slot="start"></ion-icon>
+                Cancelar
+              </ion-button>
+            </div>
           </ion-card-content>
         </ion-card>
       </div>
 
-      <div *ngSwitchCase="'mantenimientos'">
-        <ion-list>
-          <ion-item *ngFor="let m of vehiculo.mantenimientos">
-            <ion-label>
-              <h3>{{ m.tipo }}</h3>
-              <p>{{ m.fecha }} - {{ m.descripcion }}</p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
+      <!-- Tab Mantenimientos -->
+      <div *ngIf="segment === 'mantenimientos'" class="tab-panel">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Gestión de Mantenimientos</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-button 
+              expand="block" 
+              (click)="agregarMantenimiento()"
+              class="add-maintenance-btn"
+            >
+              <ion-icon name="add-outline" slot="start"></ion-icon>
+              Agregar Nuevo Mantenimiento
+            </ion-button>
+            
+            <div *ngIf="currentVehiculo.mantenimientos && currentVehiculo.mantenimientos.length > 0" class="maintenance-list">
+              <h3>Mantenimientos Programados</h3>
+              <ion-card *ngFor="let mantenimiento of currentVehiculo.mantenimientos" class="maintenance-card">
+                <ion-card-content>
+                  <div class="maintenance-info">
+                    <h4>{{ mantenimiento.tipo }}</h4>
+                    <p>{{ mantenimiento.descripcion }}</p>
+                    <ion-chip [color]="getMaintenanceStatusColor(mantenimiento.estado)">
+                      {{ mantenimiento.estado || 'Pendiente' }}
+                    </ion-chip>
+                  </div>
+                </ion-card-content>
+              </ion-card>
+            </div>
+            
+            <div *ngIf="!currentVehiculo.mantenimientos || currentVehiculo.mantenimientos.length === 0" class="empty-state">
+              <ion-icon name="construct-outline" class="empty-icon"></ion-icon>
+              <h3>No hay mantenimientos programados</h3>
+              <p>Agregue el primer mantenimiento para este vehículo</p>
+            </div>
+          </ion-card-content>
+        </ion-card>
       </div>
 
-      <div *ngSwitchCase="'historial'">
-        <p>Historial detallado del vehículo (pendiente de implementación)</p>
+      <!-- Tab Historial -->
+      <div *ngIf="segment === 'historial'" class="tab-panel">
+        <ion-card>
+          <ion-card-header>
+            <div class="historial-header">
+              <ion-card-title>Historial de Mantenimientos</ion-card-title>
+              <div class="historial-actions">
+                <ion-button 
+                  *ngIf="selectedHistorialItems.size > 0" 
+                  (click)="downloadSelectedPDF()"
+                  color="primary"
+                  size="small"
+                >
+                  <ion-icon name="download-outline" slot="start"></ion-icon>
+                  Descargar PDF ({{ selectedHistorialItems.size }})
+                </ion-button>
+                <ion-button 
+                  *ngIf="selectedHistorialItems.size > 0"
+                  (click)="clearSelection()"
+                  fill="outline"
+                  color="medium"
+                  size="small"
+                >
+                  <ion-icon name="close-outline" slot="start"></ion-icon>
+                  Limpiar
+                </ion-button>
+              </div>
+            </div>
+          </ion-card-header>
+          <ion-card-content>
+            <!-- Filtros del Historial -->
+            <div class="historial-filters">
+              <ion-searchbar 
+                [(ngModel)]="historialSearchTerm"
+                (ionInput)="filterHistorial()"
+                placeholder="Buscar en historial..."
+                debounce="300"
+              ></ion-searchbar>
+              <div class="filter-chips">
+                <ion-chip 
+                  *ngFor="let filter of historialFilters" 
+                  [color]="filter.active ? 'primary' : 'medium'"
+                  (click)="toggleHistorialFilter(filter)"
+                >
+                  <ion-label>{{ filter.label }}</ion-label>
+                </ion-chip>
+              </div>
+            </div>
+            
+            <!-- Lista del Historial -->
+            <div *ngIf="filteredHistorial && filteredHistorial.length > 0" class="historial-list">
+              <ion-card 
+                *ngFor="let item of getPagedHistorial()" 
+                class="historial-item"
+                [class.selected]="selectedHistorialItems.has(item.id)"
+              >
+                <ion-card-content>
+                  <div class="historial-item-content">
+                    <ion-checkbox 
+                      [(ngModel)]="item.selected"
+                      (ionChange)="toggleHistorialSelection(item)"
+                      class="historial-checkbox"
+                    ></ion-checkbox>
+                    
+                    <div class="historial-info" (click)="viewHistorialDetail(item)">
+                      <div class="historial-main">
+                        <h4>{{ item.tipo || 'Mantenimiento' }}</h4>
+                        <p class="historial-date">{{ formatDate(item.fecha) }}</p>
+                      </div>
+                      <div class="historial-meta">
+                        <ion-chip [color]="getEstadoColor(item.estado)" size="small">
+                          {{ item.estado }}
+                        </ion-chip>
+                        <span class="historial-category">{{ item.categoria }}</span>
+                      </div>
+                    </div>
+                    
+                    <ion-button 
+                      fill="clear" 
+                      (click)="viewHistorialDetail(item)"
+                      class="detail-button"
+                    >
+                      <ion-icon name="chevron-forward-outline"></ion-icon>
+                    </ion-button>
+                  </div>
+                </ion-card-content>
+              </ion-card>
+              
+              <!-- Paginación del Historial -->
+              <div *ngIf="historialTotalPages > 1" class="historial-pagination">
+                <ion-button 
+                  fill="outline" 
+                  (click)="previousHistorialPage()"
+                  [disabled]="historialCurrentPage === 1"
+                >
+                  <ion-icon name="chevron-back-outline"></ion-icon>
+                </ion-button>
+                <span class="pagination-info">
+                  {{ historialCurrentPage }} de {{ historialTotalPages }}
+                </span>
+                <ion-button 
+                  fill="outline" 
+                  (click)="nextHistorialPage()"
+                  [disabled]="historialCurrentPage === historialTotalPages"
+                >
+                  <ion-icon name="chevron-forward-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+            
+            <div *ngIf="!filteredHistorial || filteredHistorial.length === 0" class="empty-state">
+              <ion-icon name="time-outline" class="empty-icon"></ion-icon>
+              <h3>No hay historial disponible</h3>
+              <p>Los mantenimientos completados aparecerán aquí</p>
+            </div>
+          </ion-card-content>
+        </ion-card>
       </div>
 
-      <div *ngSwitchCase="'documentos'">
-        <p>Subir y visualizar documentos (pendiente de implementación)</p>
+      <!-- Tab Documentos -->
+      <div *ngIf="segment === 'documentos'" class="tab-panel">
+        <ion-card>
+          <ion-card-header>
+            <div class="documentos-header">
+              <ion-card-title>Gestión de Documentos</ion-card-title>
+              <div class="documentos-actions">
+                <ion-button (click)="uploadDocument()" color="primary">
+                  <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+                  Subir Documento
+                </ion-button>
+                <ion-button 
+                  (click)="toggleDocumentView()" 
+                  fill="outline"
+                  color="medium"
+                >
+                  <ion-icon [name]="viewMode === 'grid' ? 'list-outline' : 'grid-outline'"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </ion-card-header>
+          <ion-card-content>
+            <!-- Filtros y Búsqueda de Documentos -->
+            <div class="documentos-filters">
+              <ion-searchbar 
+                [(ngModel)]="searchTerm"
+                (ionInput)="filterDocuments()"
+                placeholder="Buscar documentos..."
+                debounce="300"
+              ></ion-searchbar>
+              
+              <div class="category-filters">
+                <ion-chip 
+                  *ngFor="let category of categories" 
+                  [color]="selectedCategory === category.value ? 'primary' : 'medium'"
+                  (click)="selectCategory(category.value)"
+                >
+                  <ion-label>{{ category.label }}</ion-label>
+                </ion-chip>
+              </div>
+            </div>
+            
+            <!-- Lista/Grid de Documentos -->
+            <div *ngIf="getPagedDocuments().length > 0" [class]="'documentos-' + viewMode">
+              <div 
+                *ngFor="let documento of getPagedDocuments()" 
+                class="documento-item"
+                [class.documento-card]="viewMode === 'grid'"
+                [class.documento-list]="viewMode === 'list'"
+              >
+                <div class="documento-icon">
+                  <ion-icon [name]="getDocumentIcon(documento.tipo)"></ion-icon>
+                </div>
+                <div class="documento-info">
+                  <h4>{{ documento.nombre }}</h4>
+                  <p>{{ documento.tamano }} • {{ formatDate(documento.fecha) }}</p>
+                  <ion-chip size="small" color="medium">{{ documento.tipo }}</ion-chip>
+                </div>
+                <div class="documento-actions">
+                  <ion-button 
+                    fill="clear" 
+                    (click)="previewDocument(documento)"
+                    title="Previsualizar"
+                  >
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </ion-button>
+                  <ion-button 
+                    fill="clear" 
+                    (click)="downloadDocument(documento.archivo)"
+                    title="Descargar"
+                  >
+                    <ion-icon name="download-outline"></ion-icon>
+                  </ion-button>
+                  <ion-button 
+                    fill="clear" 
+                    color="danger"
+                    (click)="deleteDocument(documento.archivo)"
+                    title="Eliminar"
+                  >
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </ion-button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Paginación de Documentos -->
+            <div *ngIf="totalPages > 1" class="documentos-pagination">
+              <ion-button 
+                fill="outline" 
+                (click)="previousPage()"
+                [disabled]="currentPage === 1"
+              >
+                <ion-icon name="chevron-back-outline"></ion-icon>
+              </ion-button>
+              <span class="pagination-info">
+                Página {{ currentPage }} de {{ totalPages }}
+              </span>
+              <ion-button 
+                fill="outline" 
+                (click)="nextPage()"
+                [disabled]="currentPage === totalPages"
+              >
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+              </ion-button>
+            </div>
+            
+            <div *ngIf="getPagedDocuments().length === 0" class="empty-state">
+              <ion-icon name="folder-open-outline" class="empty-icon"></ion-icon>
+              <h3>No hay documentos</h3>
+              <p>Sube el primer documento para este vehículo</p>
+              <ion-button (click)="uploadDocument()" color="primary">
+                <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+                Subir Documento
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
       </div>
     </div>
-  </ng-container>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="!currentVehiculo" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando información del vehículo...</p>
+  </div>
 </ion-content>
+
+<!-- Toast para notificaciones -->
+<ion-toast
+  [isOpen]="showToast"
+  [message]="toastMessage"
+  [duration]="3000"
+  [color]="toastColor"
+  (didDismiss)="showToast = false"
+></ion-toast>

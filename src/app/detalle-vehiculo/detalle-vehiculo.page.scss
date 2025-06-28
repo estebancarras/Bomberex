@@ -1,389 +1,302 @@
-// Contenedor principal
-.vehicle-detail-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 16px;
+/* Estilos para la página de Detalle de Vehículo */
+
+:host {
+  --header-height: 200px;
+  --card-border-radius: 16px;
+  --transition-duration: 0.3s;
+  --section-spacing: 20px;
+  --content-padding: 20px;
 }
 
-// Cabecera del vehículo
-.vehicle-header-card {
-  margin-bottom: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ion-content {
+  --background: var(--ion-color-light);
 }
 
-.vehicle-image-col {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.vehicle-image-container {
+.vehiculo-header {
+  background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-danger));
+  color: white;
+  padding: var(--content-padding);
+  text-align: center;
   position: relative;
-  width: 200px;
-  height: 200px;
-  border-radius: 12px;
   overflow: hidden;
-  cursor: pointer;
-  
-  &:hover .image-overlay {
-    opacity: 1;
-  }
-  
-  .vehicle-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .image-overlay {
+  min-height: var(--header-height);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &::before {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    
-    ion-icon {
-      font-size: 32px;
-      color: white;
-      margin-bottom: 8px;
-    }
-    
-    span {
-      color: white;
-      font-size: 14px;
-    }
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+  }
+
+  .header-content {
+    position: relative;
+    z-index: 1;
   }
 }
 
-.vehicle-info {
-  padding: 16px;
-  
-  .vehicle-name {
+.vehiculo-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.vehiculo-subtitle {
+  font-size: 16px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.vehiculo-status {
+  margin-top: 16px;
+  display: inline-block;
+}
+
+.info-section {
+  margin: var(--section-spacing);
+}
+
+.info-card {
+  background: white;
+  border-radius: var(--card-border-radius);
+  padding: var(--content-padding);
+  margin-bottom: var(--section-spacing);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.1);
+  border: 1px solid rgba(211, 47, 47, 0.1);
+  transition: all var(--transition-duration) ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(211, 47, 47, 0.15);
+  }
+}
+
+.info-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ion-color-primary);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ion-color-light);
+
+  ion-icon {
     font-size: 24px;
-    font-weight: 600;
-    margin: 0 0 12px;
-  }
-  
-  .vehicle-details {
-    margin-bottom: 16px;
-    
-    .status-chip {
-      margin: 0;
-    }
-  }
-  
-  .vehicle-specs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    
-    .spec-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--ion-color-medium);
-      
-      ion-icon {
-        font-size: 20px;
-      }
-    }
+    color: var(--ion-color-primary);
   }
 }
 
-.actions-col {
-  .quick-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    
-    .action-button {
-      margin: 0;
-    }
-  }
-}
-
-// Tabs personalizados
-.custom-segment {
-  margin-bottom: 20px;
-  --background: var(--ion-color-light);
-  border-radius: 8px;
-  
-  ion-segment-button {
-    --padding-top: 8px;
-    --padding-bottom: 8px;
-    
-    ion-icon {
-      margin-bottom: 4px;
-    }
-  }
-}
-
-// Contenido de los tabs
-.tab-panel {
-  animation: fadeIn 0.3s ease;
-}
-
-// Historial
-.historial-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.historial-filters {
-  margin-bottom: 16px;
-  
-  .filter-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-  }
-}
-
-.historial-list {
-  .historial-item {
-    margin-bottom: 12px;
-    border-radius: 8px;
-    transition: background-color 0.2s ease;
-    
-    &.selected {
-      --background: var(--ion-color-light-shade);
-    }
-    
-    .historial-item-content {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .historial-info {
-      flex: 1;
-      cursor: pointer;
-      
-      .historial-main {
-        margin-bottom: 8px;
-        
-        h4 {
-          margin: 0 0 4px;
-          font-weight: 600;
-        }
-        
-        .historial-date {
-          color: var(--ion-color-medium);
-          font-size: 14px;
-        }
-      }
-      
-      .historial-meta {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        
-        .historial-category {
-          color: var(--ion-color-medium);
-          font-size: 14px;
-        }
-      }
-    }
-    
-    .detail-button {
-      margin: 0;
-    }
-  }
-}
-
-// Documentos
-.documentos-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.documentos-filters {
-  margin-bottom: 16px;
-  
-  .category-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-  }
-}
-
-.documentos-grid {
+.info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 16px;
-  
-  .documento-card {
-    border-radius: 8px;
-    padding: 16px;
-    background: var(--ion-card-background);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    
-    .documento-icon {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 12px;
-      
-      ion-icon {
-        font-size: 48px;
-        color: var(--ion-color-primary);
-      }
-    }
-    
-    .documento-info {
-      text-align: center;
-      margin-bottom: 12px;
-      
-      h4 {
-        margin: 0 0 4px;
-        font-weight: 600;
-      }
-      
-      p {
-        margin: 0 0 8px;
-        color: var(--ion-color-medium);
-        font-size: 14px;
-      }
-    }
-    
-    .documento-actions {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-    }
-  }
 }
 
-.documentos-list {
+.info-item {
   display: flex;
   flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  border-left: 4px solid var(--ion-color-primary);
+  transition: all var(--transition-duration) ease;
+
+  &:hover {
+    background: rgba(211, 47, 47, 0.05);
+    transform: translateX(4px);
+  }
+}
+
+.info-label {
+  font-size: 14px;
+  color: var(--ion-color-medium);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-value {
+  font-weight: 600;
+  color: var(--ion-color-dark);
+  font-size: 16px;
+  word-break: break-word;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 2px solid;
+  transition: all var(--transition-duration) ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &.status-operativo {
+    background: rgba(46, 125, 50, 0.1);
+    color: var(--ion-color-success);
+    border-color: var(--ion-color-success);
+  }
+
+  &.status-mantenimiento {
+    background: rgba(249, 168, 37, 0.1);
+    color: var(--ion-color-warning);
+    border-color: var(--ion-color-warning);
+  }
+
+  &.status-fuera-servicio {
+    background: rgba(198, 40, 40, 0.1);
+    color: var(--ion-color-danger);
+    border-color: var(--ion-color-danger);
+  }
+}
+
+.actions-section {
+  padding: var(--content-padding);
+  background: white;
+  border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+  margin-top: var(--section-spacing);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 12px;
-  
-  .documento-list {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    background: var(--ion-card-background);
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    
-    .documento-icon {
-      margin-right: 16px;
-      
-      ion-icon {
-        font-size: 32px;
-        color: var(--ion-color-primary);
-      }
-    }
-    
-    .documento-info {
-      flex: 1;
-      
-      h4 {
-        margin: 0 0 4px;
-        font-weight: 600;
-      }
-      
-      p {
-        margin: 0 0 4px;
-        color: var(--ion-color-medium);
-        font-size: 14px;
-      }
-    }
-    
-    .documento-actions {
-      display: flex;
-      gap: 8px;
+}
+
+ion-button {
+  --border-radius: 12px;
+  --box-shadow: 0 4px 8px rgba(211, 47, 47, 0.2);
+  font-weight: 600;
+  height: 48px;
+  transition: all var(--transition-duration) ease;
+
+  &:hover {
+    --box-shadow: 0 6px 12px rgba(211, 47, 47, 0.3);
+    transform: translateY(-1px);
+  }
+
+  &[color="primary"] {
+    --background: var(--ion-color-primary);
+  }
+
+  &[color="secondary"] {
+    --background: var(--ion-color-secondary);
+  }
+
+  &[color="warning"] {
+    --background: var(--ion-color-warning);
+  }
+
+  &[fill="outline"] {
+    --border-color: var(--ion-color-primary);
+    --color: var(--ion-color-primary);
+
+    &:hover {
+      --background: var(--ion-color-primary);
+      --color: white;
     }
   }
-}
 
-// Estados vacíos
-.empty-state {
-  text-align: center;
-  padding: 32px;
-  
-  .empty-icon {
-    font-size: 48px;
-    color: var(--ion-color-medium);
-    margin-bottom: 16px;
-  }
-  
-  h3 {
-    margin: 0 0 8px;
-    font-weight: 600;
-  }
-  
-  p {
-    margin: 0 0 16px;
-    color: var(--ion-color-medium);
+  ion-icon {
+    font-size: 18px;
+    margin-right: 8px;
   }
 }
 
-// Paginación
-.historial-pagination,
-.documentos-pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  margin-top: 20px;
-  
-  .pagination-info {
-    color: var(--ion-color-medium);
-  }
-}
-
-// Animaciones
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// Responsive
+/* Responsive design */
 @media (max-width: 768px) {
-  .vehicle-image-container {
-    width: 150px;
-    height: 150px;
+  :host {
+    --header-height: 160px;
+    --content-padding: 16px;
+    --section-spacing: 16px;
   }
-  
-  .documentos-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+  .vehiculo-title {
+    font-size: 24px;
   }
-  
-  .historial-header,
-  .documentos-header {
-    flex-direction: column;
+
+  .vehiculo-subtitle {
+    font-size: 14px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
     gap: 12px;
-    
-    .historial-actions,
-    .documentos-actions {
-      width: 100%;
-      display: flex;
-      justify-content: stretch;
-      
-      ion-button {
-        flex: 1;
-      }
-    }
   }
+
+  .info-title {
+    font-size: 18px;
+  }
+
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  ion-button {
+    height: 44px;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .info-card {
+    border: 2px solid var(--ion-color-dark);
+  }
+
+  .vehiculo-header {
+    background: var(--ion-color-primary);
+  }
+
+  .status-badge {
+    border-width: 3px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .info-card:hover,
+  .info-item:hover,
+  ion-button:hover {
+    transform: none !important;
+  }
+}
+
+/* Loading states */
+.loading-skeleton {
+  .info-value {
+    background: var(--ion-color-light);
+    border-radius: 4px;
+    height: 16px;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }

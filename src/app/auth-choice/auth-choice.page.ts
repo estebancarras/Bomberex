@@ -1,6 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { 
+  shieldOutline, 
+  logInOutline, 
+  personAddOutline,
+  shieldCheckmarkOutline
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-auth-choice',
@@ -10,7 +17,14 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule]
 })
 export class AuthChoicePage {
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    addIcons({
+      shieldOutline,
+      logInOutline,
+      personAddOutline,
+      shieldCheckmarkOutline
+    });
+  }
 
   goToLogin() {
     this.router.navigateByUrl('/login');

@@ -1,29 +1,172 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/auth-choice"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Registro</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="registro-container">
+    <!-- Sección Hero con imagen -->
+    <div class="registro-hero">
+      <div class="hero-content">
+        <div class="hero-overlay"></div>
+        <div class="hero-text">
+          <h2>Únete a Bomberex</h2>
+          <p>Forma parte del equipo de gestión profesional</p>
+          <div class="hero-features">
+            <div class="feature">
+              <ion-icon name="shield-checkmark-outline"></ion-icon>
+              <span>Registro Seguro</span>
+            </div>
+            <div class="feature">
+              <ion-icon name="person-add-outline"></ion-icon>
+              <span>Acceso Controlado</span>
+            </div>
+            <div class="feature">
+              <ion-icon name="build-outline"></ion-icon>
+              <span>Herramientas Pro</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<ion-content class="ion-padding">
-  <form (ngSubmit)="register()">
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input [(ngModel)]="name" name="name" type="text" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Correo</ion-label>
-      <ion-input [(ngModel)]="email" name="email" type="email" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input [(ngModel)]="password" name="password" type="password" required></ion-input>
-    </ion-item>
-    <ion-button expand="full" type="submit">Registrarse</ion-button>
-  </form>
-  <ion-button fill="clear" routerLink="/recuperar-contrasena" expand="block" color="secondary">
-    ¿Olvidaste tu contraseña?
-  </ion-button>
+    <!-- Formulario de registro -->
+    <div class="registro-form-section">
+      <form (ngSubmit)="register()" #registroForm="ngForm" aria-labelledby="registro-title" novalidate>
+        <div class="form-header">
+          <h1 id="registro-title">Crear Cuenta</h1>
+          <p>Completa tus datos para acceder al sistema</p>
+        </div>
+
+        <div class="form-group">
+          <ion-item [class.item-has-error]="registroForm.submitted && !name">
+            <ion-label position="floating">Nombre Completo</ion-label>
+            <ion-input
+              type="text"
+              name="name"
+              [(ngModel)]="name"
+              required
+              minlength="2"
+              autocomplete="name"
+              aria-required="true"
+              [attr.aria-invalid]="registroForm.submitted && !name ? 'true' : 'false'"
+            ></ion-input>
+            <ion-icon name="person-outline" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+          <div *ngIf="registroForm.submitted && !name" class="error-message" role="alert">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            El nombre es requerido (mínimo 2 caracteres)
+          </div>
+        </div>
+
+        <div class="form-group">
+          <ion-item [class.item-has-error]="registroForm.submitted && !email">
+            <ion-label position="floating">Correo Electrónico</ion-label>
+            <ion-input
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              required
+              email
+              autocomplete="email"
+              inputmode="email"
+              aria-required="true"
+              [attr.aria-invalid]="registroForm.submitted && !email ? 'true' : 'false'"
+            ></ion-input>
+            <ion-icon name="mail-outline" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+          <div *ngIf="registroForm.submitted && !email" class="error-message" role="alert">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            Por favor ingrese un correo válido
+          </div>
+        </div>
+
+        <div class="form-group">
+          <ion-item [class.item-has-error]="registroForm.submitted && !password">
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              required
+              minlength="6"
+              autocomplete="new-password"
+              aria-required="true"
+              [attr.aria-invalid]="registroForm.submitted && !password ? 'true' : 'false'"
+            ></ion-input>
+            <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+          <div *ngIf="registroForm.submitted && !password" class="error-message" role="alert">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            La contraseña es requerida (mínimo 6 caracteres)
+          </div>
+        </div>
+
+        <div class="form-group">
+          <ion-item [class.item-has-error]="registroForm.submitted && !confirmPassword">
+            <ion-label position="floating">Confirmar Contraseña</ion-label>
+            <ion-input
+              type="password"
+              name="confirmPassword"
+              [(ngModel)]="confirmPassword"
+              required
+              autocomplete="new-password"
+              aria-required="true"
+              [attr.aria-invalid]="registroForm.submitted && !confirmPassword ? 'true' : 'false'"
+            ></ion-input>
+            <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+          <div *ngIf="registroForm.submitted && !confirmPassword" class="error-message" role="alert">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            Confirma tu contraseña
+          </div>
+          <div *ngIf="registroForm.submitted && confirmPassword && password !== confirmPassword" class="error-message" role="alert">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            Las contraseñas no coinciden
+          </div>
+        </div>
+
+        <div class="form-group">
+          <ion-item>
+            <ion-label position="floating">Rol</ion-label>
+            <ion-select 
+              name="role" 
+              [(ngModel)]="role" 
+              placeholder="Selecciona tu rol"
+              aria-required="true">
+              <ion-select-option value="bombero">Bombero</ion-select-option>
+              <ion-select-option value="tecnico">Técnico</ion-select-option>
+              <ion-select-option value="admin">Administrador</ion-select-option>
+            </ion-select>
+            <ion-icon name="shield-outline" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+        </div>
+
+        <div class="form-options">
+          <ion-checkbox [(ngModel)]="acceptTerms" name="acceptTerms" required></ion-checkbox>
+          <ion-label>Acepto los <a href="#" (click)="showTerms()">términos y condiciones</a></ion-label>
+        </div>
+
+        <ion-button 
+          expand="block" 
+          type="submit" 
+          color="primary" 
+          class="registro-button"
+          [disabled]="!acceptTerms"
+          aria-label="Crear cuenta">
+          <ion-icon name="person-add-outline" slot="start"></ion-icon>
+          Crear Cuenta
+        </ion-button>
+
+        <div class="form-footer">
+          <p>¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión aquí</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <ion-toast 
+    [isOpen]="showToast" 
+    [message]="toastMessage" 
+    [color]="toastColor" 
+    duration="3000"
+    (ionDidDismiss)="showToast = false"
+    role="alert"
+    aria-live="assertive">
+  </ion-toast>
 </ion-content>

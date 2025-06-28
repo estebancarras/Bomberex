@@ -1,4 +1,118 @@
-ion-item.selected {
-  background: #e0e7ff;
-  font-weight: bold;
+:host {
+  --menu-background: var(--ion-color-light);
+  --menu-text-color: var(--ion-color-dark);
+  --menu-selected-background: rgba(211, 47, 47, 0.1);
+  --menu-selected-text: var(--ion-color-primary);
+  --menu-border-radius: 8px;
+  --menu-transition: 0.3s ease;
+  --menu-item-padding: 12px 16px;
+}
+
+ion-menu {
+  --width: 280px;
+  --background: var(--menu-background);
+
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+    --color: white;
+    --border-color: transparent;
+    --padding-top: 20px;
+    --padding-bottom: 20px;
+
+    ion-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+
+  ion-content {
+    --background: var(--menu-background);
+  }
+
+  ion-list {
+    background: transparent;
+    padding: 8px;
+  }
+
+  ion-item {
+    --background: transparent;
+    --color: var(--menu-text-color);
+    --border-radius: var(--menu-border-radius);
+    --padding-start: var(--menu-item-padding);
+    --padding-end: var(--menu-item-padding);
+    --min-height: 48px;
+    margin-bottom: 4px;
+    font-weight: 500;
+    transition: all var(--menu-transition);
+
+    &:hover {
+      --background: rgba(211, 47, 47, 0.05);
+    }
+
+    &.selected {
+      --background: var(--menu-selected-background);
+      --color: var(--menu-selected-text);
+      font-weight: 600;
+
+      ion-icon {
+        color: var(--menu-selected-text);
+      }
+    }
+
+    ion-icon {
+      font-size: 20px;
+      margin-right: 12px;
+      color: var(--ion-color-medium);
+      transition: color var(--menu-transition);
+    }
+  }
+
+  ion-item[button] {
+    margin-top: 16px;
+    --background: transparent;
+    --color: var(--ion-color-danger);
+
+    &:hover {
+      --background: rgba(211, 47, 47, 0.05);
+    }
+
+    ion-icon {
+      color: var(--ion-color-danger);
+    }
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  ion-menu {
+    ion-item {
+      --background: white;
+      --color: black;
+      border: 1px solid black;
+      margin-bottom: 8px;
+
+      &.selected {
+        --background: black;
+        --color: white;
+      }
+    }
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  ion-menu ion-item {
+    transition: none;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  ion-menu {
+    --width: 260px;
+
+    ion-item {
+      --min-height: 44px;
+    }
+  }
 }

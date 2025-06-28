@@ -1,10 +1,53 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Bienvenido</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="auth-container">
+    <!-- Logo y título -->
+    <div class="logo-section">
+      <div class="logo-icon">
+        <ion-icon name="shield-outline" aria-hidden="true"></ion-icon>
+      </div>
+      <h1>Bomberex</h1>
+      <p>Sistema de Gestión de Vehículos de Emergencia</p>
+    </div>
 
-<ion-content class="ion-padding">
-  <ion-button expand="block" (click)="goToLogin()">Iniciar Sesión</ion-button>
-  <ion-button expand="block" color="secondary" (click)="goToRegister()">Registrarse</ion-button>
+    <!-- Opciones de autenticación -->
+    <div class="auth-options">
+      <h2>Bienvenido</h2>
+      
+      <div class="auth-buttons">
+        <ion-button expand="block" color="primary" (click)="goToLogin()">
+          <ion-icon name="log-in-outline" slot="start"></ion-icon>
+          Iniciar Sesión
+        </ion-button>
+
+        <div class="divider">
+          <span>o</span>
+        </div>
+
+        <ion-button expand="block" fill="outline" (click)="goToRegister()">
+          <ion-icon name="person-add-outline" slot="start"></ion-icon>
+          Registrarse
+        </ion-button>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="auth-info">
+        <ion-text color="medium">
+          <p>
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+            Acceso seguro para personal autorizado
+          </p>
+        </ion-text>
+      </div>
+    </div>
+
+    <!-- Pie de página -->
+    <div class="footer-text">
+      <p>¿Necesitas ayuda? <a href="#">Contacta al administrador</a></p>
+    </div>
+  </div>
+
+  <!-- Background con efecto parallax -->
+  <div class="auth-background">
+    <div class="overlay"></div>
+  </div>
 </ion-content>

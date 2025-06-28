@@ -1,4 +1,341 @@
-/* Estilos para la página de elección de autenticación */
+/* Estilos para la página de selección de autenticación */
+
+:host {
+  --auth-max-width: 420px;
+  --auth-padding: 32px;
+  --border-radius: 16px;
+  --transition-duration: 0.3s;
+  --backdrop-blur: 12px;
+}
+
+ion-content {
+  --background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-secondary) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  position: relative;
+}
+
+.auth-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+  pointer-events: none;
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.05) 100%);
+    pointer-events: none;
+  }
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 24px;
+  width: 100%;
+  max-width: var(--auth-max-width);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+
+  .logo-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    backdrop-filter: blur(var(--backdrop-blur));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    ion-icon {
+      font-size: 40px;
+      color: white;
+    }
+  }
+
+  h1 {
+    color: white;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.5px;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 18px;
+    margin: 0;
+    font-weight: 500;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.auth-options {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--border-radius);
+  padding: var(--auth-padding);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(var(--backdrop-blur));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--ion-color-primary), var(--ion-color-secondary), var(--ion-color-warning));
+  }
+
+  h2 {
+    text-align: center;
+    margin: 0 0 32px 0;
+    color: var(--ion-color-dark);
+    font-size: 24px;
+    font-weight: 600;
+  }
+}
+
+.auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 ion-button {
-  margin-top: 20px;
+  height: 56px;
+  font-weight: 600;
+  font-size: 16px;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(27, 60, 89, 0.2);
+  transition: all var(--transition-duration) ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 10;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    --box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);
+    transform: translateY(-2px);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &[color="primary"] {
+    --background: var(--ion-color-primary);
+    --color: white;
+  }
+
+  &[fill="outline"] {
+    --border-color: var(--ion-color-primary);
+    --color: var(--ion-color-primary);
+    --background: transparent;
+
+    &:hover {
+      --background: var(--ion-color-primary);
+      --color: white;
+    }
+  }
+
+  ion-icon {
+    font-size: 20px;
+    margin-right: 12px;
+  }
+
+  &:focus-visible {
+    outline: 3px solid rgba(var(--ion-color-primary-rgb), 0.5);
+    outline-offset: 2px;
+  }
+}
+
+.divider {
+  text-align: center;
+  margin: 24px 0;
+  color: var(--ion-color-medium);
+  position: relative;
+  font-weight: 500;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ion-color-light-shade), transparent);
+    z-index: 1;
+  }
+
+  span {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.footer-text {
+  text-align: center;
+  margin-top: 32px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  line-height: 1.5;
+
+  a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    transition: border-color var(--transition-duration) ease;
+
+    &:hover {
+      border-color: white;
+    }
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  :host {
+    --auth-padding: 24px;
+  }
+
+  .auth-container {
+    padding: 20px;
+  }
+
+  .logo-section {
+    margin-bottom: 32px;
+
+    .logo-icon {
+      width: 64px;
+      height: 64px;
+
+      ion-icon {
+        font-size: 32px;
+      }
+    }
+
+    h1 {
+      font-size: 28px;
+    }
+
+    p {
+      font-size: 16px;
+    }
+  }
+
+  .auth-options {
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+  ion-button {
+    height: 52px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    --auth-padding: 20px;
+  }
+
+  .auth-container {
+    padding: 16px;
+  }
+
+  .logo-section {
+    margin-bottom: 24px;
+
+    h1 {
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  ion-button {
+    height: 48px;
+    font-size: 14px;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .auth-options {
+    background: white;
+    border: 2px solid var(--ion-color-dark);
+  }
+
+  ion-button {
+    border: 2px solid currentColor;
+  }
+
+  .divider::before {
+    background: var(--ion-color-dark);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  ion-button:hover {
+    transform: none !important;
+  }
+
+  ion-button::before {
+    display: none;
+  }
 }

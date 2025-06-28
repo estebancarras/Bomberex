@@ -1,1 +1,31 @@
-/* Estilos vacíos para la página de recuperar contraseña */
+ion-content {
+  --background: var(--ion-color-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+form {
+  width: 100%;
+  max-width: 400px;
+}
+
+ion-item {
+  margin-bottom: 20px;
+}
+
+.send-button {
+  --border-radius: 8px;
+  --box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.3);
+  font-weight: 600;
+  font-size: 16px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ion-spinner {
+  margin-right: 8px;
+}

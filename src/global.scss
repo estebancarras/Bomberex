@@ -1,12 +1,7 @@
 /*
- * App Global CSS
+ * App Global CSS - Bomberex
  * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
+ * Estilos globales para la aplicación de gestión de vehículos de bomberos
  */
 
 /* Core CSS required for Ionic components to work properly */
@@ -35,3 +30,385 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/**
+ * Variables globales personalizadas para Bomberex
+ * -----------------------------------------------------
+ */
+
+:root {
+  /* Colores principales del tema bomberos - Azul Profesional */
+  --ion-color-primary: #1B3C59;
+  --ion-color-primary-rgb: 27, 60, 89;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #18344e;
+  --ion-color-primary-tint: #32506a;
+
+  --ion-color-secondary: #FFB300;
+  --ion-color-secondary-rgb: 255, 179, 0;
+  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-contrast-rgb: 0, 0, 0;
+  --ion-color-secondary-shade: #e09e00;
+  --ion-color-secondary-tint: #ffbb1a;
+
+  --ion-color-tertiary: #455a64;
+  --ion-color-tertiary-rgb: 69, 90, 100;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #3d4f58;
+  --ion-color-tertiary-tint: #586b74;
+
+  --ion-color-success: #2e7d32;
+  --ion-color-success-rgb: 46, 125, 50;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #296e2c;
+  --ion-color-success-tint: #438a47;
+
+  --ion-color-warning: #f9a825;
+  --ion-color-warning-rgb: 249, 168, 37;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #db9421;
+  --ion-color-warning-tint: #fab93b;
+
+  --ion-color-danger: #c62828;
+  --ion-color-danger-rgb: 198, 40, 40;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #ae2323;
+  --ion-color-danger-tint: #cc3d3d;
+
+  --ion-color-dark: #263238;
+  --ion-color-dark-rgb: 38, 50, 56;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #212c31;
+  --ion-color-dark-tint: #3c474c;
+
+  --ion-color-medium: #546e7a;
+  --ion-color-medium-rgb: 84, 110, 122;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #4a616b;
+  --ion-color-medium-tint: #657b87;
+
+  --ion-color-light: #eceff1;
+  --ion-color-light-rgb: 236, 239, 241;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d0d2d4;
+  --ion-color-light-tint: #eef1f2;
+
+  /* Variables de diseño */
+  --bomberex-border-radius: 12px;
+  --bomberex-border-radius-sm: 8px;
+  --bomberex-border-radius-lg: 16px;
+  --bomberex-transition: 0.3s ease;
+  --bomberex-shadow: 0 4px 12px rgba(27, 60, 89, 0.1);
+  --bomberex-shadow-hover: 0 6px 16px rgba(27, 60, 89, 0.15);
+  
+  /* Espaciado consistente */
+  --bomberex-spacing-xs: 4px;
+  --bomberex-spacing-sm: 8px;
+  --bomberex-spacing-md: 16px;
+  --bomberex-spacing-lg: 24px;
+  --bomberex-spacing-xl: 32px;
+
+  /* Tipografía */
+  --bomberex-font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+  --bomberex-font-size-xs: 12px;
+  --bomberex-font-size-sm: 14px;
+  --bomberex-font-size-md: 16px;
+  --bomberex-font-size-lg: 18px;
+  --bomberex-font-size-xl: 24px;
+  --bomberex-font-size-xxl: 32px;
+}
+
+/**
+ * Estilos globales para componentes
+ * -----------------------------------------------------
+ */
+
+/* Mejoras en botones */
+ion-button {
+  --border-radius: var(--bomberex-border-radius-sm);
+  --box-shadow: var(--bomberex-shadow);
+  font-weight: 500;
+  transition: all var(--bomberex-transition);
+
+  &:hover {
+    --box-shadow: var(--bomberex-shadow-hover);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ion-color-primary);
+    outline-offset: 2px;
+  }
+}
+
+/* Mejoras en tarjetas */
+ion-card {
+  --border-radius: var(--bomberex-border-radius);
+  box-shadow: var(--bomberex-shadow);
+  transition: all var(--bomberex-transition);
+
+  &:hover {
+    box-shadow: var(--bomberex-shadow-hover);
+    transform: translateY(-2px);
+  }
+}
+
+/* Mejoras en items */
+ion-item {
+  --border-radius: var(--bomberex-border-radius-sm);
+  --padding-start: var(--bomberex-spacing-md);
+  --padding-end: var(--bomberex-spacing-md);
+  --min-height: 48px;
+  transition: all var(--bomberex-transition);
+
+  &.item-has-focus {
+    --background: rgba(var(--ion-color-primary-rgb), 0.05);
+    --border-color: var(--ion-color-primary);
+  }
+}
+
+/* Mejoras en inputs */
+ion-input,
+ion-textarea,
+ion-select {
+  --padding-start: var(--bomberex-spacing-md);
+  --padding-end: var(--bomberex-spacing-md);
+  --border-radius: var(--bomberex-border-radius-sm);
+  font-size: var(--bomberex-font-size-md);
+}
+
+/* Mejoras en headers */
+ion-header {
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-primary-contrast);
+    --border-color: transparent;
+
+    ion-title {
+      font-weight: 600;
+      font-size: var(--bomberex-font-size-lg);
+    }
+
+    ion-button {
+      --color: var(--ion-color-primary-contrast);
+    }
+  }
+}
+
+/* Mejoras en chips */
+ion-chip {
+  --border-radius: 20px;
+  font-weight: 500;
+  font-size: var(--bomberex-font-size-xs);
+  letter-spacing: 0.5px;
+}
+
+/* Mejoras en toasts */
+ion-toast {
+  --border-radius: var(--bomberex-border-radius);
+  --box-shadow: var(--bomberex-shadow-hover);
+}
+
+/* Mejoras en modals */
+ion-modal {
+  --border-radius: var(--bomberex-border-radius-lg);
+  --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Mejoras en searchbar */
+ion-searchbar {
+  --border-radius: var(--bomberex-border-radius);
+  --box-shadow: var(--bomberex-shadow);
+  --background: white;
+
+  &.searchbar-has-focus {
+    --box-shadow: var(--bomberex-shadow-hover);
+  }
+}
+
+/**
+ * Clases utilitarias personalizadas
+ * -----------------------------------------------------
+ */
+
+.bomberex-card {
+  background: white;
+  border-radius: var(--bomberex-border-radius);
+  padding: var(--bomberex-spacing-lg);
+  box-shadow: var(--bomberex-shadow);
+  border: 1px solid rgba(var(--ion-color-primary-rgb), 0.1);
+  transition: all var(--bomberex-transition);
+
+  &:hover {
+    box-shadow: var(--bomberex-shadow-hover);
+    transform: translateY(-2px);
+  }
+}
+
+.bomberex-button-primary {
+  --background: var(--ion-color-primary);
+  --color: white;
+  --border-radius: var(--bomberex-border-radius-sm);
+  --box-shadow: var(--bomberex-shadow);
+  font-weight: 600;
+  height: 48px;
+
+  &:hover {
+    --background: var(--ion-color-primary-shade);
+    --box-shadow: var(--bomberex-shadow-hover);
+    transform: translateY(-1px);
+  }
+}
+
+.bomberex-text-primary {
+  color: var(--ion-color-primary);
+  font-weight: 600;
+}
+
+.bomberex-text-secondary {
+  color: var(--ion-color-secondary);
+  font-weight: 500;
+}
+
+.bomberex-gradient-bg {
+  background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-danger));
+}
+
+.bomberex-section-spacing {
+  margin: var(--bomberex-spacing-lg) 0;
+}
+
+.bomberex-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--bomberex-spacing-md);
+}
+
+/**
+ * Estados de accesibilidad
+ * -----------------------------------------------------
+ */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  :root {
+    --ion-color-primary: #b71c1c;
+    --ion-color-secondary: #e65100;
+    --bomberex-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --bomberex-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  ion-card,
+  ion-item,
+  ion-button {
+    border: 2px solid var(--ion-color-dark);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  ion-button:hover,
+  ion-card:hover,
+  .bomberex-card:hover {
+    transform: none !important;
+  }
+}
+
+/**
+ * Responsive design
+ * -----------------------------------------------------
+ */
+
+@media (max-width: 768px) {
+  :root {
+    --bomberex-spacing-md: 12px;
+    --bomberex-spacing-lg: 20px;
+    --bomberex-font-size-xl: 20px;
+    --bomberex-font-size-xxl: 28px;
+  }
+
+  .bomberex-container {
+    padding: 0 var(--bomberex-spacing-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --bomberex-spacing-md: 8px;
+    --bomberex-spacing-lg: 16px;
+  }
+}
+
+/**
+ * Animaciones personalizadas
+ * -----------------------------------------------------
+ */
+
+@keyframes bomberex-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bomberex-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.bomberex-fade-in {
+  animation: bomberex-fade-in 0.5s ease-out;
+}
+
+.bomberex-pulse {
+  animation: bomberex-pulse 2s infinite;
+}
+
+/**
+ * Mejoras de rendimiento
+ * -----------------------------------------------------
+ */
+
+ion-button,
+ion-card,
+ion-item,
+.bomberex-card {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Optimización para scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimización para touch devices */
+@media (hover: none) and (pointer: coarse) {
+  ion-button:hover,
+  ion-card:hover,
+  .bomberex-card:hover {
+    transform: none;
+  }
+}

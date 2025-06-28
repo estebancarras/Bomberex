@@ -1,29 +1,120 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/auth-choice"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Inicio de sesión</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="login-container">
+    <!-- Sección Hero con imagen -->
+    <div class="login-hero">
+      <div class="hero-content">
+        <div class="hero-overlay"></div>
+        <div class="hero-text">
+          <h2>Bomberex</h2>
+          <p>Gestión profesional de vehículos de emergencia</p>
+          <div class="hero-features">
+            <div class="feature">
+              <ion-icon name="shield-checkmark-outline"></ion-icon>
+              <span>Acceso Seguro</span>
+            </div>
+            <div class="feature">
+              <ion-icon name="car-outline"></ion-icon>
+              <span>Control de Flota</span>
+            </div>
+            <div class="feature">
+              <ion-icon name="build-outline"></ion-icon>
+              <span>Mantenimiento</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<ion-content class="ion-padding">
-  <form (ngSubmit)="login()">
-    <ion-item>
-      <ion-label position="floating">Correo Electrónico</ion-label>
-      <ion-input [(ngModel)]="email" name="email" type="email" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input [(ngModel)]="password" name="password" type="password" required></ion-input>
-    </ion-item>
-    <ion-button expand="block" type="submit" color="primary">Ingresar</ion-button>
-  </form>
-  <ion-button fill="clear" routerLink="/recuperar-contrasena" expand="block" color="secondary">
-    ¿Olvidaste tu contraseña?
-  </ion-button>
+    <!-- Formulario de login -->
+    <div class="login-form-section">
+      <form (ngSubmit)="login()" #loginForm="ngForm" aria-labelledby="login-title" novalidate>
+        <div class="form-header">
+          <h1 id="login-title">Iniciar Sesión</h1>
+          <p>Accede a tu cuenta para gestionar los vehículos</p>
+        </div>
 
-  <ion-toast [isOpen]="showToast" [message]="toastMessage" [color]="toastColor" duration="2000"
-    (ionDidDismiss)="showToast = false">
+        <div class="form-group">
+          <ion-item [class.item-has-error]="loginForm.submitted && !email">
+            <ion-label position="floating">Correo Electrónico</ion-label>
+            <ion-input
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              required
+              email
+              autocomplete="email"
+              inputmode="email"
+              aria-required="true"
+              [attr.aria-invalid]="loginForm.submitted && !email ? 'true' : 'false'"
+            ></ion-input>
+            <ion-icon name="mail-outline" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+          <div *ngIf="loginForm.submitted && !email" class="error-message" role="alert">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            Por favor ingrese un correo válido
+          </div>
+        </div>
+
+        <div class="form-group">
+          <ion-item [class.item-has-error]="loginForm.submitted && !password">
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              required
+              minlength="6"
+              autocomplete="current-password"
+              aria-required="true"
+              [attr.aria-invalid]="loginForm.submitted && !password ? 'true' : 'false'"
+            ></ion-input>
+            <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
+          </ion-item>
+          <div *ngIf="loginForm.submitted && !password" class="error-message" role="alert">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            La contraseña es requerida (mínimo 6 caracteres)
+          </div>
+        </div>
+
+        <div class="form-options">
+          <ion-checkbox [(ngModel)]="rememberMe" name="rememberMe"></ion-checkbox>
+          <ion-label>Recordarme</ion-label>
+        </div>
+
+        <ion-button 
+          expand="block" 
+          type="submit" 
+          color="primary" 
+          class="login-button"
+          aria-label="Iniciar sesión">
+          <ion-icon name="log-in-outline" slot="start"></ion-icon>
+          Ingresar
+        </ion-button>
+
+        <ion-button 
+          fill="clear" 
+          routerLink="/recuperar-contrasena" 
+          expand="block" 
+          color="medium"
+          class="forgot-password"
+          aria-label="Recuperar contraseña">
+          ¿Olvidaste tu contraseña?
+        </ion-button>
+
+        <div class="form-footer">
+          <p>¿No tienes cuenta? <a routerLink="/auth-choice">Regístrate aquí</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <ion-toast 
+    [isOpen]="showToast" 
+    [message]="toastMessage" 
+    [color]="toastColor" 
+    duration="3000"
+    (ionDidDismiss)="showToast = false"
+    role="alert"
+    aria-live="assertive">
   </ion-toast>
 </ion-content>

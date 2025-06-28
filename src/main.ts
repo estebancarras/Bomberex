@@ -11,7 +11,25 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 
 import { addIcons } from 'ionicons';
-import { homeOutline, carSportOutline, personCircleOutline, mailOutline, buildOutline, logOutOutline, starOutline, keyOutline, shieldCheckmarkOutline, lockClosedOutline, settingsOutline } from 'ionicons/icons';
+import { 
+  homeOutline, 
+  carSportOutline, 
+  personCircleOutline, 
+  mailOutline, 
+  buildOutline, 
+  logOutOutline, 
+  starOutline, 
+  keyOutline, 
+  shieldCheckmarkOutline, 
+  lockClosedOutline, 
+  settingsOutline,
+  shieldOutline,
+  logInOutline,
+  personAddOutline,
+  alertCircleOutline,
+  carOutline,
+  personOutline
+} from 'ionicons/icons';
 
 addIcons({
   'home-outline': homeOutline,
@@ -25,6 +43,12 @@ addIcons({
   'shield-checkmark-outline': shieldCheckmarkOutline,
   'lock-closed-outline': lockClosedOutline,
   'settings-outline': settingsOutline,
+  'shield-outline': shieldOutline,
+  'log-in-outline': logInOutline,
+  'person-add-outline': personAddOutline,
+  'alert-circle-outline': alertCircleOutline,
+  'car-outline': carOutline,
+  'person-outline': personOutline,
 });
 
 const firebaseConfig = {

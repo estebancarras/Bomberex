@@ -7,9 +7,7 @@
     </ion-buttons>
     <ion-title>Detalle del Vehículo</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="toggleEditMode()" [color]="editMode ? 'warning' : 'primary'">
-        <ion-icon [name]="editMode ? 'close-outline' : 'create-outline'"></ion-icon>
-      </ion-button>
+
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -39,6 +37,7 @@
             
             <!-- Información Principal -->
             <ion-col size="12" size-md="6">
+              
               <div class="vehicle-info">
                 <h1 class="vehicle-name">{{ currentVehiculo.vehiculo }}</h1>
                 <div class="vehicle-details">
@@ -122,6 +121,9 @@
             <ion-card-title>Información General</ion-card-title>
           </ion-card-header>
           <ion-card-content>
+          <ion-button class="editarinfo" (click)="toggleEditMode()" [color]="editMode ? 'warning' : 'primary'">
+         <ion-icon [name]="editMode ? 'close-outline' : 'create-outline'"></ion-icon>
+         </ion-button>
             <ion-grid>
               <ion-row>
                 <ion-col size="12" size-md="6">

@@ -5,11 +5,38 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form (ngSubmit)="enviarCorreoRecuperacion()">
+  <div class="instructions">
+    <p>Ingresa tu correo electrónico para recibir un enlace de recuperación de contraseña.</p>
+  </div>
+
+  <form (submit)="enviarCorreoRecuperacion(); $event.preventDefault()">
     <ion-item>
-      <ion-label position="floating">Correo Electrónico</ion-label>
-      <ion-input [(ngModel)]="email" name="email" type="email" required></ion-input>
+      <ion-label position="floating">Correo electrónico</ion-label>
+      <ion-input
+        type="email"
+        [(ngModel)]="email"
+        name="email"
+        required
+        [disabled]="isLoading"
+        autocomplete="email"
+        autocorrect="off"
+        autocapitalize="off"
+      ></ion-input>
     </ion-item>
-    <ion-button expand="block" type="submit" color="primary">Enviar correo de recuperación</ion-button>
+
+    <ion-button
+      expand="block"
+      type="submit"
+      [disabled]="isLoading || !email"
+      class="send-button"
+    >
+      <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+      <span *ngIf="!isLoading">Enviar correo de recuperación</span>
+    </ion-button>
   </form>
+
+  <div class="additional-info">
+    <p>¿No recibiste el correo? Revisa tu carpeta de spam o intenta nuevamente.</p>
+    <ion-button fill="clear" routerLink="/login">Volver al inicio de sesión</ion-button>
+  </div>
 </ion-content>

@@ -1,33 +1,51 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button aria-label="Abrir menú de navegación"></ion-menu-button>
     </ion-buttons>
     <ion-title>Inicio</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Bienvenido a Bomberex</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p>
-        Gestiona los vehículos de emergencia y sus mantenimientos de forma sencilla y eficiente.
-      </p>
-      <ion-button expand="block" routerLink="/vehiculos">
-        <ion-icon name="car-sport-outline" slot="start"></ion-icon>
-        Ver Vehículos
-      </ion-button>
-      <ion-button expand="block" routerLink="/mantenimiento">
-        <ion-icon name="build-outline" slot="start"></ion-icon>
-        Ver Mantenimientos
-      </ion-button>
-      <ion-button expand="block" routerLink="/role-management" color="secondary" *ngIf="isAdmin">
-        <ion-icon name=" shield-checkmark-outline" slot="start"></ion-icon>
-        Gestion de Roles
-      </ion-button>
-    </ion-card-content>
-  </ion-card>
+<ion-content [fullscreen]="true">
+  <main role="main" aria-labelledby="welcome-title">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title id="welcome-title">Bienvenido a Bomberex</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          Gestiona los vehículos de emergencia y sus mantenimientos de forma sencilla y eficiente.
+        </p>
+        
+        <nav role="navigation" aria-label="Navegación principal">
+          <ion-button 
+            expand="block" 
+            routerLink="/vehiculos"
+            aria-label="Ir a la sección de vehículos">
+            <ion-icon name="car-sport-outline" slot="start" aria-hidden="true"></ion-icon>
+            Ver Vehículos
+          </ion-button>
+          
+          <ion-button 
+            expand="block" 
+            routerLink="/mantenimiento"
+            aria-label="Ir a la sección de mantenimientos">
+            <ion-icon name="build-outline" slot="start" aria-hidden="true"></ion-icon>
+            Ver Mantenimientos
+          </ion-button>
+          
+          <ion-button 
+            expand="block" 
+            routerLink="/role-management" 
+            color="secondary" 
+            *ngIf="isAdmin"
+            aria-label="Ir a la gestión de roles de usuario">
+            <ion-icon name="shield-checkmark-outline" slot="start" aria-hidden="true"></ion-icon>
+            Gestión de Roles
+          </ion-button>
+        </nav>
+      </ion-card-content>
+    </ion-card>
+  </main>
 </ion-content>

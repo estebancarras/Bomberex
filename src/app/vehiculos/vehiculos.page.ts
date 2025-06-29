@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { VehiculosService, Vehiculo } from '../services/vehiculos.service';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
@@ -89,6 +89,7 @@ export class VehiculosPage implements OnInit {
   private authService = inject(AuthService);
   private modalCtrl = inject(ModalController);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private vehiculosService = inject(VehiculosService);
 
   userRole: string | null = null;
@@ -105,6 +106,13 @@ export class VehiculosPage implements OnInit {
     }
 
     this.tempPageInput = this.currentPage;
+
+    // Leer parámetros de consulta para filtros
+    this.route.queryParams.subscribe(params => {
+      if (params['estado']) {
+        this.filters.estado = params['estado'];
+      }
+    });
 
     await this.vehiculosService.init();
     this.loadVehiculos();

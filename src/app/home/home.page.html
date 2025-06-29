@@ -1,51 +1,154 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button aria-label="Abrir menú de navegación"></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Inicio</ion-title>
+    <ion-title>Dashboard</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="navegarAPerfil()">
+        <ion-avatar slot="icon-only">
+          <img [src]="currentUser?.photoURL || 'assets/icon/favicon.png'" [alt]="usuario">
+        </ion-avatar>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <main role="main" aria-labelledby="welcome-title">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title id="welcome-title">Bienvenido a Bomberex</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>
-          Gestiona los vehículos de emergencia y sus mantenimientos de forma sencilla y eficiente.
-        </p>
-        
-        <nav role="navigation" aria-label="Navegación principal">
-          <ion-button 
-            expand="block" 
-            routerLink="/vehiculos"
-            aria-label="Ir a la sección de vehículos">
-            <ion-icon name="car-sport-outline" slot="start" aria-hidden="true"></ion-icon>
-            Ver Vehículos
-          </ion-button>
-          
-          <ion-button 
-            expand="block" 
-            routerLink="/mantenimiento"
-            aria-label="Ir a la sección de mantenimientos">
-            <ion-icon name="build-outline" slot="start" aria-hidden="true"></ion-icon>
-            Ver Mantenimientos
-          </ion-button>
-          
-          <ion-button 
-            expand="block" 
-            routerLink="/role-management" 
-            color="secondary" 
-            *ngIf="isAdmin"
-            aria-label="Ir a la gestión de roles de usuario">
-            <ion-icon name="shield-checkmark-outline" slot="start" aria-hidden="true"></ion-icon>
-            Gestión de Roles
-          </ion-button>
-        </nav>
-      </ion-card-content>
-    </ion-card>
-  </main>
+<ion-content>
+  <!-- Tarjeta de bienvenida -->
+  <ion-card class="welcome-card">
+    <ion-card-content>
+      <h1>¡Hola, {{ usuario }}!</h1>
+      <p>Bienvenido al sistema de gestión de vehículos de emergencia</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Estadísticas principales -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" size-md="3">
+        <ion-card class="stat-card" button (click)="verTodosVehiculos()">
+          <ion-card-content>
+            <div class="stat-value">{{ totalVehiculos }}</div>
+            <div class="stat-label">Total Vehículos</div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6" size-md="3">
+        <ion-card class="stat-card success" button (click)="verVehiculosOperativos()">
+          <ion-card-content>
+            <div class="stat-value">{{ vehiculosOperativos }}</div>
+            <div class="stat-label">Operativos</div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6" size-md="3">
+        <ion-card class="stat-card warning" button (click)="verMantenimientosPorEstado('En mantenimiento')">
+          <ion-card-content>
+            <div class="stat-value">{{ vehiculosEnMantenimiento }}</div>
+            <div class="stat-label">En Mantenimiento</div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6" size-md="3">
+        <ion-card class="stat-card danger" button (click)="verMantenimientosPorEstado('Fuera de servicio')">
+          <ion-card-content>
+            <div class="stat-value">{{ vehiculosInoperativos }}</div>
+            <div class="stat-label">Inoperativos</div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Gráfico de estado -->
+  <ion-card class="chart-card">
+    <ion-card-header>
+      <ion-card-title>Estado de Vehículos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="chart-container">
+        <canvas #vehiculosChart></canvas>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Acciones rápidas -->
+  <ion-grid class="actions-grid">
+    <ion-row>
+      <ion-col size="6" size-md="3">
+        <ion-button expand="block" (click)="verTodosVehiculos()">
+          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+          Nuevo Vehículo
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" size-md="3">
+        <ion-button expand="block" (click)="navegarAMantenimiento()">
+          <ion-icon slot="start" name="build-outline"></ion-icon>
+          Nuevo Mantenimiento
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" size-md="3">
+        <ion-button expand="block" (click)="verTodosVehiculos()">
+          <ion-icon slot="start" name="list-outline"></ion-icon>
+          Ver Vehículos
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" size-md="3" *ngIf="isAdmin">
+        <ion-button expand="block" routerLink="/role-management">
+          <ion-icon slot="start" name="shield-outline"></ion-icon>
+          Gestión
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Alertas -->
+  <ion-card class="alerts-card" *ngIf="alertas.length > 0">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="warning-outline" color="danger"></ion-icon>
+        Alertas ({{ alertas.length }})
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item *ngFor="let alerta of alertas" button (click)="alerta.accion()">
+          <ion-icon [name]="alerta.icono" [color]="alerta.tipo" slot="start"></ion-icon>
+          <ion-label>
+            <h3>{{ alerta.titulo }}</h3>
+            <p>{{ alerta.mensaje }}</p>
+          </ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Próximos mantenimientos -->
+  <ion-card class="maintenance-card" *ngIf="proximosMantenimientos.length > 0">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="calendar-outline" color="primary"></ion-icon>
+        Próximos Mantenimientos
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item *ngFor="let mant of proximosMantenimientos.slice(0, 3)" button (click)="navegarAVehiculo(mant.vehiculoId)">
+          <ion-icon name="build-outline" [color]="mant.diasRestantes <= 7 ? 'danger' : 'warning'" slot="start"></ion-icon>
+          <ion-label>
+            <h3>{{ mant.vehiculo }}</h3>
+            <p>{{ mant.tipo }} - {{ mant.fecha }}</p>
+          </ion-label>
+          <ion-badge [color]="mant.diasRestantes <= 7 ? 'danger' : 'warning'" slot="end">
+            {{ mant.diasRestantes }}d
+          </ion-badge>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

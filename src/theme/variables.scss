@@ -1,25 +1,232 @@
-// Variables personalizadas para el tema de Bomberos App
+// Ionic Variables and Theming
+// --------------------------------------------------
 
-// Colores principales
-$colors: (
-  primary:    #3880ff,
-  secondary:  #f57c00,
-  tertiary:   #7044ff,
-  success:    #10dc60,
-  warning:    #ffce00,
-  danger:     #d32f2f,
-  dark:       #222428,
-  medium:     #989aa2,
-  light:      #f4f5f8
-);
+/** Ionic CSS Variables **/
+:root {
+  /** primary - Azul bombero principal **/
+  --ion-color-primary: #1565c0;
+  --ion-color-primary-rgb: 21, 101, 192;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #1258a9;
+  --ion-color-primary-tint: #2c72c6;
 
-// Tipografía
-$font-family-base: 'Roboto', sans-serif;
+  /** secondary - Rojo bombero **/
+  --ion-color-secondary: #e53935;
+  --ion-color-secondary-rgb: 229, 57, 53;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #ca322f;
+  --ion-color-secondary-tint: #e84d49;
 
-// Tamaños y espaciados
-$padding-md: 16px;
-$margin-md: 16px;
+  /** tertiary - Azul más claro **/
+  --ion-color-tertiary: #0277bd;
+  --ion-color-tertiary-rgb: 2, 119, 189;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #0269a6;
+  --ion-color-tertiary-tint: #1b85c4;
 
-// Otros estilos
-$border-radius: 8px;
-$box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  /** success - Verde **/
+  --ion-color-success: #43a047;
+  --ion-color-success-rgb: 67, 160, 71;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #3b8d3e;
+  --ion-color-success-tint: #56a959;
+
+  /** warning - Naranja **/
+  --ion-color-warning: #fb8c00;
+  --ion-color-warning-rgb: 251, 140, 0;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #dd7b00;
+  --ion-color-warning-tint: #fb981a;
+
+  /** danger - Rojo peligro **/
+  --ion-color-danger: #d32f2f;
+  --ion-color-danger-rgb: 211, 47, 47;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #ba2929;
+  --ion-color-danger-tint: #d74444;
+
+  /** dark - Azul gris oscuro **/
+  --ion-color-dark: #37474f;
+  --ion-color-dark-rgb: 55, 71, 79;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #303e46;
+  --ion-color-dark-tint: #4b5961;
+
+  /** medium - Azul gris medio **/
+  --ion-color-medium: #90a4ae;
+  --ion-color-medium-rgb: 144, 164, 174;
+  --ion-color-medium-contrast: #000000;
+  --ion-color-medium-contrast-rgb: 0, 0, 0;
+  --ion-color-medium-shade: #7f9099;
+  --ion-color-medium-tint: #9badb6;
+
+  /** light - Gris muy claro **/
+  --ion-color-light: #f5f5f5;
+  --ion-color-light-rgb: 245, 245, 245;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d8d8d8;
+  --ion-color-light-tint: #f6f6f6;
+}
+
+// Modo oscuro
+@media (prefers-color-scheme: dark) {
+  body {
+    --ion-color-primary: #42a5f5;
+    --ion-color-primary-rgb: 66, 165, 245;
+    --ion-color-primary-contrast: #000000;
+    --ion-color-primary-contrast-rgb: 0, 0, 0;
+    --ion-color-primary-shade: #3a91d8;
+    --ion-color-primary-tint: #55aef6;
+
+    --ion-color-secondary: #ef5350;
+    --ion-color-secondary-rgb: 239, 83, 80;
+    --ion-color-secondary-contrast: #000000;
+    --ion-color-secondary-contrast-rgb: 0, 0, 0;
+    --ion-color-secondary-shade: #d24946;
+    --ion-color-secondary-tint: #f16462;
+
+    --ion-color-tertiary: #29b6f6;
+    --ion-color-tertiary-rgb: 41, 182, 246;
+    --ion-color-tertiary-contrast: #000000;
+    --ion-color-tertiary-contrast-rgb: 0, 0, 0;
+    --ion-color-tertiary-shade: #24a0d8;
+    --ion-color-tertiary-tint: #3ebdf7;
+
+    --ion-color-success: #66bb6a;
+    --ion-color-success-rgb: 102, 187, 106;
+    --ion-color-success-contrast: #000000;
+    --ion-color-success-contrast-rgb: 0, 0, 0;
+    --ion-color-success-shade: #5aa55d;
+    --ion-color-success-tint: #75c279;
+
+    --ion-color-warning: #ffa726;
+    --ion-color-warning-rgb: 255, 167, 38;
+    --ion-color-warning-contrast: #000000;
+    --ion-color-warning-contrast-rgb: 0, 0, 0;
+    --ion-color-warning-shade: #e09322;
+    --ion-color-warning-tint: #ffb03c;
+
+    --ion-color-danger: #f44336;
+    --ion-color-danger-rgb: 244, 67, 54;
+    --ion-color-danger-contrast: #ffffff;
+    --ion-color-danger-contrast-rgb: 255, 255, 255;
+    --ion-color-danger-shade: #d73c30;
+    --ion-color-danger-tint: #f5564a;
+
+    --ion-color-dark: #121212;
+    --ion-color-dark-rgb: 18, 18, 18;
+    --ion-color-dark-contrast: #ffffff;
+    --ion-color-dark-contrast-rgb: 255, 255, 255;
+    --ion-color-dark-shade: #101010;
+    --ion-color-dark-tint: #2a2a2a;
+
+    --ion-color-medium: #9e9e9e;
+    --ion-color-medium-rgb: 158, 158, 158;
+    --ion-color-medium-contrast: #000000;
+    --ion-color-medium-contrast-rgb: 0, 0, 0;
+    --ion-color-medium-shade: #8b8b8b;
+    --ion-color-medium-tint: #a8a8a8;
+
+    --ion-color-light: #f5f5f5;
+    --ion-color-light-rgb: 245, 245, 245;
+    --ion-color-light-contrast: #000000;
+    --ion-color-light-contrast-rgb: 0, 0, 0;
+    --ion-color-light-shade: #d8d8d8;
+    --ion-color-light-tint: #f6f6f6;
+
+    // Ajustes adicionales para modo oscuro
+    --ion-background-color: #121212;
+    --ion-background-color-rgb: 18, 18, 18;
+    --ion-text-color: #ffffff;
+    --ion-text-color-rgb: 255, 255, 255;
+    --ion-border-color: #222222;
+    --ion-item-background: #1e1e1e;
+    --ion-toolbar-background: #1f1f1f;
+    --ion-tab-bar-background: #1f1f1f;
+    --ion-card-background: #1e1e1e;
+  }
+}
+
+// Variables personalizadas adicionales
+:root {
+  // Tipografía
+  --ion-font-family: 'Roboto', sans-serif;
+
+  // Espaciado
+  --page-margin: 16px;
+  --page-margin-small: 8px;
+  --page-margin-large: 24px;
+
+  // Bordes
+  --border-radius: 8px;
+  --border-radius-small: 4px;
+  --border-radius-large: 12px;
+
+  // Sombras
+  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  --box-shadow-dark: 0 2px 6px rgba(0, 0, 0, 0.3);
+
+  // Colores adicionales específicos para bomberos
+  --bombero-blue: #1565c0;
+  --bombero-red: #e53935;
+  --bombero-blue-light: #42a5f5;
+  --bombero-red-light: #ef5350;
+}
+
+// Clases de utilidad para colores de estado
+.color-success {
+  color: var(--ion-color-success);
+}
+
+.color-warning {
+  color: var(--ion-color-warning);
+}
+
+.color-danger {
+  color: var(--ion-color-danger);
+}
+
+.color-bombero-blue {
+  color: var(--bombero-blue);
+}
+
+.color-bombero-red {
+  color: var(--bombero-red);
+}
+
+.bg-success {
+  background-color: var(--ion-color-success);
+}
+
+.bg-warning {
+  background-color: var(--ion-color-warning);
+}
+
+.bg-danger {
+  background-color: var(--ion-color-danger);
+}
+
+.bg-bombero-blue {
+  background-color: var(--bombero-blue);
+}
+
+.bg-bombero-red {
+  background-color: var(--bombero-red);
+}
+
+// Gradientes específicos para bomberos
+.gradient-bombero {
+  background: linear-gradient(135deg, var(--bombero-blue), var(--bombero-red));
+}
+
+.gradient-bombero-reverse {
+  background: linear-gradient(135deg, var(--bombero-red), var(--bombero-blue));
+}
